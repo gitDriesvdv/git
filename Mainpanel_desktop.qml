@@ -4,6 +4,7 @@ import QtQuick.Dialogs 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.1
+import QtQuick.Window 2.0
 Item {
     id: main
     width: 500
@@ -100,8 +101,8 @@ Item {
                 model: enginioModel // get the data from EnginioModel
                 delegate: compListDelegate
                 clip: true
-                width: 500
-                height: 400
+                width: Screen.width/5 //500
+                height: Screen.height//400
                 add: Transition { NumberAnimation { properties: "y"; from: root.height; duration: 250 } }
                 removeDisplaced: Transition { NumberAnimation { properties: "y"; duration: 150 } }
                 remove: Transition { NumberAnimation { property: "opacity"; to: 0; duration: 150 } }
@@ -110,8 +111,8 @@ Item {
             // Dialog for Loader full size
             Rectangle  {
                 id: loaderDialog
-                width: 500
-                height: 600
+                width: Screen.width - imageListView.width//500
+                height: Screen.height//600
                 //contentWidth: mainloader.width; contentHeight: mainloader.height
                 property string fileId
                 //color: "#333"
@@ -147,7 +148,7 @@ Item {
                     width: 400
                     height: 400
                     asynchronous: true
-                    //anchors.fill: parent
+                    anchors.fill: parent
                     //anchors.verticalCenter: parent.verticalCenter
                     //anchors.horizontalCenter: parent.horizontalCenter
                     Behavior on opacity { NumberAnimation { duration: 100 } }
