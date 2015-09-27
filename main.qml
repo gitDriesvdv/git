@@ -1,42 +1,124 @@
-import QtQuick 2.4
-import QtQuick.Controls 1.3
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
+import QtQuick 2.0
+import Enginio 1.0
 
-ApplicationWindow {
-    title: qsTr("Hello World")
-    width: 640
-    height: 480
-    visible: true
+import QtQuick.Dialogs 1.0
+import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
+import QtQuick.Controls.Styles 1.2
+import QtMultimedia 5.4
+import Qt.labs.settings 1.0
 
-    menuBar: MenuBar {
-        Menu {
-            title: qsTr("&File")
-            MenuItem {
-                text: qsTr("&Open")
-                onTriggered: messageDialog.show(qsTr("Open action triggered"));
-            }
-            MenuItem {
-                text: qsTr("E&xit")
-                onTriggered: Qt.quit();
+Item {
+    id: main
+
+    property var imagesUrl: new Object
+    Rectangle {
+        id: root
+        anchors.fill: parent
+        opacity: 1
+        color: "#f4f4f4"
+
+        EnginioClient {
+            id: client
+            backendId: "54be545ae5bde551410243c3"
+            onError: console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
+        }
+
+       /* EnginioModel {
+            id: enginioModel
+            client: client
+            query: {"objectType": "objects.OS_components",
+                    "include": {"file": {}},
+                    "query" : { "type": Qt.platform.os } }
+        }*/
+        EnginioModel {
+            id: enginioModel
+            client: client
+            query: {"objectType": "objects.OS_components",
+                    "include": {"file": {}},
+                    "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
+        }
+
+        Component {
+            id: listDelegate
+
+            BorderImage {
+                height: main.height
+                width: main.width
+                border.top: 4
+                border.bottom: 4
+                source: "qrc:/new/prefix1/delegate kopie.png"
+
+                Loader {
+                    id: mainloader
+                    width: main.width
+                    height: main.height
+                    anchors.verticalCenter: parent.verticalCenter
+                    Behavior on opacity { NumberAnimation { duration: 100 } }
+
+                    //Dit is voor QML uit database
+                    /*Component.onCompleted: {
+                        mainloader.source = ""
+                            var data = { "id": file.id }
+                            var reply = client.downloadUrl(data)
+                            reply.finished.connect(function() {
+                                mainloader.source = reply.data.expiringUrl
+                            })
+                    }*/
+
+                    //Dit gebruiken voor de testen
+                    source : "qrc:/Mainpanel_desktop.qml"
+                    onStatusChanged: if (mainloader.status == Loader.Ready) console.log('Loaded the magic')
+                }
+                Rectangle {
+                    color: "transparent"
+                    anchors.fill: mainloader
+                    border.color: "#aaa"
+                    Rectangle {
+                        id: progressBar
+                        property real value:  image.progress
+                        anchors.bottom: parent.bottom
+                        width: mainloader.width * value
+                        height: 40
+                        color: "#49f"
+                        opacity: mainloader.status != Loader.Ready ? 1 : 0
+                        Behavior on opacity {NumberAnimation {duration: 100}}
+                    }
+                }
             }
         }
-    }
 
-    MainForm {
-        anchors.fill: parent
-        button1.onClicked: messageDialog.show(qsTr("Button 1 pressed"))
-        button2.onClicked: messageDialog.show(qsTr("Button 2 pressed"))
-        button3.onClicked: messageDialog.show(qsTr("Button 3 pressed"))
-    }
+        Rectangle {
+            id: header
+            anchors.top: parent.top
+            width: parent.width
+            height: 0
+            color: "white"
+        }
 
-    MessageDialog {
-        id: messageDialog
-        title: qsTr("May I have your attention, please?")
+        Row {
+            id: listLayout
 
-        function show(caption) {
-            messageDialog.text = caption;
-            messageDialog.open();
+            Behavior on x {NumberAnimation{ duration: 400 ; easing.type: "InOutCubic"}}
+            anchors.top: header.bottom
+            anchors.bottom: footer.top
+
+            ListView {
+                id: listView
+                model: enginioModel // get the data from EnginioModel
+                delegate: listDelegate
+                clip: true
+                width: root.width
+                height: parent.height
+            }
+        }
+
+        BorderImage {
+            id: footer
+            height: 0
+            width: parent.width
+            anchors.bottom: parent.bottom
+            source: addMouseArea.pressed ? "qrc:images/delegate_pressed.png" : "qrc:images/delegate.png"
         }
     }
 }
