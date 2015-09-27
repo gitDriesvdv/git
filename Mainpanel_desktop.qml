@@ -9,8 +9,6 @@ Item {
     width: 500
     height: 640
 
-
-    //property var imagesUrl: new Object
     Rectangle {
 
         id: root
@@ -70,57 +68,17 @@ Item {
                            width: parent.width
                            color: "#bbb"
                        }
-                       Image {
-                           id: image
-                           x: 10
-                           width: 0
-                           height: 100
-                           anchors.verticalCenter: parent.verticalCenter
-                           Behavior on opacity { NumberAnimation { duration: 100 } }
-                       }
-
-                       Column {
-                           anchors.left: image.right
-                           anchors.right: deleteIcon.left
-                           anchors.margins: 12
-                           y: 10
-                           x: 10
                            Text {
                                id : naam
+                               x: 30
+                               y: 30
                                height: 20
                                width: parent.width
                                verticalAlignment: Text.AlignVCenter
                                font.pixelSize: height * 0.5
-                               text: name
+                               text: tab
                                elide: Text.ElideRight
                            }
-                           Text {
-                               height: 20
-                               width: parent.width
-                               verticalAlignment: Text.AlignVCenter
-                               font.pixelSize: height * 0.5
-                               text: type
-                               elide: Text.ElideRight
-                           }
-                           Text {
-                               height: 20
-                               width: parent.width
-                               verticalAlignment: Text.AlignVCenter
-                               font.pixelSize: height * 0.5
-                               text: sizeStringFromFile(file)
-                               elide:Text.ElideRight
-                               color: "#555"
-                           }
-                           Text {
-                               height: 20
-                               width: parent.width
-                               verticalAlignment: Text.AlignVCenter
-                               font.pixelSize: height * 0.5
-                               text: timeStringFromFile(file)
-                               elide:Text.ElideRight
-                               color: "#555"
-                           }
-                       }
 
                        MouseArea {
                            id: hitbox
@@ -130,57 +88,12 @@ Item {
                                loaderDialog.visible = true
                            }
                        }
-
-                       // Delete button
-                       Button {
-                           id: deleteIcon
-                           text: "Delete"
-                           anchors.right: parent.right
-                           anchors.verticalCenter: parent.verticalCenter
-                           anchors.rightMargin: 18
-                           onClicked: {
-                               enginioModel.remove(index)
-                               enginioModelLogs.append({"Log": name + " File Removed", "User": "Admin"})
-                           }
-                       }
                    }
                }
 
-        Rectangle {
-            id: header
-            anchors.top: parent.top
-            width: 500
-            height: 70
-            color: "white"
-
-            Row {
-                id: logo
-                anchors.centerIn: parent
-                anchors.horizontalCenterOffset: -4
-                spacing: 6
-
-                Text {
-                    text: "Components"
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.verticalCenterOffset: -3
-                    font.bold: true
-                    font.pixelSize: 46
-                    color: "#555"
-                }
-            }
-            Rectangle {
-                width: parent.width ; height: 1
-                anchors.bottom: parent.bottom
-                color: "#bbb"
-            }
-        }
-
         Row {
             id: listLayout
-
             Behavior on x {NumberAnimation{ duration: 400 ; easing.type: "InOutCubic"}}
-            anchors.top: header.bottom
-            anchors.bottom: footer.top
 
             ListView {
                 id: imageListView
@@ -195,11 +108,11 @@ Item {
             }
 
             // Dialog for Loader full size
-            Flickable  {
+            Rectangle  {
                 id: loaderDialog
                 width: 500
                 height: 600
-                contentWidth: mainloader.width; contentHeight: mainloader.height
+                //contentWidth: mainloader.width; contentHeight: mainloader.height
                 property string fileId
                 //color: "#333"
                 visible: false
@@ -247,155 +160,9 @@ Item {
                             })
                     }
                 }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: root.state = ""
-                }
-            }
-
-        }
-
-        BorderImage {
-            id: footer
-            width: 500
-            height: 110
-            anchors.bottom: parent.bottom
-            border.left: 5; border.top: 5
-            border.right: 5; border.bottom: 5
-
-            Rectangle {
-                y: -1 ; height: 1
-                width: parent.width
-                color: "#bbb"
-            }
-
-            ComboBox {
-                id: os
-                width: 200
-                model: [
-                    "android",
-                    "blackberry",
-                    "ios",
-                    "linux",
-                    "osx",
-                    "unix",
-                    "windows",
-                    "wince",
-                    "winrt",
-                    "winphone"
-                ]
-            }
-
-            TextField{
-                id: name
-                anchors.top: os.bottom
-                height: 40
-                width: 400
-                placeholderText: "Name"
-            }
-
-            Rectangle{
-            id : upload
-            anchors.top: name.bottom
-
-            Button {
-                text: "Click to upload..."
-                onClicked: fileDialog.visible = true;
-            }
-
-            }
-            Rectangle {
-                id: progressBar
-                property real value:0
-                anchors.bottom: parent.bottom
-                width: parent.width * value
-                height: 4
-                color: "#49f"
-                Behavior on opacity {NumberAnimation {duration: 100}}
-            }
-        }
-
-        // File dialog for selecting file from local file system
-        FileDialog {
-            id: fileDialog
-            title: "Select QML file to upload"
-
-            onSelectionAccepted: {
-                var pathParts = fileUrl.toString().split("/");
-                var fileName = pathParts[pathParts.length - 1];
-                var fileObject = {
-                    objectType: "objects.OS_components",
-                    name: name.text,
-                    type: os.currentText,
-                    localPath: fileUrl.toString()
-                }
-                var reply = client.create(fileObject);
-                reply.finished.connect(function() {
-                    var uploadData = {
-                        file: { fileName: fileName },
-                        targetFileProperty: {
-                            objectType: "objects.OS_components",
-                            id: reply.data.id,
-                            propertyName: "file"
-                        },
-                    };
-
-                    var uploadReply = client.uploadFile(uploadData, fileUrl)
-                    progressBar.opacity = 1
-                    uploadReply.progress.connect(function(progress, total) {
-                        progressBar.value = progress/total
-                    })
-                    uploadReply.finished.connect(function() {
-                        var tmp = enginioModel.query; enginioModel.query = null; enginioModel.query = tmp;
-                        progressBar.opacity = 0
-                        if (uploadReply.errorType !== EnginioReply.NoError) {
-                            messageDialog.text = "Failed to create an account:\n" + JSON.stringify(uploadReply.data, undefined, 2) + "\n\n"
-                            enginioModelErrors.append({"Error": name.text + " Failed to add file :\n" + JSON.stringify(uploadReply.data, undefined, 2) + "\n\n", "User": "Admin"})
-                        } else {
-                            messageDialog.text = "File added.\n"
-                            enginioModelLogs.append({"Log": name.text + " File Added", "User": "Admin"})
-                            name.text = "";
-                        }
-                        messageDialog.visible = true;
-                    })
-                })
-
             }
         }
     }
-
-    function sizeStringFromFile(fileData) {
-        var str = [];
-        if (fileData && fileData.fileSize) {
-            str.push("Size: ");
-            str.push(fileData.fileSize);
-            str.push(" bytes");
-        }
-        return str.join("");
-    }
-
-    function doubleDigitNumber(number) {
-        if (number < 10)
-            return "0" + number;
-        return number;
-    }
-
-    function timeStringFromFile(fileData) {
-        var str = [];
-        if (fileData && fileData.createdAt) {
-            var date = new Date(fileData.createdAt);
-            if (date) {
-                str.push("Uploaded: ");
-                str.push(date.toDateString());
-                str.push(" ");
-                str.push(doubleDigitNumber(date.getHours()));
-                str.push(":");
-                str.push(doubleDigitNumber(date.getMinutes()));
-            }
-        }
-        return str.join("");
-    }
-
 }
 
 

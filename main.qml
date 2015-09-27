@@ -68,7 +68,7 @@ Item {
 
                     //Dit gebruiken voor de testen
                     source : "qrc:/Mainpanel_desktop.qml"
-                    onStatusChanged: if (mainloader.status == Loader.Ready) console.log('Loaded the magic')
+                    //onStatusChanged: if (mainloader.status == Loader.Ready) console.log('Loaded the magic')
                 }
                 Rectangle {
                     color: "transparent"
