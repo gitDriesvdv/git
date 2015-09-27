@@ -76,7 +76,7 @@ Item {
                     border.color: "#aaa"
                     Rectangle {
                         id: progressBar
-                        property real value:  image.progress
+                        property real value:  mainloader.progress
                         anchors.bottom: parent.bottom
                         width: mainloader.width * value
                         height: 40

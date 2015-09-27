@@ -59,16 +59,13 @@ Item {
         Component {
                    id: compListDelegate
 
-                   BorderImage {
+                   Rectangle {
+                       id: borderImage
                        height: 90
                        width: 500
-                       border.top: 4
-                       border.bottom: 4
-                       Rectangle {
-                           y: -1 ; height: 1
-                           width: parent.width
-                           color: "#bbb"
-                       }
+                      // border.top: 4
+                      // border.bottom: 4
+
                            Text {
                                id : naam
                                x: 30
@@ -78,15 +75,21 @@ Item {
                                verticalAlignment: Text.AlignVCenter
                                font.pixelSize: height * 0.5
                                text: tab
-                               elide: Text.ElideRight
                            }
-
+                           Rectangle {
+                               //y: -1 ;
+                               anchors.top: borderImage.bottom
+                               height: 3
+                               width: parent.width
+                               color: "#bbb"
+                           }
                        MouseArea {
                            id: hitbox
                            anchors.fill: parent
                            onClicked: {
                                loaderDialog.fileId = file.id;
                                loaderDialog.visible = true
+                               mainloader.visible =  true
                            }
                        }
                    }
@@ -98,25 +101,21 @@ Item {
 
             ListView {
                 id: imageListView
-                model: enginioModel // get the data from EnginioModel
+                model: enginioModel
                 delegate: compListDelegate
                 clip: true
-                width: Screen.width/5 //500
-                height: Screen.height//400
-                add: Transition { NumberAnimation { properties: "y"; from: root.height; duration: 250 } }
-                removeDisplaced: Transition { NumberAnimation { properties: "y"; duration: 150 } }
-                remove: Transition { NumberAnimation { property: "opacity"; to: 0; duration: 150 } }
+                width: Screen.width/5
+                height: Screen.height
             }
 
             // Dialog for Loader full size
             Rectangle  {
                 id: loaderDialog
-                width: Screen.width - imageListView.width//500
-                height: Screen.height//600
-                //contentWidth: mainloader.width; contentHeight: mainloader.height
+                width: Screen.width - imageListView.width
+                height: Screen.height
                 property string fileId
-                //color: "#333"
-                visible: false
+                color: "#333"
+                //visible: false
 
                 onFileIdChanged: {
                     mainloader.source = ""
@@ -125,14 +124,6 @@ Item {
                     reply.finished.connect(function() {
                         mainloader.source = reply.data.expiringUrl
                     })
-                }
-                Label {
-                    id: label
-                    text: "Loading ..."
-                    font.pixelSize: 28
-                    color: "white"
-                    anchors.centerIn: parent
-                    visible: mainloader.status != Loader.Ready
                 }
                 Rectangle {
                     property real value: mainloader.progress
@@ -149,6 +140,7 @@ Item {
                     height: 400
                     asynchronous: true
                     anchors.fill: parent
+                     visible: false
                     //anchors.verticalCenter: parent.verticalCenter
                     //anchors.horizontalCenter: parent.horizontalCenter
                     Behavior on opacity { NumberAnimation { duration: 100 } }
