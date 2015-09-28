@@ -40,11 +40,19 @@ Rectangle {
         columnSpacing: 40
 
         Button{
-            id: firstbutton
+            id: textFieldbutton
             text: "Textfield"
             enabled: false
             onClicked: {
                 enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextEdit"})
+            }
+        }
+        Button{
+            id: textAreabutton
+            text: "Textarea"
+            enabled: false
+            onClicked: {
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextArea"})
             }
         }
     }
@@ -90,14 +98,27 @@ Rectangle {
                          Rectangle{
                              anchors.top: naam.bottom
                              height: 25
-                             id: firstname
+                             id: item1
                              visible: Type == "TextEdit"
                              x: 20
                          TextField {
                              height: 25
                              font.pixelSize: 15
-                             id: labelfirstname
+                             id: textfield_item
                              placeholderText: color
+                         }
+                         }
+                         Rectangle{
+                             anchors.top: naam.bottom
+                             height: 25
+                             id: item2
+                             visible: Type == "TextArea"
+                             x: 20
+                         TextArea {
+                             height: 75
+                             font.pixelSize: 15
+                             id: textarea_item
+                             //placeholderText: color
                          }
                          }
 
@@ -153,7 +174,8 @@ Rectangle {
     function enableButtons()
     {
         aFormname = nameForm.text;
-        firstbutton.enabled = true;
+        textFieldbutton.enabled = true;
+        textAreabutton.enabled = true;
         form.visible = true;
         newform.visible = false;
     }
