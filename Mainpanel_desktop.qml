@@ -63,9 +63,6 @@ Item {
                        id: borderImage
                        height: 90
                        width: 500
-                      // border.top: 4
-                      // border.bottom: 4
-
                            Text {
                                id : naam
                                x: 30
@@ -77,7 +74,6 @@ Item {
                                text: tab
                            }
                            Rectangle {
-                               //y: -1 ;
                                anchors.top: borderImage.bottom
                                height: 3
                                width: parent.width
