@@ -201,17 +201,17 @@ Rectangle {
                     Behavior on opacity { NumberAnimation { duration: 100 } }
 
                     //Dit is voor QML uit database
-                    Component.onCompleted: {
+                   /* Component.onCompleted: {
                         mainloader.source = ""
                             var data = { "id": file.id }
                             var reply = client.downloadUrl(data)
                             reply.finished.connect(function() {
                                 mainloader.source = reply.data.expiringUrl
                             })
-                    }
+                    }*/
 
                     //Dit gebruiken voor de testen
-                    //source : "Login_desktop.qml"
+                    source : "qrc:/Mainpanel_desktop.qml"
                 }
                 Rectangle {
                     color: "transparent"

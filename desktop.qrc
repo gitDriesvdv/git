@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>Login_desktop.qml</file>
         <file>Mainpanel_desktop.qml</file>
+        <file>Formbuilder.qml</file>
     </qresource>
 </RCC>
