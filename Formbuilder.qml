@@ -52,7 +52,7 @@ Rectangle {
             text: "Textarea"
             enabled: false
             onClicked: {
-                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextArea"})
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextArea", "index" : index})
             }
         }
     }
