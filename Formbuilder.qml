@@ -164,23 +164,6 @@ Rectangle {
                 }
             }
 
-          /*  Item{
-                id: form
-                visible: false
-                width: Screen.width - grid.width
-                 height: Screen.height //- grid.height
-                anchors.left: grid.right
-                //color: "gray"
-                y: 50
-           /* Row {
-                id: listLayout
-                Behavior on x {NumberAnimation{ duration: 400 ; easing.type: "InOutCubic"}}
-                //anchors.top: knoppen.bottom
-                //anchors.bottom: footer.top
-                width: Screen.width - grid.width
-                 //height: Screen.height - grid.height
-                anchors.fill: parent*/
-
                 ListView {
                     id: formListView
                     //interactive: false
@@ -201,8 +184,6 @@ Rectangle {
                     remove: Transition { NumberAnimation { property: "opacity"; to: 0; duration: 150 } }
 
                 }
-           // }
-            //}
     }
     function enableButtons()
     {
