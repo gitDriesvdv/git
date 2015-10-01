@@ -44,7 +44,7 @@ Rectangle {
             text: "Textfield"
             enabled: false
             onClicked: {
-                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextEdit"})
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextField"})
             }
         }
         Button{
@@ -52,7 +52,15 @@ Rectangle {
             text: "Textarea"
             enabled: false
             onClicked: {
-                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextArea", "index" : index})
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextArea"})
+            }
+        }
+        Button{
+            id: comboboxbutton
+            text: "Combobox"
+            enabled: false
+            onClicked: {
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "ComboBox"})
             }
         }
     }
@@ -84,12 +92,14 @@ Rectangle {
             Component {
                 id: listDelegate
                 Item {
-                width: 460; height: 60
+                    id: item_list
+                width: 460; height: 70
 
                     Row {
                      Column {
                          id: col
                          width: 200
+                         height: 90
                         TextField {
                             id: naam
                             x: 20
@@ -99,26 +109,43 @@ Rectangle {
                              anchors.top: naam.bottom
                              height: 25
                              id: item1
-                             visible: Type == "TextEdit"
+                             visible: Type == "TextField"
                              x: 20
                          TextField {
                              height: 25
                              font.pixelSize: 15
                              id: textfield_item
-                             placeholderText: color
+                            // placeholderText: color
+                         }
+                         }
+                         Rectangle{
+                             anchors.top: naam.bottom
+                             height: 75
+                             id: item2
+                             visible: Type == "TextArea"
+                             x: 20
+
+
+                         TextArea {
+                             height: 75
+                             font.pixelSize: 15
+                             id: textarea_item
+                             Component.onCompleted: {
+                                 item_list.height = 110
+                                 }
+
                          }
                          }
                          Rectangle{
                              anchors.top: naam.bottom
                              height: 25
-                             id: item2
-                             visible: Type == "TextArea"
+                             id: item3
+                             visible: Type == "ComboBox"
                              x: 20
-                         TextArea {
-                             height: 75
-                             font.pixelSize: 15
-                             id: textarea_item
-                             //placeholderText: color
+                         ComboBox {
+                             height: 25
+                             id: combobox_item
+                             model: ComboBoxList
                          }
                          }
 
@@ -137,31 +164,33 @@ Rectangle {
                 }
             }
 
-            Rectangle{
+            Flickable{
                 id: form
                 visible: false
                 width: Screen.width - grid.width
-                height: Screen.height - grid.height
+                 height: Screen.height //- grid.height
                 anchors.left: grid.right
-                color: "gray"
+                //color: "gray"
                 y: 50
             Row {
                 id: listLayout
                 Behavior on x {NumberAnimation{ duration: 400 ; easing.type: "InOutCubic"}}
                 //anchors.top: knoppen.bottom
                 //anchors.bottom: footer.top
+                width: Screen.width - grid.width
+                 //height: Screen.height - grid.height
                 anchors.fill: parent
 
                 ListView {
                     id: formListView
-                    interactive: false
+                    //interactive: false
                     model: enginioModel
                     delegate: listDelegate
                     clip: true
                     //width: parent.width
                     //height: parent.height
                     width: Screen.width - grid.width
-                    height: Screen.height - grid.height
+                    height: parent.height//Screen.height - grid.height
 
                     // Animations
                     add: Transition { NumberAnimation { properties: "y"; from: root.height; duration: 250 } }
@@ -176,6 +205,7 @@ Rectangle {
         aFormname = nameForm.text;
         textFieldbutton.enabled = true;
         textAreabutton.enabled = true;
+        comboboxbutton.enabled = true;
         form.visible = true;
         newform.visible = false;
     }
