@@ -93,12 +93,13 @@ Rectangle {
                 id: listDelegate
                 Item {
                     id: item_list
-                width: 460; height: 70
+                    width: 600 ;
+                    height: 70
 
                     Row {
                      Column {
                          id: col
-                         width: 200
+                         width: parent.width
                          height: 90
                         TextField {
                             id: naam
@@ -139,14 +140,58 @@ Rectangle {
                          Rectangle{
                              anchors.top: naam.bottom
                              height: 25
+                             width: parent.width
                              id: item3
                              visible: Type == "ComboBox"
                              x: 20
+                         Text{
+                             id: containerID
+                             text: id
+                             visible: false
+                         }
+
                          ComboBox {
                              height: 25
                              id: combobox_item
                              model: ComboBoxList
                          }
+                         Button {
+                                    id: addIcon
+                                    text: "ADD"
+                                    anchors.margins: 20
+                                    //anchors.verticalCenter: col.verticalCenter
+                                    anchors.left: combobox_item.left
+                                    onClicked: {
+                                        var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
+                                        var xhr = new XMLHttpRequest();
+
+                                               xhr.onreadystatechange = function() {
+                                                   if ( xhr.readyState == xhr.DONE)
+                                                   {
+                                                       console.log("Success " + xhr.responseText + " STATUS " + xhr.status)
+                                                       if ( xhr.status == 200)
+                                                       {
+                                                           var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
+                                                           console.log("Success " + jsonObject.balance)
+                                                       }
+                                                   }
+                                               }
+
+                                               xhr.open("PUT",url,true);
+
+                                               var data = {
+                                                    "$push": {
+                                                    "ComboBoxList": "smoky"
+                                                }
+                                               }
+                                               xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                        xhr.send(JSON.stringify(data));
+                                        //imageDialog.fileId = file.id;
+                                        //imageDialog.visible = true
+                                        //root.state = "view"
+                                    }
+                                 }
+
                          }
 
                         }
