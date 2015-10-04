@@ -95,116 +95,135 @@ Rectangle {
                     id: item_list
                     width: 600 ;
                     height: 70
+                    Column{
+                        id: col
+                        width: parent.width
+                        //height: 70
+                        x: 10;
+                        y: 10
 
-                    Row {
-                     Column {
-                         id: col
-                         width: parent.width
-                         height: 90
-                        TextField {
-                            id: naam
-                            x: 20
-                            text: Name
-                        }
-                         Rectangle{
-                             anchors.top: naam.bottom
-                             height: 25
-                             id: item1
-                             visible: Type == "TextField"
-                             x: 20
-                         TextField {
-                             height: 25
-                             font.pixelSize: 15
-                             id: textfield_item
-                            // placeholderText: color
-                         }
-                         }
-                         Rectangle{
-                             anchors.top: naam.bottom
-                             height: 75
-                             id: item2
-                             visible: Type == "TextArea"
-                             x: 20
+                                spacing: 10
+                                Rectangle {
+                                    width: parent.width;
+                                    height: 20;
+                                    color: "gray"
+                                    x: 20
+                                    TextField {
+                                        id: name_component
 
-
-                         TextArea {
-                             height: 75
-                             font.pixelSize: 15
-                             id: textarea_item
-                             Component.onCompleted: {
-                                 item_list.height = 110
-                                 }
-
-                         }
-                         }
-                         Rectangle{
-                             anchors.top: naam.bottom
-                             height: 25
-                             width: parent.width
-                             id: item3
-                             visible: Type == "ComboBox"
-                             x: 20
-                         Text{
-                             id: containerID
-                             text: id
-                             visible: false
-                         }
-
-                         ComboBox {
-                             height: 25
-                             id: combobox_item
-                             model: ComboBoxList
-                         }
-                         Button {
-                                    id: addIcon
-                                    text: "ADD"
-                                    anchors.margins: 20
-                                    //anchors.verticalCenter: col.verticalCenter
-                                    anchors.left: combobox_item.left
-                                    onClicked: {
-                                        var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
-                                        var xhr = new XMLHttpRequest();
-
-                                               xhr.onreadystatechange = function() {
-                                                   if ( xhr.readyState == xhr.DONE)
-                                                   {
-                                                       console.log("Success " + xhr.responseText + " STATUS " + xhr.status)
-                                                       if ( xhr.status == 200)
-                                                       {
-                                                           var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
-                                                           console.log("Success " + jsonObject.balance)
-                                                       }
-                                                   }
-                                               }
-
-                                               xhr.open("PUT",url,true);
-
-                                               var data = {
-                                                    "$push": {
-                                                    "ComboBoxList": "smoky"
-                                                }
-                                               }
-                                               xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
-                                        xhr.send(JSON.stringify(data));
-                                        //imageDialog.fileId = file.id;
-                                        //imageDialog.visible = true
-                                        //root.state = "view"
+                                        width: parent.width/2 ;
+                                        text: Name
                                     }
-                                 }
+                                    Button{
+                                        id: changeName
+                                        width: parent.width/5
+                                        anchors.left: name_component.right
+                                        text: "Change name"
+                                    }
+                                }
+                                Rectangle {
+                                    id: item1
+                                    visible: Type == "TextField"
+                                    x: 20
+                                    y: 20
+                                    width: parent.width;
+                                    height: 20;
+                                    color: "gray"
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width;
+                                    id: textfield_item
+                                }
+                                }
 
-                         }
+                                Rectangle {
+                                    width: parent.width;
+                                    color: "gray"
+                                    height: 75
+                                    id: item2
+                                    visible: Type == "TextArea"
+                                    x: 20
+                                    y: 20
+                                TextArea {
+                                    height: 75
+                                    font.pixelSize: 15
+                                    id: textarea_item
+                                    Component.onCompleted: {
+                                        item_list.height = 150
+                                        }
+                                }
+                                }
+                                Rectangle {
+                                    height: 30
+                                    width: parent.width
+                                    id: item3
+                                    visible: Type == "ComboBox"
+                                    x: 20
+                                    //y: 20
+                                    color: "gray"
+                                Text{
+                                    id: containerID
+                                    text: id
+                                    visible: false
+                                }
+                                ComboBox {
+                                    height: 25
+                                    id: combobox_item
+                                    width: parent.width/5
+                                    model: ComboBoxList
+                                }
+                                Button {
+                                           id: addIcon
+                                           text: "ADD"
+                                           anchors.margins: 20
+                                           anchors.left: combobox_item.right
+                                           onClicked: {
+                                               var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
+                                               var xhr = new XMLHttpRequest();
+                                                      xhr.onreadystatechange = function() {
+                                                          if ( xhr.readyState == xhr.DONE)
+                                                          {
+                                                              console.log("Success " + xhr.responseText + " STATUS " + xhr.status)
+                                                              if ( xhr.status == 200)
+                                                              {
+                                                                  var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
+                                                                  console.log("Success " + jsonObject.balance)
+                                                              }
+                                                          }
+                                                      }
+                                                      xhr.open("PUT",url,true);
+                                                      var data = {
+                                                           "$push": {
+                                                           "ComboBoxList": "smoky"
+                                                       }
+                                                      }
+                                                      xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                               xhr.send(JSON.stringify(data));
+                                           }
+                                        }
 
-                        }
-                     Button {
-                                id: removeIcon
-                                text: "remove"
-                                anchors.margins: 20
-                                anchors.verticalCenter: col.verticalCenter
-                                anchors.left: col.right
-                                opacity: enabled ? 1 : 0.5
-                                Behavior on opacity {NumberAnimation{duration: 100}}
-                                onClicked: enginioModel.remove(index)
-                             }
+                                }
+                                Rectangle {
+                                    width: parent.width;
+                                    color: "gray"
+                                    height: 25
+                                    id: delete_button
+                                   // visible: Type == "TextArea"
+                                    x: 20
+                                    y: 20
+                                    Button {
+                                               id: removeIcon
+                                               text: "remove"
+                                               anchors.margins: 20
+                                               //anchors.verticalCenter: col.verticalCenter
+                                               //anchors.left: col.right
+                                               opacity: enabled ? 1 : 0.5
+                                               Behavior on opacity {NumberAnimation{duration: 100}}
+                                               onClicked: enginioModel.remove(index)
+                                            }
+                                }
+
                     }
                 }
             }

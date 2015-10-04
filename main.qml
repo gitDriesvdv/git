@@ -1,6 +1,6 @@
 import QtQuick 2.0
 import Enginio 1.0
-
+import QtQml 2.0
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
@@ -38,7 +38,14 @@ Item {
                     "include": {"file": {}},
                     "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
         }
-
+        Label {
+                            id: label
+                            text: "loading all components ..."
+                            font.pixelSize: 28
+                            color: "black"
+                            anchors.centerIn: parent
+                            visible: mainloader.status != Loader.Ready
+                        }
         Component {
             id: listDelegate
 
@@ -68,8 +75,14 @@ Item {
 
                     //Dit gebruiken voor de testen
                     source : "qrc:/Formbuilder.qml"
+                    onStatusChanged:{
+                       // if (mainloader.status == Loader.Null) console.log('Loading the magic')
+                        if (mainloader.status == Loader.Ready) console.log('Loaded the magic')
+
+                    }
                     //onStatusChanged: if (mainloader.status == Loader.Ready) console.log('Loaded the magic')
                 }
+
                 Rectangle {
                     color: "transparent"
                     anchors.fill: mainloader
