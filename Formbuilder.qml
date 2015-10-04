@@ -134,6 +134,7 @@ Rectangle {
                                     font.pixelSize: 15
                                     width: parent.width;
                                     id: textfield_item
+
                                 }
                                 }
 
@@ -144,13 +145,13 @@ Rectangle {
                                     id: item2
                                     visible: Type == "TextArea"
                                     x: 20
-                                    y: 20
+                                    y: 10
                                 TextArea {
                                     height: 75
                                     font.pixelSize: 15
                                     id: textarea_item
                                     Component.onCompleted: {
-                                        item_list.height = 150
+                                        item_list.height = 160
                                         }
                                 }
                                 }
@@ -209,7 +210,6 @@ Rectangle {
                                     color: "gray"
                                     height: 25
                                     id: delete_button
-                                   // visible: Type == "TextArea"
                                     x: 20
                                     y: 20
                                     Button {
@@ -223,6 +223,12 @@ Rectangle {
                                                onClicked: enginioModel.remove(index)
                                             }
                                 }
+                                Rectangle {
+                                                //y: 0 ;
+                                                height: 1
+                                                width: parent.width
+                                                color: "white"
+                                            }
 
                     }
                 }
