@@ -163,7 +163,8 @@ Rectangle {
                                 }
                                 }
                     /*
-                        Checkbox nof niet werkend. Een listview nog aan koppelen om meerdere weer te geven.
+                        Checkbox nog niet werkend. Een listview nog aan koppelen om meerdere weer te geven.
+                        Idem maken voor radiobuttons
                     */
 
                                 Rectangle {
@@ -189,7 +190,6 @@ Rectangle {
                                     id: item3
                                     visible: Type == "ComboBox"
                                     x: 20
-                                    //y: 20
                                     color: "gray"
                                 Text{
                                     id: containerID
@@ -202,11 +202,18 @@ Rectangle {
                                     width: parent.width/5
                                     model: ComboBoxList
                                 }
+                                TextField{
+                                    id: inputComboBox
+                                    width: Screen.width/5
+                                    anchors.left: combobox_item.right
+                                }
+
                                 Button {
                                            id: addIcon
                                            text: "ADD"
                                            anchors.margins: 20
-                                           anchors.left: combobox_item.right
+                                           anchors.left: inputComboBox.right
+                                           enabled: inputComboBox.text.length
                                            onClicked: {
                                                var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
                                                var xhr = new XMLHttpRequest();
@@ -218,13 +225,46 @@ Rectangle {
                                                               {
                                                                   var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
                                                                   console.log("Success " + jsonObject.balance)
+                                                                  inputComboBox.text = "";
+                                                                  reload()
                                                               }
                                                           }
                                                       }
                                                       xhr.open("PUT",url,true);
                                                       var data = {
                                                            "$push": {
-                                                           "ComboBoxList": "smoky"
+                                                           "ComboBoxList": inputComboBox.text
+                                                       }
+                                                      }
+                                                      xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                               xhr.send(JSON.stringify(data));
+
+                                           }
+                                        }
+                                Button {
+                                           id: removeButton
+                                           text: "Remove current"
+                                           anchors.margins: 20
+                                           anchors.left: addIcon.right
+                                           onClicked: {
+                                               var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
+                                               var xhr = new XMLHttpRequest();
+                                                      xhr.onreadystatechange = function() {
+                                                          if ( xhr.readyState == xhr.DONE)
+                                                          {
+                                                              console.log("Success " + xhr.responseText + " STATUS " + xhr.status)
+                                                              if ( xhr.status == 200)
+                                                              {
+                                                                  var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
+                                                                  console.log("Success " + jsonObject.balance)
+                                                                   reload()
+                                                              }
+                                                          }
+                                                      }
+                                                      xhr.open("DELETE",url,true);
+                                                      var data = {
+                                                            "$delete": {
+                                                           "ComboBoxList": combobox_item.onlycurrentText
                                                        }
                                                       }
                                                       xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
@@ -288,6 +328,11 @@ Rectangle {
         checkboxbutton.enabled = true;
         formListView.visible = true;
         newform.visible = false;
+    }
+    function reload() {
+        var a = enginioModel.query
+        enginioModel.query = null
+        enginioModel.query = a
     }
 }
 
