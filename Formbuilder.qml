@@ -249,6 +249,8 @@ Rectangle {
                                            onClicked: {
                                                var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
                                                var xhr = new XMLHttpRequest();
+                                               //xhr.open('DELETE','http://localhost/test.txt');
+                                               //xhr.send();
                                                       xhr.onreadystatechange = function() {
                                                           if ( xhr.readyState == xhr.DONE)
                                                           {
@@ -261,10 +263,10 @@ Rectangle {
                                                               }
                                                           }
                                                       }
-                                                      xhr.open("DELETE",url,true);
+                                                      xhr.open('PUT',url,true);
                                                       var data = {
-                                                            "$delete": {
-                                                           "ComboBoxList": combobox_item.onlycurrentText
+                                                            "$pull": {
+                                                           "ComboBoxList": combobox_item.currentText
                                                        }
                                                       }
                                                       xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
