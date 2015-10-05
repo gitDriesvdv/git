@@ -63,6 +63,14 @@ Rectangle {
                 enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "ComboBox"})
             }
         }
+        Button{
+            id: checkboxbutton
+            text: "Checkbox"
+            enabled: false
+            onClicked: {
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "CheckBox"})
+            }
+        }
     }
     Rectangle{
         //anchors.fill: parent
@@ -79,7 +87,7 @@ Rectangle {
                 Layout.fillWidth: true
                 placeholderText: "Username"
             }
-            Button{
+            Button {
                 id: startbutton
                 text: "Start"
                 onClicked: {
@@ -98,7 +106,6 @@ Rectangle {
                     Column{
                         id: col
                         width: parent.width
-                        //height: 70
                         x: 10;
                         y: 10
 
@@ -153,6 +160,27 @@ Rectangle {
                                     Component.onCompleted: {
                                         item_list.height = 160
                                         }
+                                }
+                                }
+                    /*
+                        Checkbox nof niet werkend. Een listview nog aan koppelen om meerdere weer te geven.
+                    */
+
+                                Rectangle {
+                                    width: parent.width;
+                                    color: "gray"
+                                    height: 75
+                                    id: item4
+                                    visible: Type == "CheckBox"
+                                    x: 20
+                                    y: 10
+                                CheckBox {
+                                    height: 75
+                                    //font.pixelSize: 15
+                                    id: checkbox_item
+                                    /*Component.onCompleted: {
+                                        item_list.height = 160
+                                        }*/
                                 }
                                 }
                                 Rectangle {
@@ -216,15 +244,12 @@ Rectangle {
                                                id: removeIcon
                                                text: "remove"
                                                anchors.margins: 20
-                                               //anchors.verticalCenter: col.verticalCenter
-                                               //anchors.left: col.right
                                                opacity: enabled ? 1 : 0.5
                                                Behavior on opacity {NumberAnimation{duration: 100}}
                                                onClicked: enginioModel.remove(index)
                                             }
                                 }
                                 Rectangle {
-                                                //y: 0 ;
                                                 height: 1
                                                 width: parent.width
                                                 color: "white"
@@ -252,7 +277,6 @@ Rectangle {
                     add: Transition { NumberAnimation { properties: "y"; from: root.height; duration: 250 } }
                     removeDisplaced: Transition { NumberAnimation { properties: "y"; duration: 150 } }
                     remove: Transition { NumberAnimation { property: "opacity"; to: 0; duration: 150 } }
-
                 }
     }
     function enableButtons()
@@ -261,6 +285,7 @@ Rectangle {
         textFieldbutton.enabled = true;
         textAreabutton.enabled = true;
         comboboxbutton.enabled = true;
+        checkboxbutton.enabled = true;
         formListView.visible = true;
         newform.visible = false;
     }
