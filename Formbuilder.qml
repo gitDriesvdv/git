@@ -170,19 +170,29 @@ Rectangle {
                                 Rectangle {
                                     width: parent.width;
                                     color: "gray"
-                                    height: 75
+                                    height: 50
                                     id: item4
                                     visible: Type == "CheckBox"
                                     x: 20
                                     y: 10
-                                CheckBox {
-                                    height: 75
-                                    //font.pixelSize: 15
-                                    id: checkbox_item
-                                    /*Component.onCompleted: {
-                                        item_list.height = 160
-                                        }*/
-                                }
+                                    Column{
+                                        spacing: 2
+                                       // height: 20
+                                    Repeater {
+                                            id: rep
+                                            model: ["apples", "oranges", "pears"]
+                                            CheckBox {
+                                                height: 15
+                                                //font.pixelSize: 15
+                                                id: checkbox_item
+                                                text: modelData
+                                                /*Component.onCompleted: {
+                                                    item_list.height = 160
+                                                    }*/
+                                            }
+                                    }
+                                    }
+
                                 }
                                 Rectangle {
                                     height: 30
@@ -200,7 +210,7 @@ Rectangle {
                                     height: 25
                                     id: combobox_item
                                     width: parent.width/5
-                                    model: ComboBoxList
+                                    model: List
                                 }
                                 TextField{
                                     id: inputComboBox
@@ -233,7 +243,7 @@ Rectangle {
                                                       xhr.open("PUT",url,true);
                                                       var data = {
                                                            "$push": {
-                                                           "ComboBoxList": inputComboBox.text
+                                                           "List": inputComboBox.text
                                                        }
                                                       }
                                                       xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
@@ -249,8 +259,6 @@ Rectangle {
                                            onClicked: {
                                                var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
                                                var xhr = new XMLHttpRequest();
-                                               //xhr.open('DELETE','http://localhost/test.txt');
-                                               //xhr.send();
                                                       xhr.onreadystatechange = function() {
                                                           if ( xhr.readyState == xhr.DONE)
                                                           {
@@ -266,7 +274,7 @@ Rectangle {
                                                       xhr.open('PUT',url,true);
                                                       var data = {
                                                             "$pull": {
-                                                           "ComboBoxList": combobox_item.currentText
+                                                           "List": combobox_item.currentText
                                                        }
                                                       }
                                                       xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
