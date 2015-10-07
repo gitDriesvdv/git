@@ -167,10 +167,10 @@ Rectangle {
                         Idem maken voor radiobuttons
                     */
 
-                                Rectangle {
+                                Flickable {
                                     width: parent.width;
-                                    color: "gray"
-                                    height: 50
+                                    //color: "gray"
+                                    height: 150
                                     id: item4
                                     visible: Type == "CheckBox"
                                     x: 20
@@ -178,18 +178,88 @@ Rectangle {
                                     Column{
                                         spacing: 2
                                        // height: 20
+                                        width: parent.width
+                                        Row{
+                                            TextField{
+                                                id: inputcheckbox
+                                                width: Screen.width/5
+                                            }
+                                            Button{
+                                                id: addcheckbox
+                                                text: "add"
+                                                onClicked: {
+                                                    var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
+                                                    var xhr = new XMLHttpRequest();
+                                                           xhr.onreadystatechange = function() {
+                                                               if ( xhr.readyState == xhr.DONE)
+                                                               {
+                                                                   console.log("Success " + xhr.responseText + " STATUS " + xhr.status)
+                                                                   if ( xhr.status == 200)
+                                                                   {
+                                                                       var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
+                                                                       console.log("Success " + jsonObject.balance)
+                                                                       inputcheckbox.text = "";
+                                                                       reload()
+                                                                   }
+                                                               }
+                                                           }
+                                                           xhr.open("PUT",url,true);
+                                                           var data = {
+                                                                "$push": {
+                                                                "List": inputcheckbox.text
+                                                            }
+                                                           }
+                                                           xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                                    xhr.send(JSON.stringify(data));
+
+                                                }
+                                            }
+                                        }
+
+
                                     Repeater {
                                             id: rep
-                                            model: ["apples", "oranges", "pears"]
+                                            model: List
+                                            Row{
+                                                spacing: 10
                                             CheckBox {
                                                 height: 15
-                                                //font.pixelSize: 15
                                                 id: checkbox_item
                                                 text: modelData
-                                                /*Component.onCompleted: {
-                                                    item_list.height = 160
-                                                    }*/
+
                                             }
+                                            Button{
+                                                id: removecheckbox
+                                                text: "remove"
+                                                onClicked: {
+                                                    var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
+                                                    var xhr = new XMLHttpRequest();
+                                                           xhr.onreadystatechange = function() {
+                                                               if ( xhr.readyState == xhr.DONE)
+                                                               {
+                                                                   console.log("Success " + xhr.responseText + " STATUS " + xhr.status)
+                                                                   if ( xhr.status == 200)
+                                                                   {
+                                                                       var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
+                                                                       console.log("Success " + jsonObject.balance)
+                                                                        reload()
+                                                                   }
+                                                               }
+                                                           }
+                                                           xhr.open('PUT',url,true);
+                                                           var data = {
+                                                                 "$pull": {
+                                                                "List": modelData
+                                                            }
+                                                           }
+                                                           xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                                    xhr.send(JSON.stringify(data));
+                                                }
+                                            }
+
+                                            }
+
+
                                     }
                                     }
 
