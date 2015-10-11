@@ -28,6 +28,20 @@ Rectangle {
                 "include": {"file": {}},
                 "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
     }
+    EnginioModel {
+        id: enginioModelErrors
+        client: enginioClient
+        query: {
+            "objectType": "objects.Errors"
+        }
+    }
+    EnginioModel {
+        id: enginioModelLogs
+        client: enginioClient
+        query: {
+            "objectType": "objects.Logs"
+        }
+    }
     //![identity]
     anchors.fill: parent
     anchors.margins: 0
@@ -64,6 +78,7 @@ Rectangle {
                  anchors.top: password.bottom
                 Layout.fillWidth: true
                 //onClicked: createSpriteObjects();
+
             }
             Button {
                 id: proccessButton2
@@ -83,19 +98,19 @@ Rectangle {
             Rectangle{
                 anchors.centerIn: parent
                 ColumnLayout {
-                    anchors.margins: 3
+                    anchors.margins: 1
                     spacing: 3
 
                     TextField {
                         id: login_R
                         Layout.fillWidth: true
-                        placeholderText: "Username"
+                        placeholderText: "Username (required)"
                     }
 
                     TextField {
                         id: password_R
                         Layout.fillWidth: true
-                        placeholderText: "Password"
+                        placeholderText: "Password (required)"
                         echoMode: TextInput.PasswordEchoOnEdit
                     }
 
@@ -114,14 +129,13 @@ Rectangle {
                     TextField {
                         id: userEmail
                         Layout.fillWidth: true
-                        placeholderText: "Email"
+                        placeholderText: "Email (required)"
                         inputMethodHints: Qt.ImhEmailCharactersOnly
                     }
                     Text{
                         id: val_text
                         text: ""
                         Layout.fillWidth: true
-
                     }
 
                     Button {
@@ -147,11 +161,10 @@ Rectangle {
 
                             if(validateEmail(userEmail.text) == false)
                             {
-                                val_text.text = "yes"
+                                val_text.text = "Fill in a valid email"
                             }
                             else
                             {
-                                val_text.text = "DONE"
                             var reply = enginioClient.create(
                                         { "username": login_R.text,
                                           "password": password_R.text,
@@ -164,20 +177,25 @@ Rectangle {
                                     proccessButton.state = ""
                                     if (reply.errorType !== EnginioReply.NoError) {
                                         log.text = "Failed to create an account:\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
+                                        enginioModelErrors.append({"Error": "Enginio " + log.text + "\n\n", "User": login.text})
+
                                     } else {
                                         log.text = "Account Created.\n"
+                                        enginioModelLogs.append({"Log": log.text, "User": login.text})
+
                                     }
                                 })
                             }
                         }
                     }
 
-                    /*TextArea {
+                    TextArea {
                         id: log
                         readOnly: true
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                    }*/
+                        visible: false
+                    }
                 }
             }
         }
@@ -252,39 +270,6 @@ Rectangle {
                 }
             }
         }
-
-        /*Rectangle {
-            id: header
-            anchors.top: parent.top
-            width: parent.width
-            height: 0
-            color: "white"
-        }*/
-
-        /*Row {
-            id: listLayout
-
-            Behavior on x {NumberAnimation{ duration: 400 ; easing.type: "InOutCubic"}}
-            anchors.top: header.bottom
-            anchors.bottom: footer.top
-
-            ListView {
-                id: listView
-                model: enginioModel // get the data from EnginioModel
-                delegate: listDelegate
-                clip: true
-                width: root.width
-                height: parent.height
-            }
-        }*/
-
-        /*BorderImage {
-            id: footer
-            height: 0
-            width: parent.width
-            anchors.bottom: parent.bottom
-            source: addMouseArea.pressed ? "qrc:images/delegate_pressed.png" : "qrc:images/delegate.png"
-        }*/
         GridView{
             id: gridview
             model: enginioModel
@@ -294,28 +279,33 @@ Rectangle {
         }
     }
 
-   /* TextArea {
+    TextArea {
         id: data
         text: "Not logged in.\n\n"
         readOnly: true
         Layout.fillHeight: true
         Layout.fillWidth: true
+        visible: false
 
         //![connections]
         Connections {
             target: enginioClient
             onSessionAuthenticated: {
                 data.text = data.text + "User '"+ login.text +"' is logged in.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
+                enginioModelLogs.append({"Log": data.text, "User": login.text})
+
             }
             onSessionAuthenticationError: {
                 data.text = data.text + "Authentication of user '"+ login.text +"' failed.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
+                enginioModelErrors.append({"Error": "Enginio " + data.text + "\n\n", "User": login.text})
+
             }
             onSessionTerminated: {
                 data.text = data.text + "Session closed.\n\n"
             }
         }
         //![connections]
-    }*/
+    }
 
     states: [
         State {
