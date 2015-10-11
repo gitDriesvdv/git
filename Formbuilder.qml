@@ -73,7 +73,6 @@ Rectangle {
         }
     }
     Rectangle{
-        //anchors.fill: parent
         width: Screen.width - grid.width
         height: Screen.height - grid.height
         anchors.left: grid.right

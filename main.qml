@@ -74,7 +74,7 @@ Item {
                     }*/
 
                     //Dit gebruiken voor de testen
-                    source : "qrc:/Formbuilder.qml"
+                    source : "qrc:/AdminPanel.qml"
                     onStatusChanged:{
                        // if (mainloader.status == Loader.Null) console.log('Loading the magic')
                         if (mainloader.status == Loader.Ready) console.log('Loaded the magic')

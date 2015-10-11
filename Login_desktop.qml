@@ -6,8 +6,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.0
 Rectangle {
-    //height: 400
-    //width: 400
+    id: rec
+    width: Screen.width
+    height: Screen.height
     //![identity]
     EnginioOAuth2Authentication {
         id: identity
@@ -20,149 +21,154 @@ Rectangle {
 
         onError: console.debug(JSON.stringify(reply.data))
     }
-    /*EnginioModel {
+    EnginioModel {
         id: enginioModel
         client: enginioClient
         query: {"objectType": "objects.OS_components",
                 "include": {"file": {}},
                 "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
-    }*/
+    }
     //![identity]
     anchors.fill: parent
-    anchors.margins: 3
+    anchors.margins: 0
     //spacing: 3
 
-    Rectangle{
-    id: loginscreen
-    width: Screen.width/2
-    height: Screen.height
-   // x: 0
-    color: "#23617B"
-
-    Rectangle{
-        anchors.centerIn: parent
-        TextField {
-            id: login
-            Layout.fillWidth: true
-            placeholderText: "Username"
-            enabled: enginioClient.authenticationState == Enginio.NotAuthenticated
-        }
-
-        TextField {
-            id: password
-            anchors.top: login.bottom
-            Layout.fillWidth: true
-            placeholderText: "Password"
-            echoMode: TextInput.PasswordEchoOnEdit
-            enabled: enginioClient.authenticationState == Enginio.NotAuthenticated
-        }
-
-        Button {
-            id: proccessButton
-             anchors.top: password.bottom
-            Layout.fillWidth: true
-            //onClicked: createSpriteObjects();
-        }
-        Button {
-            id: proccessButton2
-             anchors.top: proccessButton.bottom
-            Layout.fillWidth: true
-            onClicked: root.visible = true
-        }
-    }
-
-
-    }
-    Rectangle{
-        width: Screen.width/2
-        height: Screen.height
-        anchors.left: loginscreen.right
+    GridLayout{
+        columns: 2
+        Rectangle{
+        id: loginscreen
+        width: rec.width/2
+        height: rec.height
         color: "#23617B"
+
         Rectangle{
             anchors.centerIn: parent
-            ColumnLayout {
-                anchors.margins: 3
-                spacing: 3
+            TextField {
+                id: login
+                Layout.fillWidth: true
+                placeholderText: "Username"
+                enabled: enginioClient.authenticationState == Enginio.NotAuthenticated
+            }
 
-                TextField {
-                    id: login_R
-                    Layout.fillWidth: true
-                    placeholderText: "Username"
-                }
+            TextField {
+                id: password
+                anchors.top: login.bottom
+                Layout.fillWidth: true
+                placeholderText: "Password"
+                echoMode: TextInput.PasswordEchoOnEdit
+                enabled: enginioClient.authenticationState == Enginio.NotAuthenticated
+            }
 
-                TextField {
-                    id: password_R
-                    Layout.fillWidth: true
-                    placeholderText: "Password"
-                    echoMode: TextInput.PasswordEchoOnEdit
-                }
+            Button {
+                id: proccessButton
+                 anchors.top: password.bottom
+                Layout.fillWidth: true
+                //onClicked: createSpriteObjects();
+            }
+            Button {
+                id: proccessButton2
+                 anchors.top: proccessButton.bottom
+                Layout.fillWidth: true
+                onClicked: root.visible = true
+            }
+        }
 
-                TextField {
-                    id: userFirstName
-                    Layout.fillWidth: true
-                    placeholderText: "First name"
-                }
 
-                TextField {
-                    id: userLastName
-                    Layout.fillWidth: true
-                    placeholderText: "Last name"
-                }
+        }
+        Rectangle{
+            width: rec.width/2
+            height: rec.height
+            anchors.left: loginscreen.right
+            color: "#23617B"
+            Rectangle{
+                anchors.centerIn: parent
+                ColumnLayout {
+                    anchors.margins: 3
+                    spacing: 3
 
-                TextField {
-                    id: userEmail
-                    Layout.fillWidth: true
-                    placeholderText: "Email"
-                }
-
-                Button {
-                    id: proccessButton_R
-                    Layout.fillWidth: true
-                    enabled: login.text.length && password.text.length
-                    text: "Register"
-
-                    states: [
-                        State {
-                            name: "Registering"
-                            PropertyChanges {
-                                target: proccessButton
-                                text: "Registering..."
-                                enabled: false
-                            }
-                        }
-                    ]
-
-                    onClicked: {
-                        proccessButton.state = "Registering"
-                        //![create]
-                        var reply = enginioClient.create(
-                                    { "username": login_R.text,
-                                      "password": password_R.text,
-                                      "email": userEmail.text,
-                                      "firstName": userFirstName.text,
-                                      "lastName": userLastName.text
-                                    }, Enginio.UserOperation)
-                        //![create]
-                        reply.finished.connect(function() {
-                                proccessButton.state = ""
-                                if (reply.errorType !== EnginioReply.NoError) {
-                                    log.text = "Failed to create an account:\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
-                                } else {
-                                    log.text = "Account Created.\n"
-                                }
-                            })
+                    TextField {
+                        id: login_R
+                        Layout.fillWidth: true
+                        placeholderText: "Username"
                     }
-                }
 
-                /*TextArea {
-                    id: log
-                    readOnly: true
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }*/
+                    TextField {
+                        id: password_R
+                        Layout.fillWidth: true
+                        placeholderText: "Password"
+                        echoMode: TextInput.PasswordEchoOnEdit
+                    }
+
+                    TextField {
+                        id: userFirstName
+                        Layout.fillWidth: true
+                        placeholderText: "First name"
+                    }
+
+                    TextField {
+                        id: userLastName
+                        Layout.fillWidth: true
+                        placeholderText: "Last name"
+                    }
+
+                    TextField {
+                        id: userEmail
+                        Layout.fillWidth: true
+                        placeholderText: "Email"
+                    }
+
+                    Button {
+                        id: proccessButton_R
+                        Layout.fillWidth: true
+                        enabled: login.text.length && password.text.length
+                        text: "Register"
+
+                        states: [
+                            State {
+                                name: "Registering"
+                                PropertyChanges {
+                                    target: proccessButton
+                                    text: "Registering..."
+                                    enabled: false
+                                }
+                            }
+                        ]
+
+                        onClicked: {
+                            proccessButton.state = "Registering"
+                            //![create]
+                            var reply = enginioClient.create(
+                                        { "username": login_R.text,
+                                          "password": password_R.text,
+                                          "email": userEmail.text,
+                                          "firstName": userFirstName.text,
+                                          "lastName": userLastName.text
+                                        }, Enginio.UserOperation)
+                            //![create]
+                            reply.finished.connect(function() {
+                                    proccessButton.state = ""
+                                    if (reply.errorType !== EnginioReply.NoError) {
+                                        log.text = "Failed to create an account:\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
+                                    } else {
+                                        log.text = "Account Created.\n"
+                                    }
+                                })
+                        }
+                    }
+
+                    /*TextArea {
+                        id: log
+                        readOnly: true
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                    }*/
+                }
             }
         }
     }
+
+
+
     Rectangle {
         id: root
         anchors.fill: parent
@@ -175,13 +181,13 @@ Rectangle {
             backendId: "54be545ae5bde551410243c3"
             onError: console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
         }
-        EnginioModel {
+        /*EnginioModel {
             id: enginioModel
             client: client
             query: {"objectType": "objects.OS_components",
                     "include": {"file": {}},
                     "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
-        }
+        }*/
 
         Component {
             id: listDelegate
@@ -211,7 +217,7 @@ Rectangle {
                     }*/
 
                     //Dit gebruiken voor de testen
-                    source : "qrc:/Mainpanel_desktop.qml"
+                    source : "qrc:/AdminPanel.qml"
                 }
                 Rectangle {
                     color: "transparent"
