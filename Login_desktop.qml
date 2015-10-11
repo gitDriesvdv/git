@@ -115,12 +115,19 @@ Rectangle {
                         id: userEmail
                         Layout.fillWidth: true
                         placeholderText: "Email"
+                        inputMethodHints: Qt.ImhEmailCharactersOnly
+                    }
+                    Text{
+                        id: val_text
+                        text: ""
+                        Layout.fillWidth: true
+
                     }
 
                     Button {
                         id: proccessButton_R
                         Layout.fillWidth: true
-                        enabled: login.text.length && password.text.length
+                        enabled: login_R.text.length >= 10 && password_R.text.length >= 7
                         text: "Register"
 
                         states: [
@@ -137,6 +144,14 @@ Rectangle {
                         onClicked: {
                             proccessButton.state = "Registering"
                             //![create]
+
+                            if(validateEmail(userEmail.text) == false)
+                            {
+                                val_text.text = "yes"
+                            }
+                            else
+                            {
+                                val_text.text = "DONE"
                             var reply = enginioClient.create(
                                         { "username": login_R.text,
                                           "password": password_R.text,
@@ -153,6 +168,7 @@ Rectangle {
                                         log.text = "Account Created.\n"
                                     }
                                 })
+                            }
                         }
                     }
 
@@ -237,15 +253,15 @@ Rectangle {
             }
         }
 
-        Rectangle {
+        /*Rectangle {
             id: header
             anchors.top: parent.top
             width: parent.width
             height: 0
             color: "white"
-        }
+        }*/
 
-        Row {
+        /*Row {
             id: listLayout
 
             Behavior on x {NumberAnimation{ duration: 400 ; easing.type: "InOutCubic"}}
@@ -260,14 +276,21 @@ Rectangle {
                 width: root.width
                 height: parent.height
             }
-        }
+        }*/
 
-        BorderImage {
+        /*BorderImage {
             id: footer
             height: 0
             width: parent.width
             anchors.bottom: parent.bottom
             source: addMouseArea.pressed ? "qrc:images/delegate_pressed.png" : "qrc:images/delegate.png"
+        }*/
+        GridView{
+            id: gridview
+            model: enginioModel
+            delegate: listDelegate
+            width: root.width
+            height: parent.height
         }
     }
 
@@ -342,6 +365,11 @@ Rectangle {
             }
         }
     ]
+    function validateEmail(email)
+    {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
 }
 
 

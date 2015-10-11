@@ -74,7 +74,7 @@ Item {
                     }*/
 
                     //Dit gebruiken voor de testen
-                    source : "qrc:/AdminPanel.qml"
+                    source : "qrc:/Login_desktop.qml"
                     onStatusChanged:{
                        // if (mainloader.status == Loader.Null) console.log('Loading the magic')
                         if (mainloader.status == Loader.Ready) console.log('Loaded the magic')
@@ -100,8 +100,14 @@ Item {
                 }
             }
         }
-
-        Rectangle {
+        GridView{
+            id: gridview
+            model: enginioModel
+            delegate: listDelegate
+            width: root.width
+            height: parent.height
+        }
+        /*Rectangle {
             id: header
             anchors.top: parent.top
             width: parent.width
@@ -132,6 +138,6 @@ Item {
             width: parent.width
             anchors.bottom: parent.bottom
             source: addMouseArea.pressed ? "qrc:images/delegate_pressed.png" : "qrc:images/delegate.png"
-        }
+        }*/
     }
 }
