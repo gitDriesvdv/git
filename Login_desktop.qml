@@ -148,7 +148,7 @@ Rectangle {
                             State {
                                 name: "Registering"
                                 PropertyChanges {
-                                    target: proccessButton
+                                    target: proccessButton_R
                                     text: "Registering..."
                                     enabled: false
                                 }
@@ -156,7 +156,7 @@ Rectangle {
                         ]
 
                         onClicked: {
-                            proccessButton.state = "Registering"
+                            proccessButton_R.state = "Registering"
                             //![create]
 
                             if(validateEmail(userEmail.text) == false)
@@ -174,7 +174,7 @@ Rectangle {
                                         }, Enginio.UserOperation)
                             //![create]
                             reply.finished.connect(function() {
-                                    proccessButton.state = ""
+                                    proccessButton_R.state = ""
                                     if (reply.errorType !== EnginioReply.NoError) {
                                         log.text = "Failed to create an account:\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
                                         enginioModelErrors.append({"Error": "Enginio " + log.text + "\n\n", "User": login.text})
@@ -182,6 +182,7 @@ Rectangle {
                                     } else {
                                         log.text = "Account Created.\n"
                                         enginioModelLogs.append({"Log": log.text, "User": login.text})
+                                        root.visible = true
 
                                     }
                                 })
@@ -293,6 +294,7 @@ Rectangle {
             onSessionAuthenticated: {
                 data.text = data.text + "User '"+ login.text +"' is logged in.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
                 enginioModelLogs.append({"Log": data.text, "User": login.text})
+                root.visible = true
 
             }
             onSessionAuthenticationError: {
