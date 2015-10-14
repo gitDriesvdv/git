@@ -4,7 +4,7 @@ import Enginio 1.0
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
-import QtQuick.Dialogs 1.1
+import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.0
 
 Rectangle {
@@ -12,6 +12,7 @@ Rectangle {
     height: Screen.height
 
      property string aFormname: ""
+    property string aFieldname: ""
 
     EnginioClient {
         id: client
@@ -31,6 +32,37 @@ Rectangle {
             "query" : { "User": "Dries", "FormName" : aFormname}
         }
     }
+    Dialog {
+            id: customDialog
+            title: "Custom Dialog"
+            standardButtons: StandardButton.Ok | StandardButton.Close
+            height: 100
+            width: 200
+            Column {
+                //anchors.fill: parent
+                width: 200
+                Text {
+                    text: "Give a name for this field"
+                }
+                TextField {
+                    id: editInput
+                     Layout.fillWidth: true
+                     width: 180
+                    //text: "Fieldname"
+                    //inputMask: "Fieldname"
+                }
+            }
+
+            onButtonClicked: {
+                if (clickedButton===StandardButton.Ok) {
+                    console.log("Accepted " + clickedButton)
+                    aFieldname = editInput.text
+
+                } else {
+                    console.log("Rejected" + clickedButton)
+                }
+            }
+        }
 
     //FormName
 
@@ -44,7 +76,18 @@ Rectangle {
             text: "Textfield"
             enabled: false
             onClicked: {
-                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextField"})
+                customDialog.open();
+                if(aFieldname != "")
+                {
+                    enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
+                }
+                else
+                {
+                    //customDialog.close();
+                    customDialog.open();
+                }
+
+                //enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextField"})
             }
         }
         Button{

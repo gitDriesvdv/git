@@ -77,13 +77,7 @@ Rectangle {
                 id: proccessButton
                  anchors.top: password.bottom
                 Layout.fillWidth: true
-                //onClicked: createSpriteObjects();
-
-            }
-            Button {
-                id: proccessButton2
-                 anchors.top: proccessButton.bottom
-                Layout.fillWidth: true
+                text: "Login"
                 onClicked: root.visible = true
             }
         }
@@ -337,7 +331,7 @@ Rectangle {
             when: enginioClient.authenticationState == Enginio.AuthenticationFailure
             PropertyChanges {
                 target: proccessButton
-                text: "Authentication failed, restart"
+                text: "Login failed, restart"
                 onClicked: {
                     enginioClient.identity = null
                 }

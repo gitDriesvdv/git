@@ -7,6 +7,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls.Styles 1.2
 import QtMultimedia 5.4
 import Qt.labs.settings 1.0
+import QtQuick.Dialogs 1.1
 
 Item {
     id: main
@@ -44,14 +45,18 @@ Item {
                             anchors.centerIn: parent
                             visible: mainloader.status != Loader.Ready
                         }
+        MessageDialog {
+            id: messageDialog
+            title: "Message"
+        }
         Component {
             id: gridDelegate
-            BorderImage {
+            Rectangle {
                 height: main.height
                 width: main.width
-                border.top: 4
-                border.bottom: 4
-                source: "qrc:/new/prefix1/delegate kopie.png"
+                //border.top: 4
+                //border.bottom: 4
+                //source: "qrc:/new/prefix1/delegate kopie.png"
 
                 Loader {
                     id: mainloader
@@ -69,14 +74,27 @@ Item {
                             })
                     }*/
                     //Dit gebruiken voor de testen
-                    source : "qrc:/Login_deskop.qml"
+                    source : "qrc:/Formbuilder.qml"
                    /* onStatusChanged:{
                         if (mainloader.status == Loader.Ready) console.log('Loaded the magic')
                     }*/
                     onStatusChanged:{
                         if (mainloader.status === Loader.Error)
                         {
-                            enginioModelErrors.append({"Error": "Mainloader could not load" + "\n\n", "User": "unknown"})
+                            reload();
+                            if(mainloader.status === Loader.Error)
+                            {
+                                messageDialog.visible = true;
+                                messageDialog.text = "Trying to reload not worked";
+                            }
+                            //messageDialog.visible = true;
+                            //messageDialog.text = "Trying to reload not worked";
+                            //reload()
+                            //enginioModelErrors.append({"Error": "Mainloader could not load" + "\n\n", "User": "unknown"})
+                            /*if(reloadLoader() === false)
+                            {
+                                label.text = "Could not load the page"
+                            }*/
                         }
                     }
 
@@ -106,5 +124,30 @@ Item {
             width: root.width
             height: parent.height
         }
+    }
+    function reload()
+    {
+            var tmp = enginioModel.query
+            enginioModel.query = null
+            enginioModel.query = tmp
+    }
+
+    function reloadLoader()
+    {
+        messageDialog.text = "Trying to reload";
+        messageDialog.visible = true;
+        for(var i = 0; i < 3; i++)
+        {
+            var tmp = enginioModel.query
+            enginioModel.query = null
+            enginioModel.query = tmp
+            if(mainloader.status === Loader.Ready)
+            {
+                messageDialog.visible = false;
+                return true;
+            }
+        }
+        messageDialog.visible = false;
+        return false;
     }
 }
