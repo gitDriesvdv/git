@@ -1,2 +1,5 @@
-<RCC/>
-
+<RCC>
+    <qresource prefix="/">
+        <file>Login_mobile.qml</file>
+    </qresource>
+</RCC>

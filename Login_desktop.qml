@@ -19,7 +19,10 @@ Rectangle {
         id: enginioClient
         backendId: "54be545ae5bde551410243c3"
 
-        onError: console.debug(JSON.stringify(reply.data))
+        onError:{
+            console.debug(JSON.stringify(reply.data))
+            enginioModelErrors.append({"Error": "Enginio " + JSON.stringify(reply.data) + "\n\n", "User": "Admin"})
+        }
     }
     EnginioModel {
         id: enginioModel
@@ -34,6 +37,7 @@ Rectangle {
         query: {
             "objectType": "objects.Errors"
         }
+
     }
     EnginioModel {
         id: enginioModelLogs
@@ -351,6 +355,8 @@ Rectangle {
             }
         }
     ]
+
+    //bron: http://stackoverflow.com/questions/23652378/javascript-adding-email-validation-function-to-existing-validation-function
     function validateEmail(email)
     {
         var re = /\S+@\S+\.\S+/;

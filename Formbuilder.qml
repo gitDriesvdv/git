@@ -6,14 +6,24 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.0
+//Voor het opslagen van de gegevens
+/*
+tabel aanmaken met de velden:
+- naam tabel
+- user
+- naam veld
+- invoer
+- type invoer
+- lijst (afhankelijk van de invoer)
 
+voor de weergave van hieruit een tabel opbouwen
+*/
 Rectangle {
     width: Screen.width
     height: Screen.height
 
      property string aFormname: ""
     property string aFieldname: ""
-
     EnginioClient {
         id: client
         backendId: "54be545ae5bde551410243c3"
@@ -32,37 +42,6 @@ Rectangle {
             "query" : { "User": "Dries", "FormName" : aFormname}
         }
     }
-    Dialog {
-            id: customDialog
-            title: "Custom Dialog"
-            standardButtons: StandardButton.Ok | StandardButton.Close
-            height: 100
-            width: 200
-            Column {
-                //anchors.fill: parent
-                width: 200
-                Text {
-                    text: "Give a name for this field"
-                }
-                TextField {
-                    id: editInput
-                     Layout.fillWidth: true
-                     width: 180
-                    //text: "Fieldname"
-                    //inputMask: "Fieldname"
-                }
-            }
-
-            onButtonClicked: {
-                if (clickedButton===StandardButton.Ok) {
-                    console.log("Accepted " + clickedButton)
-                    aFieldname = editInput.text
-
-                } else {
-                    console.log("Rejected" + clickedButton)
-                }
-            }
-        }
 
     //FormName
 
@@ -71,23 +50,12 @@ Rectangle {
         columns: 2
         columnSpacing: 40
 
-        Button{
+        Button {
             id: textFieldbutton
             text: "Textfield"
             enabled: false
             onClicked: {
-                customDialog.open();
-                if(aFieldname != "")
-                {
                     enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
-                }
-                else
-                {
-                    //customDialog.close();
-                    customDialog.open();
-                }
-
-                //enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextField"})
             }
         }
         Button{
@@ -95,7 +63,7 @@ Rectangle {
             text: "Textarea"
             enabled: false
             onClicked: {
-                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "TextArea"})
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextArea"})
             }
         }
         Button{
@@ -103,7 +71,7 @@ Rectangle {
             text: "Combobox"
             enabled: false
             onClicked: {
-                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "ComboBox"})
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "ComboBox"})
             }
         }
         Button{
@@ -111,7 +79,7 @@ Rectangle {
             text: "Checkbox"
             enabled: false
             onClicked: {
-                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": "Blanck", "Type" : "CheckBox"})
+                enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "CheckBox"})
             }
         }
     }
@@ -145,8 +113,18 @@ Rectangle {
                     id: item_list
                     width: 600 ;
                     height: 70
+                    Rectangle{
+                        id: colorvalidator
+                        width: 10
+                        height: 70
+                        x: 0
+                        y: 10
+                        color: Name === "" ? "red" : "green"
+                    }
+
                     Column{
                         id: col
+                        anchors.left: colorvalidator.right
                         width: parent.width
                         x: 10;
                         y: 10
@@ -159,7 +137,6 @@ Rectangle {
                                     x: 20
                                     TextField {
                                         id: name_component
-
                                         width: parent.width/2 ;
                                         text: Name
                                     }
@@ -167,7 +144,17 @@ Rectangle {
                                         id: changeName
                                         width: parent.width/5
                                         anchors.left: name_component.right
-                                        text: "Change name"
+                                        text: "Save name"
+                                        enabled: name_component.length
+                                        onClicked:{
+                                            enginioModel.setProperty(index, "Name", name_component.text);
+                                        }
+                                    }
+                                    Text{
+                                        anchors.left: changeName.right
+                                        text: Name === "" ? "no fieldname" : ""
+                                        color: "white"
+                                        verticalAlignment : Text.AlignHCenter
                                     }
                                 }
                                 Rectangle {
@@ -327,7 +314,7 @@ Rectangle {
                                     width: parent.width/5
                                     model: List
                                 }
-                                TextField{
+                                TextField {
                                     id: inputComboBox
                                     width: Screen.width/5
                                     anchors.left: combobox_item.right
@@ -458,6 +445,33 @@ Rectangle {
         var a = enginioModel.query
         enginioModel.query = null
         enginioModel.query = a
+    }
+
+   //bron : http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+    /*function createSessionID()
+    {
+          function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+              .toString(16)
+              .substring(1);
+          }
+           console.log(s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4());
+    }*/
+
+    function createSessionID()
+    {
+      var lut = [];
+      for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
+
+      var d0 = Math.random()*0xffffffff|0;
+      var d1 = Math.random()*0xffffffff|0;
+      var d2 = Math.random()*0xffffffff|0;
+      var d3 = Math.random()*0xffffffff|0;
+      console.log(lut[d0&0xff]+lut[d0>>8&0xff]+lut[d0>>16&0xff]+lut[d0>>24&0xff]+'-'+
+        lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
+        lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
+        lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff]);
     }
 }
 
