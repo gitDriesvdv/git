@@ -147,7 +147,7 @@ Item {
                             when: enginioClient.authenticationState == Enginio.AuthenticationFailure
                             PropertyChanges {
                                 target: proccessButton
-                                text: "Authentication failed, restart"
+                                text: "Login failed, restart"
                                 onClicked: {
                                     enginioClient.identity = null
                                 }
@@ -170,7 +170,7 @@ Item {
                 }
 
             }
-
+        //geen register omdat dit centraal door de admin moet gebeuren en niet in de handen van elke gebruiker mag gegeven worden
            /* Tab {
                 title: "Register"
                 Rectangle { anchors.fill: parent }

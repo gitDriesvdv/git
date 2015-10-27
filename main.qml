@@ -28,7 +28,7 @@ Item {
             client: client
             query: {"objectType": "objects.OS_components",
                     "include": {"file": {}},
-                    "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
+                    "query" : { "type": Qt.platform.os, "name" : "FormBuilder_desktop" } }
         }
         EnginioModel {
                 id: enginioModelErrors
@@ -65,7 +65,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     Behavior on opacity { NumberAnimation { duration: 100 } }
                     //Dit is voor QML uit database
-                    /*Component.onCompleted: {
+                   /* Component.onCompleted: {
                         mainloader.source = ""
                             var data = { "id": file.id }
                             var reply = client.downloadUrl(data)
