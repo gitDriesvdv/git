@@ -64,7 +64,8 @@ Item {
                     height: main.height
                     anchors.verticalCenter: parent.verticalCenter
                     Behavior on opacity { NumberAnimation { duration: 100 } }
-                    //Dit is voor QML uit database
+
+                   //Dit is voor QML uit database
                    /* Component.onCompleted: {
                         mainloader.source = ""
                             var data = { "id": file.id }
@@ -73,11 +74,10 @@ Item {
                                 mainloader.source = reply.data.expiringUrl
                             })
                     }*/
+
                     //Dit gebruiken voor de testen
                     source : "qrc:/Formbuilder.qml"
-                   /* onStatusChanged:{
-                        if (mainloader.status == Loader.Ready) console.log('Loaded the magic')
-                    }*/
+
                     onStatusChanged:{
                         if (mainloader.status === Loader.Error)
                         {
@@ -87,14 +87,6 @@ Item {
                                 messageDialog.visible = true;
                                 messageDialog.text = "Trying to reload not worked";
                             }
-                            //messageDialog.visible = true;
-                            //messageDialog.text = "Trying to reload not worked";
-                            //reload()
-                            //enginioModelErrors.append({"Error": "Mainloader could not load" + "\n\n", "User": "unknown"})
-                            /*if(reloadLoader() === false)
-                            {
-                                label.text = "Could not load the page"
-                            }*/
                         }
                     }
 

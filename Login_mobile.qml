@@ -35,7 +35,7 @@ Item {
             client: enginioClient
             query: {"objectType": "objects.OS_components",
                     "include": {"file": {}},
-                    "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
+                    "query" : { "type": Qt.platform.os, "name" : "Login_Mobiel" } }
         }
         EnginioModel {
             id: enginioModelErrors
