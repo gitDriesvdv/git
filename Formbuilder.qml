@@ -24,6 +24,9 @@ Rectangle {
 
      property string aFormname: ""
     property string aFieldname: ""
+    property int indexForm : 0;
+    property variant indexFormArray: [];
+    property variant newindexFormArray: [];
 
     //test
     EnginioClient {
@@ -41,7 +44,8 @@ Rectangle {
         client: client
         query: {
             "objectType": "objects.Form",
-            "query" : { "User": "Dries", "FormName" : aFormname}
+            "query" : { "User": "Dries", "FormName" : aFormname},
+            "sort" : [ {"sortBy": "indexForm", "direction": "asc"} ]
         }
     }
 
@@ -57,7 +61,8 @@ Rectangle {
             text: "Textfield"
             enabled: false
             onClicked: {
-                    enginioModel.append({"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
+                indexRegulator();
+                    enginioModel.append({"indexForm": indexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
             }
         }
         Button{
@@ -123,10 +128,38 @@ Rectangle {
                         y: 10
                         color: Name === "" ? "red" : "green"
                     }
+                    Rectangle{
+                        id: checkrect
+                        width: 50
+                        height: 70
+                        color: "gray"
+                        y: 10
+                        anchors.left: colorvalidator.right
+                        CheckBox {
+                                id: fielcheck
+                                anchors.horizontalCenter: checkrect.horizontalCenter
+                                anchors.verticalCenter: checkrect.verticalCenter
+                                //text: qsTr("Breakfast")
+                                //checked: true
+
+                                onClicked:  {
+                                    if(fielcheck.checked)
+                                    {
+                                        push_indexFormArrayRegulator(index,indexForm);
+                                    }
+                                    else
+                                    {
+                                        pop_indexFormArrayRegulator(indexForm);
+                                    }
+                                }
+                            }
+                    }
+
+
 
                     Column{
                         id: col
-                        anchors.left: colorvalidator.right
+                        anchors.left: checkrect.right
                         width: parent.width
                         x: 10;
                         y: 10
@@ -137,6 +170,7 @@ Rectangle {
                                     height: 20;
                                     color: "gray"
                                     x: 20
+
                                     TextField {
                                         id: name_component
                                         width: parent.width/2 ;
@@ -302,7 +336,7 @@ Rectangle {
                                     height: 30
                                     width: parent.width
                                     id: item3
-                                    visible: Type == "ComboBox"
+                                    visible: qsTr(Type) == "ComboBox"
                                     x: 20
                                     color: "gray"
                                 Text{
@@ -431,7 +465,55 @@ Rectangle {
                     add: Transition { NumberAnimation { properties: "y"; from: root.height; duration: 250 } }
                     removeDisplaced: Transition { NumberAnimation { properties: "y"; duration: 150 } }
                     remove: Transition { NumberAnimation { property: "opacity"; to: 0; duration: 150 } }
+
+                    anchors.top: actionbar.bottom
                 }
+
+                Rectangle{
+                    id: actionbar
+                    color: "gray"
+                    width: Screen.width - grid.width
+                    height: 50
+                    y:0
+                    visible: false;
+                    Row{
+                        id: rowActionbar
+                        height :50
+                        x:50
+                        width: Screen.width - grid.width
+                        spacing: 20;
+                     Button{
+                         id: swapBUtton
+                         anchors.verticalCenter: rowActionbar.verticalCenter
+                         text: "SWAP";
+                         width: 50;
+                         height: 20;
+                         visible: false
+                         onClicked: {
+                             //enginioModel.setProperty(indexFormArray[0].index, "indexForm", indexFormArray[1].indexForm);
+                             //enginioModel.setProperty(indexFormArray[1].index, "indexForm", indexFormArray[0].indexForm);
+                             /*if(swap()===true)
+                             {
+                                 //reload();
+
+                             }*/
+                             swap2();
+                         }
+                     }
+                     Button{
+                         id: reloadBUtton
+                         anchors.verticalCenter: rowActionbar.verticalCenter
+                         text: "Reload";
+                         width: 50;
+                         height: 20;
+                         visible: false
+                         onClicked: {
+                             reload();
+                         }
+                     }
+                    }
+                }
+
     }
     function enableButtons()
     {
@@ -442,24 +524,72 @@ Rectangle {
         checkboxbutton.enabled = true;
         formListView.visible = true;
         newform.visible = false;
+        actionbar.visible = true;
     }
     function reload() {
         var a = enginioModel.query
         enginioModel.query = null
         enginioModel.query = a
     }
+    function indexRegulator()
+    {
+        indexForm = indexForm + 1;
+    }
+
+    function push_indexFormArrayRegulator(index,i)
+    {
+        var a = {"index": index, "indexForm":i};
+        indexFormArray.push(a);
+        if(indexFormArray.length == 2)
+        {
+            swapBUtton.visible = true;
+            reloadBUtton.visible = true;
+        }
+        else
+        {
+            swapBUtton.visible = false;
+            reloadBUtton.visible = false;
+        }
+    }
+
+    //bron: http://stackoverflow.com/questions/10024866/remove-object-from-array-using-javascript
+
+    function pop_indexFormArrayRegulator(z)
+    {
+        for (var i =0; i < indexFormArray.length; i++)
+           if (indexFormArray[i].indexForm === z) {
+              indexFormArray.splice(i,1);
+              break;
+           }
+        if(indexFormArray.length == 2)
+        {
+            swapBUtton.visible = true;
+            reloadBUtton.visible = true;
+        }
+        else
+        {
+            swapBUtton.visible = false;
+            reloadBUtton.visible = false;
+        }
+    }
+    function swap()
+    {
+
+        enginioModel.setProperty(indexFormArray[0].index, "indexForm", indexFormArray[1].indexForm);
+        enginioModel.setProperty(indexFormArray[1].index, "indexForm", indexFormArray[0].indexForm);
+        return true;
+    }
+    function swap2()
+    {
+
+        if(swap()===true)
+        {
+            reload();
+            indexFormArray.length = 0;// = newindexFormArray;
+        }
+    }
 
    //bron : http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-    /*function createSessionID()
-    {
-          function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-              .toString(16)
-              .substring(1);
-          }
-           console.log(s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4());
-    }*/
 
     function createSessionID()
     {
