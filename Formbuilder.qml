@@ -434,7 +434,10 @@ Rectangle {
                                                anchors.margins: 20
                                                opacity: enabled ? 1 : 0.5
                                                Behavior on opacity {NumberAnimation{duration: 100}}
-                                               onClicked: enginioModel.remove(index)
+                                               onClicked: {
+                                                   enginioModel.remove(index);
+                                                   pop_indexFormArrayRegulator(indexForm);
+                                               }
                                             }
                                 }
                                 Rectangle {
@@ -490,13 +493,6 @@ Rectangle {
                          height: 20;
                          visible: false
                          onClicked: {
-                             //enginioModel.setProperty(indexFormArray[0].index, "indexForm", indexFormArray[1].indexForm);
-                             //enginioModel.setProperty(indexFormArray[1].index, "indexForm", indexFormArray[0].indexForm);
-                             /*if(swap()===true)
-                             {
-                                 //reload();
-
-                             }*/
                              swap2();
                          }
                      }
