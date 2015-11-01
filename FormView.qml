@@ -22,13 +22,11 @@ Rectangle {
     width: Screen.width
     height: Screen.height
 
-    property string aFormname: ""
+     property string aFormname: ""
     property string aFieldname: ""
-    property int aIndexForm : 0;
+    property int indexForm : 0;
     property variant indexFormArray: [];
     property variant newindexFormArray: [];
-    property int aIndexFormSingle : 0;
-
 
     //test
     EnginioClient {
@@ -46,13 +44,13 @@ Rectangle {
         client: client
         query: {
             "objectType": "objects.Form",
-            "query" : { "User": "Dries", "FormName" : aFormname},
+            "query" : { "User": "Dries", "FormName" : "azerty"},
             "sort" : [ {"sortBy": "indexForm", "direction": "asc"} ]
         }
     }
 
     //FormName
-
+/*
     GridLayout {
         id: grid
         columns: 2
@@ -64,7 +62,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
+                    enginioModel.append({"heightItem": 70 ,"indexForm": indexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
             }
         }
         Button{
@@ -73,7 +71,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem": 170 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextArea"})
+                enginioModel.append({"heightItem": 170 ,"indexForm": indexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextArea"})
             }
         }
         Button{
@@ -82,7 +80,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem": 100 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "ComboBox","List":[]})
+                enginioModel.append({"heightItem": 100 ,"indexForm": indexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "ComboBox","List":[]})
             }
         }
         Button{
@@ -91,17 +89,17 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "CheckBox","List":[]})
+                enginioModel.append({"heightItem": 200 ,"indexForm": indexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "CheckBox","List":[]})
             }
         }
-    }
+    }*/
     Rectangle{
-        width: Screen.width - grid.width
-        height: Screen.height - grid.height
-        anchors.left: grid.right
+        width: Screen.width //- grid.width
+        height: Screen.height //- grid.height
+        //anchors.left: grid.right
         color: "gray"
 
-        Rectangle {
+       /* Rectangle {
             id: newform
             anchors.centerIn: parent
             TextField {
@@ -117,15 +115,15 @@ Rectangle {
                 }
                 anchors.top: nameForm.bottom
             }
-        }
+        }*/
 
             Component {
                 id: listDelegate
                 Item {
                     id: item_list
                     width: 600 ;
-                    height: heightItem + 40
-                    Rectangle{
+                    height: heightItem //+ 40
+                    /*Rectangle{
                         id: colorvalidator
                         width: 10
                         height: 70
@@ -158,7 +156,7 @@ Rectangle {
                                     }
                                 }
                             }
-                    }
+                    }*/
 
 
 
@@ -176,12 +174,12 @@ Rectangle {
                                     color: "gray"
                                     x: 20
 
-                                    TextField {
+                                    Label {
                                         id: name_component
                                         width: parent.width/2 ;
                                         text: Name
                                     }
-                                    Button{
+                                    /*Button{
                                         id: changeName
                                         width: parent.width/5
                                         anchors.left: name_component.right
@@ -196,7 +194,7 @@ Rectangle {
                                         text: Name === "" ? "no fieldname" : ""
                                         color: "white"
                                         verticalAlignment : Text.AlignHCenter
-                                    }
+                                    }*/
                                 }
                                 Rectangle {
                                     id: item1
@@ -245,7 +243,7 @@ Rectangle {
                                     visible: Type == "CheckBox"
                                     x: 20
                                     //y: 10
-                                    Row{
+                                    /*Row{
                                         id: rowcheckbox
                                         TextField{
                                             id: inputcheckbox
@@ -280,10 +278,10 @@ Rectangle {
                                                 xhr.send(JSON.stringify(data));
                                             }
                                         }
-                                    }
+                                    }*/
                                     ScrollView {
                                         //contentWidth: columnCheckbox.width; contentHeight: columnCheckbox.height
-                                        anchors.top: rowcheckbox.bottom
+                                        //anchors.top: rowcheckbox.bottom
                                         width: 180; height: 150
                                         /*Component.onCompleted: {
                                             item_list.height = 300
@@ -299,13 +297,13 @@ Rectangle {
                                             id: rep
                                             model: List
                                             Row{
-                                                spacing: 20
+                                                spacing: 10
                                             CheckBox {
                                                 height: 15
                                                 id: checkbox_item
                                                 text: modelData
                                             }
-                                            Button{
+                                           /* Button{
                                                 id: removecheckbox
                                                 text: "remove"
                                                 onClicked: {
@@ -332,7 +330,7 @@ Rectangle {
                                                            xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
                                                     xhr.send(JSON.stringify(data));
                                                 }
-                                            }
+                                            }*/
 
                                             }
                                     }
@@ -358,7 +356,7 @@ Rectangle {
                                     width: parent.width/5
                                     model: List
                                 }
-                                TextField {
+                               /* TextField {
                                     id: inputComboBox
                                     width: Screen.width/5
                                     anchors.left: combobox_item.right
@@ -425,10 +423,10 @@ Rectangle {
                                                       xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
                                                xhr.send(JSON.stringify(data));
                                            }
-                                        }
+                                        }*/
 
                                 }
-                                Rectangle {
+                                /*Rectangle {
                                     width: parent.width;
                                     color: "gray"
                                     height: 25
@@ -446,7 +444,7 @@ Rectangle {
                                                    pop_indexFormArrayRegulator(indexForm);
                                                }
                                             }
-                                }
+                                }*/
                                 Rectangle {
                                                 height: 1
                                                 width: parent.width
@@ -463,12 +461,12 @@ Rectangle {
                     model: enginioModel
                     delegate: listDelegate
                     clip: true
-                     anchors.left: grid.right
-                     y: 50
+                     //anchors.left: grid.right
+                     y: 20
                     //width: parent.width
                     //height: parent.height
-                    visible: false
-                    width: Screen.width - grid.width
+                    visible: true
+                    width: Screen.width //- grid.width
                     height: parent.height - 100//Screen.height - grid.height
 
                     // Animations
@@ -482,7 +480,7 @@ Rectangle {
                 Rectangle{
                     id: actionbar
                     color: "gray"
-                    width: Screen.width - grid.width
+                    width: Screen.width //- grid.width
                     height: 50
                     y:0
                     visible: false;
@@ -490,7 +488,7 @@ Rectangle {
                         id: rowActionbar
                         height :50
                         x:50
-                        width: Screen.width - grid.width
+                        width: Screen.width //- grid.width
                         spacing: 20;
                      Button{
                          id: swapBUtton
@@ -534,11 +532,9 @@ Rectangle {
         enginioModel.query = null
         enginioModel.query = a
     }
-
-
     function indexRegulator()
     {
-        aIndexForm = indexForm + 1;
+        indexForm = indexForm + 1;
     }
 
     function push_indexFormArrayRegulator(index,i)
@@ -611,4 +607,6 @@ Rectangle {
         lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff]);
     }
 }
+
+
 

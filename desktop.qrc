@@ -4,5 +4,6 @@
         <file>Mainpanel_desktop.qml</file>
         <file>Formbuilder.qml</file>
         <file>AdminPanel.qml</file>
+        <file>FormView.qml</file>
     </qresource>
 </RCC>

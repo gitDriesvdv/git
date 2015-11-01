@@ -9,6 +9,7 @@ import QtMultimedia 5.4
 import Qt.labs.settings 1.0
 import QtQuick.Dialogs 1.1
 
+
 Item {
     id: main
     property var imagesUrl: new Object
@@ -44,6 +45,7 @@ Item {
                             color: "black"
                             anchors.centerIn: parent
                             visible: mainloader.status != Loader.Ready
+
                         }
         MessageDialog {
             id: messageDialog
@@ -76,7 +78,7 @@ Item {
                     }*/
 
                     //Dit gebruiken voor de testen
-                    source : "qrc:/Formbuilder.qml"
+                    source : "qrc:/FormView.qml"
 
                     onStatusChanged:{
                         if (mainloader.status === Loader.Error)
@@ -142,4 +144,5 @@ Item {
         messageDialog.visible = false;
         return false;
     }
+
 }
