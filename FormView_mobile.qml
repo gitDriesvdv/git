@@ -10,6 +10,7 @@ import QtQuick.Window 2.0
 Rectangle {
     width: Screen.width
     height: Screen.height
+    color: "white"
 
     property variant aInputFormArray: [];
     property variant aCheckboxArray: [];
@@ -46,9 +47,9 @@ Rectangle {
 
     //FormName
     Rectangle{
-        width: Screen.width
-        height: Screen.height
-        color: "gray"
+        width: parent.width
+        height: parent.height
+        color: "white"
         Component.onCompleted: aSessionID = generateUUID();
 
 
@@ -56,19 +57,19 @@ Rectangle {
                 id: listDelegate
                 Item {
                     id: item_list
-                    width: 600 ;
-                    height: heightItem //+ 40
+                    width: Screen.width - 50 ;
+                    height: Screen.height/heightItem_mobile //heightItem_mobile
 
                     Column{
                         id: col
                         width: parent.width
                         x: 10;
 
-                                spacing: 10
+                                spacing: 20
                                 Rectangle {
                                     width: parent.width;
-                                    height: 20;
-                                    color: "gray"
+                                    height: Screen.height/(heightItem_mobile + 12);
+                                    color: "white"
                                     x: 20
 
                                     Label {
@@ -84,11 +85,11 @@ Rectangle {
                                     x: 20
                                     //y: 20
                                     width: parent.width;
-                                    height: 20;
-                                    color: "gray"
+                                    height: Screen.height/(heightItem_mobile + 9)//heightItem_mobile;
+                                    color: "white"
                                 TextField {
-                                    height: 25
-                                    font.pixelSize: 15
+                                    height: Screen.height/(heightItem_mobile + 10)//heightItem_mobile/0.5
+                                    font.pointSize: 15
                                     width: parent.width;
                                     id: textfield_item
                                     onTextChanged: push_aInputFormArray(Name,textfield_item.text,List,Type)
@@ -98,15 +99,16 @@ Rectangle {
 
                                 Rectangle {
                                     width: parent.width;
-                                    color: "gray"
-                                    height: 75
+                                    color: "white"
+                                    height: Screen.height/(heightItem_mobile + 4)
                                     id: item2
                                     visible: Type == "TextArea"
                                     x: 20
                                     //y: 10
                                 TextArea {
-                                    height: 75
-                                    font.pixelSize: 15
+                                    height: Screen.height/(heightItem_mobile + 4.5)
+                                    width: parent.width;
+                                    font.pointSize: 15
                                     id: textarea_item
                                     onTextChanged: push_aInputFormArray(Name,textarea_item.text,List,Type)
 
@@ -120,13 +122,13 @@ Rectangle {
                                 Rectangle {
                                     width: parent.width;
                                     color: "gray"
-                                    height: 150
+                                    height: Screen.height/(heightItem_mobile + 4)
                                     id: item4
                                     visible: Type == "CheckBox"
                                     x: 20
 
                                     ScrollView {
-                                        width: 180; height: 150
+                                        width: Screen.width; height: Screen.height/(heightItem_mobile + 6)
 
                                     Column{
                                         id: columnCheckbox
@@ -140,13 +142,14 @@ Rectangle {
                                                 createArrayInCheckboxArray(Name)
                                             }
                                             Row{
-                                                spacing: 10
+                                                spacing: 5
 
                                             CheckBox {
-                                                height: 15
+                                                height: Screen.height/(heightItem_mobile + 15)
                                                 id: checkbox_item
                                                 text: modelData
                                                 //onClicked:
+
                                                 onClicked: {
                                                     if(checkbox_item.checked == true)
                                                     {
@@ -172,21 +175,21 @@ Rectangle {
 
                                 }
                                 Rectangle {
-                                    height: 30
+                                    height: Screen.height/(heightItem_mobile + 6)
                                     width: parent.width
                                     id: item3
                                     visible: qsTr(Type) === "ComboBox"
                                     x: 20
-                                    color: "gray"
+                                    color: "white"
                                 Text{
                                     id: containerID
                                     text: id
                                     visible: false
                                 }
                                 ComboBox {
-                                    height: 25
+                                    height: Screen.height/(heightItem_mobile + 8)
                                     id: combobox_item
-                                    width: parent.width/5
+                                    width: parent.width
                                     model: List
                                     onCurrentIndexChanged: push_aInputFormArray(Name,combobox_item.currentText,List,Type)//combobox_item.currentText
                                     Component.onCompleted:{
@@ -214,39 +217,40 @@ Rectangle {
                     id: formListView
                     model: enginioModel
                     delegate: listDelegate
-                    //clip: true
-                     y: 20
+                    clip: true
+                    y: 20
                     visible: true
                     width: Screen.width
-                    height: parent.height - 100
+                    height: Screen.height - (actionbar.height*2)
 
                     // Animations
                     add: Transition { NumberAnimation { properties: "y"; from: root.height; duration: 250 } }
                     removeDisplaced: Transition { NumberAnimation { properties: "y"; duration: 150 } }
                     remove: Transition { NumberAnimation { property: "opacity"; to: 0; duration: 150 } }
 
-                    anchors.top: actionbar.bottom
+
                 }
 
                 Rectangle{
                     id: actionbar
                     color: "gray"
                     width: Screen.width //- grid.width
-                    height: 50
-                    y:0
+                    height: 150
+                    //y:0
                     visible: true;
+                    anchors.top: formListView.bottom
                     Row{
                         id: rowActionbar
-                        height :50
-                        x:50
-                        width: Screen.width //- grid.width
+                        height :parent.height
+                        x:0
+                        width: parent.width //- grid.width
                         spacing: 20;
                      Button{
                          id: swapBUtton
                          anchors.verticalCenter: rowActionbar.verticalCenter
                          text: "Send";
-                         width: 50;
-                         height: 20;
+                         width: parent.width;
+                         height: parent.height;
                          visible: true
                          onClicked: {
                              writetoDatabase()
@@ -381,6 +385,8 @@ Rectangle {
         return arrayList;
     }
 }
+
+
 
 
 

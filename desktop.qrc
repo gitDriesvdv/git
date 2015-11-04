@@ -5,5 +5,6 @@
         <file>Formbuilder.qml</file>
         <file>AdminPanel.qml</file>
         <file>FormView.qml</file>
+        <file>FormResults.qml</file>
     </qresource>
 </RCC>

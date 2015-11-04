@@ -68,7 +68,7 @@ Item {
                     Behavior on opacity { NumberAnimation { duration: 100 } }
 
                    //Dit is voor QML uit database
-                   /* Component.onCompleted: {
+                    /*Component.onCompleted: {
                         mainloader.source = ""
                             var data = { "id": file.id }
                             var reply = client.downloadUrl(data)
@@ -78,9 +78,9 @@ Item {
                     }*/
 
                     //Dit gebruiken voor de testen
-                    source : "qrc:/FormView.qml"
+                    source : "FormView.qml"
 
-                    onStatusChanged:{
+                    /*onStatusChanged:{
                         if (mainloader.status === Loader.Error)
                         {
                             reload();
@@ -90,7 +90,7 @@ Item {
                                 messageDialog.text = "Trying to reload not worked";
                             }
                         }
-                    }
+                    }*/
 
                 }
 

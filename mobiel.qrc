@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>Login_mobile.qml</file>
+        <file>FormView_mobile.qml</file>
+        <file>FormResult_mobile.qml</file>
     </qresource>
 </RCC>
