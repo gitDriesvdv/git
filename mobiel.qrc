@@ -3,5 +3,6 @@
         <file>Login_mobile.qml</file>
         <file>FormView_mobile.qml</file>
         <file>FormResult_mobile.qml</file>
+        <file>Mainpanel_Mobile.qml</file>
     </qresource>
 </RCC>

@@ -9,7 +9,7 @@ Rectangle{
     height: 800
     width: 1000
     anchors.fill: parent
-
+    property variant tableArray: [];
     EnginioClient {
         id: enginioClient
         backendId: "54be545ae5bde551410243c3"
@@ -18,15 +18,15 @@ Rectangle{
         enginioModelErrors.append({"Error": "Enginio" + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
         }
     }
-    /*EnginioModel {
-        id: enginioModel
-        client: enginioClientLog
-        query: {
-            "objectType": "objects.resultforms",
-            "query" : { "user": "Dries", "formName" : "azerty"},
-            "sort" : [ {"sortBy": "indexForm", "direction": "asc"} ]
-        }
-    }*/
+
+    EnginioModel {
+                id: enginioModel
+                client: enginioClient
+                query: {
+                    "objectType": "objects.resultforms",
+                    "query" : { "user": "Dries", "formname" : "azerty"}
+                }
+            }
     Rectangle{
         id: loglist
         height: 400
@@ -40,22 +40,19 @@ Rectangle{
     height: 400
     width: 800
     TableView {
+        id: table
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        TableViewColumn { title: "fieldname"; role: "fieldname" }
-        TableViewColumn { title: "input"; role: "input" }
-        TableViewColumn { title: "list"; role: "list" }
+       // TableViewColumn { title: "fieldname"; role: "fieldname" }
+       // TableViewColumn { title: "input"; role: "input" }
+       // TableViewColumn { title: "list"; role: "list" }
 
-        model: EnginioModel {
-            id: enginioModel
-            client: enginioClient
-            query: {
-                "objectType": "objects.resultforms",
-                "query" : { "user": "Dries", "formname" : "azerty"}
-            }
+        model: listmodel
+        Component.onCompleted: {
+
+
         }
-        Component.onCompleted: readModels();
     }
 
     Button {
@@ -70,16 +67,45 @@ Rectangle{
     }
 }
     }
+    ListModel{
+        id: listmodel
+    }
 
-    function readModels()
-    {
-        var lijst = [];
-        lijst = enginioModel;
-        console.log(enginioModel);
-        for(var a = 0; a < lijst.length;i++)
-        {
-            console.log(lijst[a].user);
+    Component{
+        id: listDelegate
+        Item{
+            Component.onCompleted: {
+                //table.addColumn()
+                listmodel.append({fieldname: input});
+                //table.insertColumn( TableViewColumn { role: "title"; title: "Title"; width: 100 });
+                //readModels(fieldname,fieldname);
+                table.addColumn(1, { title: fieldname, role: "fieldname" });
+
+            }
         }
+    }
+
+    ListView {
+        id: formListView
+        model: enginioModel
+        delegate: listDelegate
+        visible: false
+    }
+
+    function readModels(role,title)
+    {
+
+        for(var i = 0; i < tableArray.length;i++)
+        {
+            if(tableArray[i].role === role)
+            {
+                return false;
+            }
+        }
+        //var a = { "role": role ,"title":title };
+        //tableArray.push(a);
+        table.addColumn( { title: tableArray[i].title, role: tableArray[i].role });
+        return true;
     }
     
     

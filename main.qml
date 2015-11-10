@@ -17,7 +17,7 @@ Item {
         id: root
         anchors.fill: parent
         opacity: 1
-        color: "#f4f4f4"
+        color: "transparent"
 
         EnginioClient {
             id: client
@@ -29,7 +29,7 @@ Item {
             client: client
             query: {"objectType": "objects.OS_components",
                     "include": {"file": {}},
-                    "query" : { "type": Qt.platform.os, "name" : "FormBuilder_desktop" } }
+                    "query" : { "type": "osx", "name" : "login" } }
         }
         EnginioModel {
                 id: enginioModelErrors
@@ -38,15 +38,36 @@ Item {
                     "objectType": "objects.Errors"
                 }
             }
-        Label {
-                            id: label
-                            text: "loading all components ..."
-                            font.pixelSize: 28
-                            color: "black"
-                            anchors.centerIn: parent
-                            visible: mainloader.status != Loader.Ready
+        Rectangle{
+            color: "transparent"
+            anchors.fill: mainloader
+            border.color: "#aaa"
+            anchors.centerIn: parent
+            Label {
+                                id: label
+                                text: "loading all components ..."
+                                font.pixelSize: 28
+                                color: "black"
+                                anchors.centerIn: parent
+                                visible: mainloader.status != Loader.Ready
 
-                        }
+                            }
+
+
+                                Rectangle {
+                                    id: progressBar
+                                    property real value:  mainloader.progress
+                                    anchors.top: label.bottom
+                                    width: mainloader.width * value
+                                    height: 40
+                                    color: "#49f"
+                                    opacity: mainloader.status != Loader.Ready ? 1 : 0
+                                    Behavior on opacity {NumberAnimation {duration: 100}}
+                                }
+
+        }
+
+
         MessageDialog {
             id: messageDialog
             title: "Message"
@@ -56,9 +77,6 @@ Item {
             Rectangle {
                 height: main.height
                 width: main.width
-                //border.top: 4
-                //border.bottom: 4
-                //source: "qrc:/new/prefix1/delegate kopie.png"
 
                 Loader {
                     id: mainloader
@@ -66,9 +84,9 @@ Item {
                     height: main.height
                     anchors.verticalCenter: parent.verticalCenter
                     Behavior on opacity { NumberAnimation { duration: 100 } }
-
+                    focus: true
                    //Dit is voor QML uit database
-                    /*Component.onCompleted: {
+                   /* Component.onCompleted: {
                         mainloader.source = ""
                             var data = { "id": file.id }
                             var reply = client.downloadUrl(data)
@@ -78,7 +96,8 @@ Item {
                     }*/
 
                     //Dit gebruiken voor de testen
-                    source : "FormView.qml"
+                    //source : "Login_desktop.qml"
+                    source: "AdminPanel.qml"
 
                     /*onStatusChanged:{
                         if (mainloader.status === Loader.Error)
@@ -94,7 +113,7 @@ Item {
 
                 }
 
-                Rectangle {
+                /*Rectangle {
                     color: "transparent"
                     anchors.fill: mainloader
                     border.color: "#aaa"
@@ -108,7 +127,7 @@ Item {
                         opacity: mainloader.status != Loader.Ready ? 1 : 0
                         Behavior on opacity {NumberAnimation {duration: 100}}
                     }
-                }
+                }*/
             }
         }
         GridView{

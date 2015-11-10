@@ -11,7 +11,6 @@ Item {
     height: 640
 
     Rectangle {
-
         id: root
         color: "#f4f4f4"
         width: 500
@@ -33,7 +32,7 @@ Item {
             query: {
                 "objectType": "objects.Tabs",
                 "include": {"file": {}},
-                "query" : { "file": { "$ne": null } }
+                //}
             }
         }
         EnginioModel {
@@ -73,22 +72,25 @@ Item {
                                font.pixelSize: height * 0.5
                                text: tab
                            }
-                           Rectangle {
-                               anchors.top: borderImage.bottom
-                               height: 3
-                               width: parent.width
-                               color: "#bbb"
-                           }
+
                        MouseArea {
                            id: hitbox
                            anchors.fill: parent
                            onClicked: {
-                               loaderDialog.fileId = file.id;
+                               console.log("klik")
+                               //loaderDialog.fileId = file.id;
                                loaderDialog.visible = true
                                mainloader.visible =  true
                            }
                        }
+                       /*Rectangle {
+                           anchors.top: borderImage.bottom
+                           height: 3
+                           width: parent.width
+                           color: "#bbb"
+                       }*/
                    }
+
                }
 
         Row {
@@ -99,7 +101,7 @@ Item {
                 id: imageListView
                 model: enginioModel
                 delegate: compListDelegate
-                clip: true
+                //clip: true
                 width: Screen.width/5
                 height: Screen.height
             }
@@ -136,18 +138,18 @@ Item {
                     height: 400
                     asynchronous: true
                     anchors.fill: parent
-                     visible: false
-                    //anchors.verticalCenter: parent.verticalCenter
-                    //anchors.horizontalCenter: parent.horizontalCenter
+                    // visible: false
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
                     Behavior on opacity { NumberAnimation { duration: 100 } }
                     Component.onCompleted: {
-                        mainloader.source = ""
-                            var data = { "id": file.id }
-                            var reply = client.downloadUrl(data)
-                            reply.finished.connect(function() {
-                                mainloader.source = reply.data.expiringUrl
-                            })
-                    }
+                                            mainloader.source = ""
+                                                var data = { "id": file.id }
+                                                var reply = client.downloadUrl(data)
+                                                reply.finished.connect(function() {
+                                                    mainloader.source = reply.data.expiringUrl
+                                                })
+                                        }
                 }
             }
         }

@@ -3,11 +3,24 @@ import QtQuick.Controls 1.1
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
 import QtQuick.Controls.Styles 1.4
+import Enginio 1.0
+
 Item {
     id: tabViewTest
     width: Screen.width
     height: Screen.height
-
+    EnginioClient {
+        id: client
+        backendId: "54be545ae5bde551410243c3"
+        onError: console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
+    }
+    EnginioModel {
+        id: enginioModel
+        client: client
+        query: {"objectType": "objects.OS_components",
+                "include": {"file": {}},
+                "query" : { "type": "android", "name" : "formview_mobile" } }
+    }
     TabView {
         id: tabView
         width: Screen.width
@@ -23,6 +36,16 @@ Item {
 
             // [1] Specify the source URL to load the content.
             source: "FormView_mobile.qml"
+
+            /*
+            component.onCompleted: {
+                dynamicTab.source = ""
+                    var data = { "id": file.id }
+                    var reply = client.downloadUrl(data)
+                    reply.finished.connect(function() {
+                        dynamicTab.source = reply.data.expiringUrl
+                    })
+            }*/
 
             // [2] Define a signal within the Tab that will
             // be connected to the 'contentsClicked' signal
@@ -43,7 +66,7 @@ Item {
             }
 
             onLoaded: {
-                console.debug( "Loaded", source );
+                console.log( "Loaded", source );
 
                 // [4] Here's the key action, connect the signal
                 // 'contentsClicked' to our signal

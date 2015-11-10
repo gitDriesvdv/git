@@ -9,6 +9,7 @@ Rectangle {
     id: rec
     width: Screen.width
     height: Screen.height
+
     //![identity]
     EnginioOAuth2Authentication {
         id: identity
@@ -81,8 +82,8 @@ Rectangle {
                 id: proccessButton
                  anchors.top: password.bottom
                 Layout.fillWidth: true
-                text: "Login"
-                onClicked: root.visible = true
+                //text: "Login"
+                //onClicked: root.visible = true
             }
         }
 
@@ -180,7 +181,7 @@ Rectangle {
                                     } else {
                                         log.text = "Account Created.\n"
                                         enginioModelLogs.append({"Log": log.text, "User": login.text})
-                                        root.visible = true
+                                        //root.visible = true
 
                                     }
                                 })
@@ -202,81 +203,7 @@ Rectangle {
 
 
 
-    Rectangle {
-        id: root
-        anchors.fill: parent
-        visible: false
-        opacity: 1
-        color: "#f4f4f4"
 
-        EnginioClient {
-            id: client
-            backendId: "54be545ae5bde551410243c3"
-            onError: console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
-        }
-        /*EnginioModel {
-            id: enginioModel
-            client: client
-            query: {"objectType": "objects.OS_components",
-                    "include": {"file": {}},
-                    "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
-        }*/
-
-        Component {
-            id: listDelegate
-
-            BorderImage {
-                height: main.height
-                width: main.width
-                border.top: 4
-                border.bottom: 4
-                source: "qrc:/new/prefix1/delegate kopie.png"
-
-                Loader {
-                    id: mainloader
-                    width: main.width
-                    height: main.height
-                    anchors.verticalCenter: parent.verticalCenter
-                    Behavior on opacity { NumberAnimation { duration: 100 } }
-
-                    //Dit is voor QML uit database
-                   /* Component.onCompleted: {
-                        mainloader.source = ""
-                            var data = { "id": file.id }
-                            var reply = client.downloadUrl(data)
-                            reply.finished.connect(function() {
-                                mainloader.source = reply.data.expiringUrl
-                            })
-                    }*/
-
-                    //Dit gebruiken voor de testen
-                    source : "qrc:/AdminPanel.qml"
-                }
-                Rectangle {
-                    color: "transparent"
-                    anchors.fill: mainloader
-                    border.color: "#aaa"
-                    Rectangle {
-                        id: progressBar
-                        property real value:  image.progress
-                        anchors.bottom: parent.bottom
-                        width: mainloader.width * value
-                        height: 40
-                        color: "#49f"
-                        opacity: mainloader.status != Loader.Ready ? 1 : 0
-                        Behavior on opacity {NumberAnimation {duration: 100}}
-                    }
-                }
-            }
-        }
-        GridView{
-            id: gridview
-            model: enginioModel
-            delegate: listDelegate
-            width: root.width
-            height: parent.height
-        }
-    }
 
     TextArea {
         id: data
@@ -292,7 +219,11 @@ Rectangle {
             onSessionAuthenticated: {
                 data.text = data.text + "User '"+ login.text +"' is logged in.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
                 enginioModelLogs.append({"Log": data.text, "User": login.text})
-                root.visible = true
+                var component = Qt.createComponent("mainpanel_test.qml")
+                var window    = component.createObject(rec)
+                window.show()
+                //gridview.visible = true;
+                //root.visible = true;
 
             }
             onSessionAuthenticationError: {
@@ -355,7 +286,71 @@ Rectangle {
             }
         }
     ]
+    /*Rectangle {
+        id: root
+       // anchors.fill: rec
+        visible: false
+        //opacity: 1
+        color: "blue"
+        width: Screen.width
+        height: Screen.height
 
+        Item{
+            id: griddelegate
+            Rectangle{
+
+                width: Screen.width
+                height: Screen.height
+
+            Loader {
+                id: mainloader_2
+                width: Screen.width
+                height: Screen.height
+                //anchors.verticalCenter: rec.verticalCenter
+                anchors.verticalCenter: parent.verticalCenter
+
+                Behavior on opacity { NumberAnimation { duration: 100 } }
+                focus: true
+                //Dit is voor QML uit database
+               /* Component.onCompleted: {
+                    mainloader.source = ""
+                        var data = { "id": file.id }
+                        var reply = client.downloadUrl(data)
+                        reply.finished.connect(function() {
+                            mainloader.source = reply.data.expiringUrl
+                        })
+                }*/
+
+                //Dit gebruiken voor de testen
+              /* source : "qrc:/mainpanel_test.qml"
+            }
+            }
+        }
+        GridView{
+            id: gridview
+            visible: false
+            model: enginioModel2
+            delegate: griddelegate
+            width: Screen.width
+            height: Screen.height
+            //anchors.fill: root
+            x:0
+            y:0
+        }
+
+        EnginioClient {
+            id: client
+            backendId: "54be545ae5bde551410243c3"
+            onError: console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
+        }
+        EnginioModel {
+            id: enginioModel2
+            client: client
+            query: {"objectType": "objects.OS_components",
+                    "include": {"file": {}},
+                    "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
+        }
+    }*/
     //bron: http://stackoverflow.com/questions/23652378/javascript-adding-email-validation-function-to-existing-validation-function
     function validateEmail(email)
     {

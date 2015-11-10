@@ -6,5 +6,6 @@
         <file>AdminPanel.qml</file>
         <file>FormView.qml</file>
         <file>FormResults.qml</file>
+        <file>mainpanel_test.qml</file>
     </qresource>
 </RCC>
