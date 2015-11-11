@@ -538,7 +538,7 @@ Rectangle {
 
     function indexRegulator()
     {
-        aIndexForm = indexForm + 1;
+        aIndexForm = aIndexForm + 1;
     }
 
     function push_indexFormArrayRegulator(index,i)

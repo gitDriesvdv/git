@@ -97,7 +97,7 @@ Item {
 
                     //Dit gebruiken voor de testen
                     //source : "Login_desktop.qml"
-                    source: "AdminPanel.qml"
+                    source: "Formbuilder.qml"
 
                     /*onStatusChanged:{
                         if (mainloader.status === Loader.Error)

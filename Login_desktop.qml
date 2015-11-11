@@ -89,6 +89,7 @@ Rectangle {
 
 
         }
+
         Rectangle{
             width: rec.width/2
             height: rec.height

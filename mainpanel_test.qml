@@ -20,7 +20,7 @@ import QtQuick.Window 2.0
                 id: root
                 width: Screen.width
                 height: Screen.height
-                color: "white"
+                color: "gray"
 
                 EnginioClient {
                     id: client
@@ -83,6 +83,7 @@ import QtQuick.Window 2.0
                                    height: 50
                                    width: 200
                                    anchors.left: colorvalidator.right
+                                   color: "gray"
                                    Text {
                                        id : naam
                                        height: parent.height
@@ -92,6 +93,7 @@ import QtQuick.Window 2.0
                                        font.pixelSize: height * 0.2
                                        text: name
                                        elide: Text.ElideRight
+                                       color: "#15B7ED"
 
                                    }
                                }
@@ -110,25 +112,25 @@ import QtQuick.Window 2.0
                 Rectangle {
                     id: header
                     anchors.top: parent.top
-                    width: 500
-                    height: 0
-                    color: "white"
+                    width: 200
+                    height: 50
+                    color: "gray"
 
-                   /* Row {
+                   Row {
                         id: logo
                         anchors.centerIn: parent
                         anchors.horizontalCenterOffset: -4
                         spacing: 6
 
                         Text {
-                            text: "Components"
+                            text: "BOARD"
                             anchors.verticalCenter: parent.verticalCenter
-                            anchors.verticalCenterOffset: -3
+                            //anchors.verticalCenterOffset: -3
                             font.bold: true
-                            font.pixelSize: 46
-                            color: "#555"
+                            font.pixelSize: 26
+                            color: "#15B7ED"
                         }
-                    }*/
+                    }
                     Rectangle {
                         width: parent.width ; height: 1
                         anchors.bottom: parent.bottom
@@ -145,11 +147,11 @@ import QtQuick.Window 2.0
 
                     ListView {
                         id: componentListView
-                        model: enginioModel // get the data from EnginioModel
+                        model: enginioModel
                         delegate: compListDelegate
                         clip: true
                         width: 200
-                        height: Screen.height-400
+                        height: Screen.height- header.height
                         add: Transition { NumberAnimation { properties: "y"; from: root.height; duration: 250 } }
                         removeDisplaced: Transition { NumberAnimation { properties: "y"; duration: 150 } }
                         remove: Transition { NumberAnimation { property: "opacity"; to: 0; duration: 150 } }
@@ -162,9 +164,9 @@ import QtQuick.Window 2.0
                         height: Screen.height - 50
                         visible: false
 
-                        contentWidth: mainloader.width; contentHeight: mainloader.height
+                        contentWidth: mainloader.width;
+                        contentHeight: mainloader.height
                         property string fileId
-                        //color: "#333"
 
                         onFileIdChanged: {
                             mainloader.source = ""
@@ -196,9 +198,7 @@ import QtQuick.Window 2.0
                             width: parent.width
                             height: parent.height
                             asynchronous: true
-                            //anchors.fill: parent
-                            //anchors.verticalCenter: parent.verticalCenter
-                            //anchors.horizontalCenter: parent.horizontalCenter
+                            focus: true
                             Behavior on opacity { NumberAnimation { duration: 100 } }
                             Component.onCompleted: {
                                 mainloader.source = ""
@@ -209,72 +209,18 @@ import QtQuick.Window 2.0
                                     })
                             }
                         }
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: root.state = ""
-                        }
+
                     }
 
                 }
 
                 BorderImage {
                     id: footer
-                    width: 500
+                    width: 200
                     height: 0
                     anchors.bottom: parent.bottom
                     border.left: 5; border.top: 5
                     border.right: 5; border.bottom: 5
-
-                   /* Rectangle {
-                        y: -1 ; height: 1
-                        width: parent.width
-                        color: "#bbb"
-                    }*/
-
-                    /*ComboBox {
-                        id: os
-                        width: 200
-                        model: [
-                            "android",
-                            "blackberry",
-                            "ios",
-                            "linux",
-                            "osx",
-                            "unix",
-                            "windows",
-                            "wince",
-                            "winrt",
-                            "winphone"
-                        ]
-                    }
-
-                    TextField{
-                        id: name
-                        anchors.top: os.bottom
-                        height: 40
-                        width: 400
-                        placeholderText: "Name"
-                    }
-
-                    Rectangle{
-                    id : upload
-                    anchors.top: name.bottom
-
-                    Button {
-                        text: "Click to upload..."
-                        onClicked: fileDialog.visible = true;
-                    }
-
-                    }
-                    Rectangle {
-                        id: progressBar
-                        property real value:0
-                        anchors.bottom: parent.bottom
-                        width: parent.width * value
-                        height: 4
-                        color: "#49f"
-                        Behavior on opacity {NumberAnimation {duration: 100}}
-                    }*/
                 }
             }
 
