@@ -9,26 +9,24 @@ Rectangle{
     height: 800
     width: 1000
     anchors.fill: parent
-    property variant tableArray: [];
+
     EnginioClient {
-        id: enginioClient
+        id: enginioClientLog
         backendId: "54be545ae5bde551410243c3"
         onError: {
         console.debug(JSON.stringify(reply.data))
         enginioModelErrors.append({"Error": "Enginio" + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
         }
     }
-
     EnginioModel {
-                id: enginioModel
-                client: enginioClient
-                query: {
-                    "objectType": "objects.resultforms",
-                    "query" : { "user": "Dries", "formname" : "azerty"}
-                }
-            }
+        id: enginioModelErrors
+        client: enginioClientLog
+        query: {
+            "objectType": "objects.Errors"
+        }
+    }
     Rectangle{
-        id: loglist
+        id: resultlist
         height: 400
         width: 800
 
@@ -40,18 +38,17 @@ Rectangle{
     height: 400
     width: 800
     TableView {
-        id: table
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-       // TableViewColumn { title: "fieldname"; role: "fieldname" }
-       // TableViewColumn { title: "input"; role: "input" }
-       // TableViewColumn { title: "list"; role: "list" }
+        TableViewColumn { title: "Name"; role: "fieldname" }
+        TableViewColumn { title: "Input"; role: "input" }
+        TableViewColumn { title: "List"; role: "list" }
 
-        model: listmodel
-        Component.onCompleted: {
-
-
+        model: EnginioModel {
+            id: enginioModel
+            client: enginioClientLog
+            query: {"objectType": "objects.resultforms" }
         }
     }
 
@@ -67,48 +64,4 @@ Rectangle{
     }
 }
     }
-    ListModel{
-        id: listmodel
-    }
-
-    Component{
-        id: listDelegate
-        Item{
-            Component.onCompleted: {
-                //table.addColumn()
-                listmodel.append({fieldname: input});
-                //table.insertColumn( TableViewColumn { role: "title"; title: "Title"; width: 100 });
-                //readModels(fieldname,fieldname);
-                table.addColumn(1, { title: fieldname, role: "fieldname" });
-
-            }
-        }
-    }
-
-    ListView {
-        id: formListView
-        model: enginioModel
-        delegate: listDelegate
-        visible: false
-    }
-
-    function readModels(role,title)
-    {
-
-        for(var i = 0; i < tableArray.length;i++)
-        {
-            if(tableArray[i].role === role)
-            {
-                return false;
-            }
-        }
-        //var a = { "role": role ,"title":title };
-        //tableArray.push(a);
-        table.addColumn( { title: tableArray[i].title, role: tableArray[i].role });
-        return true;
-    }
-    
-    
 }
-
-

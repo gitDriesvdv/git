@@ -320,10 +320,10 @@ Rectangle {
                         reply.finished.connect(function() {
                             mainloader.source = reply.data.expiringUrl
                         })
-                }*/
+                }
 
                 //Dit gebruiken voor de testen
-              /* source : "qrc:/mainpanel_test.qml"
+               source : "qrc:/mainpanel_test.qml"
             }
             }
         }

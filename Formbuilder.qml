@@ -64,7 +64,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
             }
         }
         Button{
@@ -73,7 +73,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem": 170 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextArea"})
+                enginioModel.append({"heightItem_mobile":4,"heightItem": 170 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextArea"})
             }
         }
         Button{
@@ -82,7 +82,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem": 100 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "ComboBox","List":[]})
+                enginioModel.append({"heightItem_mobile":8,"heightItem": 100 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "ComboBox","List":[]})
             }
         }
         Button{
@@ -91,7 +91,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "CheckBox","List":[]})
+                enginioModel.append({"heightItem_mobile":4,"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "CheckBox","List":[]})
             }
         }
     }
@@ -107,7 +107,7 @@ Rectangle {
             TextField {
                 id: nameForm
                 Layout.fillWidth: true
-                placeholderText: "Username"
+                placeholderText: "Formname"
             }
             Button {
                 id: startbutton
