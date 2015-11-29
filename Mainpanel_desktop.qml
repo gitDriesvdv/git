@@ -32,6 +32,7 @@ Item {
             query: {
                 "objectType": "objects.Tabs",
                 "include": {"file": {}},
+                "query" : {"active":true}
                 //}
             }
         }

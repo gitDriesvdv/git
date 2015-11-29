@@ -156,7 +156,8 @@ Rectangle {
                         ]
 
                         onClicked: {
-                            proccessButton_R.state = "Registering"
+                            plans.visible = true;
+                           /* proccessButton_R.state = "Registering"
                             //![create]
 
                             if(validateEmail(userEmail.text) == false)
@@ -186,7 +187,7 @@ Rectangle {
 
                                     }
                                 })
-                            }
+                            }*/
                         }
                     }
 
@@ -287,6 +288,40 @@ Rectangle {
             }
         }
     ]
+
+    Rectangle{
+        id: plans
+        width: rec.width/1.5
+        height: rec.height/1.5
+        color: "transparent"
+        anchors.verticalCenter: parent.verticalCenter
+        anchors.horizontalCenter: parent.horizontalCenter
+        visible: false
+
+        Rectangle{
+            id: plan1
+            width: plans.width/3
+            height: plans.height
+            color: "blue"
+
+        }
+        Rectangle{
+            id: plan2
+            width: plans.width/3
+            height: plans.height
+            color: "green"
+            anchors.left: plan1.right
+        }
+        Rectangle{
+            id: plan3
+            width: plans.width/3
+            height: plans.height
+            color: "yellow"
+            anchors.left: plan2.right
+        }
+
+    }
+
     /*Rectangle {
         id: root
        // anchors.fill: rec

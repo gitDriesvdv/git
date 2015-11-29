@@ -31,7 +31,7 @@ Rectangle {
         client: client
         query: {
             "objectType": "objects.Form",
-            "query" : { "User": "Dries", "FormName" : "azerty"},
+            "query" : { "User": "Dries", "FormName" : "test"},
             "sort" : [ {"sortBy": "indexForm", "direction": "asc"} ]
         }
     }
@@ -77,6 +77,48 @@ Rectangle {
                                         text: Name
                                     }
 
+                                }
+                                Rectangle {
+                                    id: itemFullName
+                                    visible: Type == "ComplexType"
+                                    x: 20
+                                    width: parent.width;
+                                    height: 35;
+                                    color: "gray"
+
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width/2.5;
+                                    id: textfield_firstname
+                                    onTextChanged: push_aInputFormArray("First Name",textfield_firstname.text,List,Type)
+
+                                }
+                                Text{
+                                    id: text_firstname
+                                    height: 10
+                                    text:qsTr("first name")
+                                    width: parent.width/2.5;
+                                    anchors.top: textfield_firstname.bottom
+                                    color: "white"
+                                }
+
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width/2.5;
+                                    id: textfield_lastname
+                                    anchors.left: textfield_firstname.right
+                                    onTextChanged: push_aInputFormArray("Last Name",textfield_lastname.text,List,Type)
+
+                                }
+                                Text{
+                                    height: 10
+                                    text:qsTr("last name")
+                                    anchors.top: textfield_lastname.bottom
+                                    anchors.left: text_firstname.right
+                                    color: "white"
+                                }
                                 }
                                 Rectangle {
                                     id: item1
@@ -264,14 +306,24 @@ Rectangle {
         var user = "Dries";
         var formname = "azerty";
 
-            for (var i =0; i < aInputFormArray.length; i++)
-               if (aInputFormArray[i].fieldname === fieldname) {
+            for (var i =0; i < aInputFormArray.length; i++){
+               if  (aInputFormArray[i].fieldname === fieldname) {
                   aInputFormArray.splice(i,1);
                   break;
                }
+            }
 
             var a = {"user":user,"sessionID":aSessionID,"fieldname": fieldname, "formname":formname, "input":input,"list":list, "type":type};
+
+            if(input !== "")
+            {
+                console.log(fieldname +  ":" + input);
             aInputFormArray.push(a);
+            }
+            else if (type ==="CheckBox" || type ==="ComboBox")
+            {
+                aInputFormArray.push(a);
+            }
     }
 
     function writetoDatabase()
@@ -381,6 +433,3 @@ Rectangle {
         return arrayList;
     }
 }
-
-
-

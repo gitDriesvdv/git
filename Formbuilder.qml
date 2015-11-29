@@ -6,27 +6,18 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.0
-//Voor het opslagen van de gegevens
-/*
-tabel aanmaken met de velden:
-- naam tabel
-- user
-- naam veld
-- invoer
-- type invoer
-- lijst (afhankelijk van de invoer)
 
-voor de weergave van hieruit een tabel opbouwen
-*/
 Rectangle {
-    width: Screen.width
-    height: Screen.height
+    id: rec_formbuilder
+    width: parent.width
+    height: parent.height
 
     property string aFormname: ""
     property string aFieldname: ""
     property int aIndexForm : 0;
     property variant indexFormArray: [];
     property variant newindexFormArray: [];
+    property variant fullNameFormArray: [];
     property int aIndexFormSingle : 0;
 
 
@@ -57,6 +48,7 @@ Rectangle {
         id: grid
         columns: 2
         columnSpacing: 40
+        width: rec_formbuilder/7
 
         Button {
             id: textFieldbutton
@@ -94,10 +86,28 @@ Rectangle {
                 enginioModel.append({"heightItem_mobile":4,"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "CheckBox","List":[]})
             }
         }
+        Button{
+            id: fullNamebutton
+            text: "Full Name"
+            enabled: false
+            onClicked: {
+                indexRegulator();
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Full Name", "Type" : "ComplexType"})
+            }
+        }
+        Button{
+            id: adressbutton
+            text: "Adress"
+            enabled: false
+            onClicked: {
+                indexRegulator();
+                    enginioModel.append({"heightItem_mobile":4,"heightItem": 250 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Adress", "Type" : "Adress"})
+            }
+        }
     }
     Rectangle{
-        width: Screen.width - grid.width
-        height: Screen.height - grid.height
+        width: rec_formbuilder.width - grid.width
+        height: rec_formbuilder.height - grid.height
         anchors.left: grid.right
         color: "gray"
 
@@ -198,6 +208,146 @@ Rectangle {
                                         verticalAlignment : Text.AlignHCenter
                                     }
                                 }
+
+                                Rectangle {
+                                    id: itemAdress
+                                    visible: Type == "Adress"
+                                    x: 20
+                                    width: parent.width;
+                                    height: 150;
+                                    color: "gray"
+
+                                    //straat + nummer
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width;
+                                    id: textfield_street
+
+                                }
+                                Text{
+                                    id: text_streetname
+                                    height: 20
+                                    text:qsTr("streetname + number")
+                                    width: parent.width/2.5;
+                                    anchors.top: textfield_street.bottom
+                                    color: "white"
+                                }
+
+                                //plaats
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width/2.5;
+                                    id: textfield_place
+                                    anchors.top: text_streetname.bottom
+                                }
+                                Text{
+                                    id: text_place
+                                    height: 20
+                                    text:qsTr("place")
+                                    width: parent.width/2.5;
+                                    anchors.top: textfield_place.bottom
+                                    color: "white"
+                                }
+
+                                //staat
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width/2.5;
+                                    id: textfield_state
+                                    anchors.top: text_streetname.bottom
+                                    anchors.left: textfield_place.right
+
+                                }
+                                Text{
+                                    id: text_state
+                                    height: 20
+                                    text:qsTr("State")
+                                    anchors.top: textfield_state.bottom
+                                    anchors.left: text_place.right
+                                    color: "white"
+                                }
+
+                                //postcode
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width/2.5;
+                                    id: textfield_postcode
+                                    anchors.top: text_state.bottom
+
+                                }
+                                Text{
+                                    id: text_postcode
+                                    height: 20
+                                    width: parent.width/2.5;
+                                    text:qsTr("zip code")
+                                    anchors.top: textfield_postcode.bottom
+                                    color: "white"
+                                }
+
+                                //land
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width/2.5;
+                                    id: textfield_country
+                                    anchors.top: text_state.bottom
+                                    anchors.left: textfield_postcode.right
+
+                                }
+                                Text{
+                                    id: text_country
+                                    height: 20
+                                    text:qsTr("country")
+                                    anchors.top: textfield_country.bottom
+                                    anchors.left: text_postcode.right
+                                    color: "white"
+                                }
+                                }
+                                Rectangle {
+                                    id: itemFullName
+                                    visible: Type == "ComplexType"
+                                    x: 20
+                                    width: parent.width;
+                                    height: 35;
+                                    color: "gray"
+
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width/2.5;
+                                    id: textfield_firstname
+
+                                }
+                                Text{
+                                    id: text_firstname
+                                    height: 10
+                                    text:qsTr("first name")
+                                    width: parent.width/2.5;
+                                    anchors.top: textfield_firstname.bottom
+                                    color: "white"
+                                }
+
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width/2.5;
+                                    id: textfield_lastname
+                                    anchors.left: textfield_firstname.right
+
+                                }
+                                Text{
+                                    height: 10
+                                    text:qsTr("last name")
+                                    anchors.top: textfield_lastname.bottom
+                                    anchors.left: text_firstname.right
+                                    color: "white"
+                                }
+                                }
+
                                 Rectangle {
                                     id: item1
                                     visible: Type == "TextField"
@@ -468,7 +618,7 @@ Rectangle {
                     //width: parent.width
                     //height: parent.height
                     visible: false
-                    width: Screen.width - grid.width
+                    width: rec_formbuilder.width - grid.width
                     height: parent.height - 100//Screen.height - grid.height
 
                     // Animations
@@ -528,6 +678,8 @@ Rectangle {
         formListView.visible = true;
         newform.visible = false;
         actionbar.visible = true;
+        fullNamebutton.enabled = true;
+        adressbutton.enabled = true;
     }
     function reload() {
         var a = enginioModel.query

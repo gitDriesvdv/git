@@ -38,7 +38,7 @@ import QtQuick.Window 2.0
                     query: {
                         "objectType": "objects.OS_components",
                         "include": {"file": {}},
-                        "query" : { "file": { "$ne": null } }
+                        "query" : {"active" : true ,"file": { "$ne": null } }
                     }
                 }
                 EnginioModel {
