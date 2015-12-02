@@ -28,7 +28,7 @@ Rectangle {
         onError:
         {
          console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
-         enginioModelErrors.append({"Error": "Enginio " + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
+         //enginioModelErrors.append({"Error": "Enginio " + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
         }
     }
 
@@ -56,7 +56,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":8,"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField"})
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField","req":"false"})
             }
         }
         Button{
@@ -93,6 +93,15 @@ Rectangle {
             onClicked: {
                 indexRegulator();
                     enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Full Name", "Type" : "ComplexType"})
+            }
+        }
+        Button{
+            id: emailbutton
+            text: "Email"
+            enabled: false
+            onClicked: {
+                indexRegulator();
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Email", "Type" : "Email"})
             }
         }
         Button{
@@ -202,10 +211,18 @@ Rectangle {
                                         }
                                     }
                                     Text{
+                                        id: fieldname
                                         anchors.left: changeName.right
                                         text: Name === "" ? "no fieldname" : ""
                                         color: "white"
                                         verticalAlignment : Text.AlignHCenter
+                                    }
+                                    CheckBox{
+                                        id: checkReq
+                                        anchors.left: fieldname.right
+                                        text: "required (nog niet werkend)"
+                                        checked: req === "false" ? true : false
+                                        onClicked: checkIt(index);
                                     }
                                 }
 
@@ -349,6 +366,21 @@ Rectangle {
                                 }
 
                                 Rectangle {
+                                    id: itemEmail
+                                    visible: Type == "Email"
+                                    x: 20
+                                    //y: 20
+                                    width: parent.width;
+                                    height: 20;
+                                    color: "gray"
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width;
+                                    id: textfield_item
+                                }
+                                }
+                                Rectangle {
                                     id: item1
                                     visible: Type == "TextField"
                                     x: 20
@@ -360,7 +392,7 @@ Rectangle {
                                     height: 25
                                     font.pixelSize: 15
                                     width: parent.width;
-                                    id: textfield_item
+                                    id: email_item
 
                                 }
                                 }
@@ -680,6 +712,7 @@ Rectangle {
         actionbar.visible = true;
         fullNamebutton.enabled = true;
         adressbutton.enabled = true;
+        emailbutton.enabled = true;
     }
     function reload() {
         var a = enginioModel.query
@@ -729,6 +762,8 @@ Rectangle {
             reloadBUtton.visible = false;
         }
     }
+
+
     function swap()
     {
 

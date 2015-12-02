@@ -14,6 +14,7 @@ Rectangle {
     property variant aInputFormArray: [];
     property variant aCheckboxArray: [];
     property string aSessionID: "";
+    property string aErrorMessage: "";
 
     //test
     EnginioClient {
@@ -118,6 +119,22 @@ Rectangle {
                                     anchors.top: textfield_lastname.bottom
                                     anchors.left: text_firstname.right
                                     color: "white"
+                                }
+                                }
+                                Rectangle {
+                                    id: itemEmail
+                                    visible: Type == "Email"
+                                    x: 20
+                                    //y: 20
+                                    width: parent.width;
+                                    height: 20;
+                                    color: "gray"
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width;
+                                    id: email_item
+                                    onTextChanged: push_aInputFormArray(Name,email_item.text,List,Type)
                                 }
                                 }
                                 Rectangle {
@@ -291,11 +308,33 @@ Rectangle {
                          height: 20;
                          visible: true
                          onClicked: {
-                             writetoDatabase()
+                             if(testValidation() !== false)
+                             {
+                                 messageDialog.text = "Valid Email";
+                                 messageDialog.visible = true;
+                                writetoDatabase();
+                             }
+                             else
+                             {
+                                 messageDialog.text = aErrorMessage;
+                                 messageDialog.visible = true;
+                                   // aErrorMessage
+                             }
                          }
                      }
 
                     }
+                }
+                MessageDialog {
+                    id: messageDialog
+                    title: "Error Message"
+                    text: ""
+                    visible: false
+                    onAccepted: {
+                        console.log("And of course you could only agree.")
+                        messageDialog.close();
+                    }
+                    //Component.onCompleted: visible = true
                 }
 
     }
@@ -326,6 +365,29 @@ Rectangle {
             }
     }
 
+    //bron:http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
+    function validateEmail(email) {
+        var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return filter.test(email);
+    }
+
+    function testValidation()
+    {
+        for (var i =0; i < aInputFormArray.length; i++)
+           {
+            if(aInputFormArray[i].type === "Email" && aInputFormArray[i].type !== "")
+             {
+                if(validateEmail(aInputFormArray[i].input) === false)
+                {
+                    aErrorMessage = "Fill in a valid Email";
+                    return false;
+                }
+
+                //return validateEmail(aInputFormArray[i].input);
+            }
+        }
+        return true;
+    }
     function writetoDatabase()
     {
         for (var i =0; i < aInputFormArray.length; i++)
@@ -432,4 +494,6 @@ Rectangle {
            }
         return arrayList;
     }
+
+
 }
