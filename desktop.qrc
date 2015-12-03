@@ -8,5 +8,6 @@
         <file>FormResults.qml</file>
         <file>mainpanel_test.qml</file>
         <file>GoogleMapsTest.qml</file>
+        <file>GoogleMapsTest2.qml</file>
     </qresource>
 </RCC>

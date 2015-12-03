@@ -4,8 +4,11 @@ import QtQuick.Controls 1.2
 import QtQuick 2.4
 import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
+import QtQuick.XmlListModel 2.0
+import QtWebKit 3.0
 
 Item {
+    property var arr: [];
     anchors.fill: parent
 
     ColumnLayout {
@@ -36,12 +39,12 @@ Item {
                             if (request.status === 200) {
                                 listview.model = JSON.parse(request.responseText)
                                 responseTextArea.text = request.responseText
-                                /*var arr = JSON.parse(request.responseText);
+                                arr = JSON.parse(request.responseText);
                                 console.log("ok" + arr.length);
                                         for(var i = 0; i < arr.length; i++) {
                                             model.append( {"listdata": arr.predictions[i].description })
                                             console.log("ok");
-                                        }*/
+                                        }
                             } else {
                                 responseTextArea.text = "HTTP request failed " + request.status
                             }
@@ -72,12 +75,12 @@ Item {
                width: 300
                height: 300
                //anchors.fill: parent
-               anchors.top: responseTextArea.bottom
-               model: model
-               /*delegate: Text {
+               model: arr
+               delegate: Text {
                    text: listdata
-               }*/
+               }
            }
         }
     }
+
 }

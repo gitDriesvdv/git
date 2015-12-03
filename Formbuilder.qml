@@ -113,6 +113,15 @@ Rectangle {
                     enginioModel.append({"heightItem_mobile":4,"heightItem": 250 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Adress", "Type" : "Adress"})
             }
         }
+        Button{
+            id: numberbutton
+            text: "Number"
+            enabled: false
+            onClicked: {
+                indexRegulator();
+                enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "Number"})
+            }
+        }
     }
     Rectangle{
         width: rec_formbuilder.width - grid.width
@@ -337,6 +346,7 @@ Rectangle {
                                     font.pixelSize: 15
                                     width: parent.width/2.5;
                                     id: textfield_firstname
+
 
                                 }
                                 Text{

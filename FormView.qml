@@ -92,8 +92,14 @@ Rectangle {
                                     font.pixelSize: 15
                                     width: parent.width/2.5;
                                     id: textfield_firstname
-                                    onTextChanged: push_aInputFormArray("First Name",textfield_firstname.text,List,Type)
-
+                                    //onTextChanged: push_aInputFormArray("First Name",textfield_firstname.text,List,Type)
+                                    //validator: IntValidator{bottom: 0; top: 31;}
+                                    /*onTextChanged:{
+                                        if(textfield_firstname.length > 5)
+                                        {
+                                            textfield_firstname.text = text.substr(0, text.length-1)
+                                        }
+                                    }*/
                                 }
                                 Text{
                                     id: text_firstname
@@ -367,7 +373,7 @@ Rectangle {
 
     //bron:http://stackoverflow.com/questions/46155/validate-email-address-in-javascript
     function validateEmail(email) {
-        var filter=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        var filter=/^ ([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
         return filter.test(email);
     }
 
