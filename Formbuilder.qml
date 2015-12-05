@@ -172,7 +172,7 @@ Rectangle {
                                 id: fielcheck
                                 anchors.horizontalCenter: checkrect.horizontalCenter
                                 anchors.verticalCenter: checkrect.verticalCenter
-                                //text: qsTr("Breakfast")
+                                //text: qsTr(test)
                                 //checked: true
 
                                 onClicked:  {
@@ -229,9 +229,11 @@ Rectangle {
                                     CheckBox{
                                         id: checkReq
                                         anchors.left: fieldname.right
-                                        text: "required (nog niet werkend)"
-                                        checked: req === "false" ? true : false
-                                        onClicked: checkIt(index);
+                                        text: qsTr("required")
+                                        checked: req
+                                        onClicked: {
+                                        enginioModel.setProperty(index, "req", !req);
+                                        }
                                     }
                                 }
 

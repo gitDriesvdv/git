@@ -37,7 +37,7 @@ Item {
             Item {
             width: 250; height: 50
             Rectangle{
-                color: "red"
+
                 anchors.fill: parent
                 Text { text: listdata }
                 MouseArea{
