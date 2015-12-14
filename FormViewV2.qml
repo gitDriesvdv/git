@@ -15,6 +15,7 @@ Rectangle {
     property variant aCheckboxArray: [];
     property string aSessionID: "";
     property string aErrorMessage: "";
+    property string regex: "a";
 
     EnginioClient {
         id: client
@@ -91,6 +92,12 @@ Rectangle {
                                             width: parent.width;
                                             height: 25
                                             placeholderText: "autocomplete"
+                                            validator: RegExpValidator {
+
+                                                regExp: new RegExp(regex);
+             //bron: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+                                            }
+
                                             onTextChanged: {
                                                 model.clear();
                                                 var xmlhttp = new XMLHttpRequest();

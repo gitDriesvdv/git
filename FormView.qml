@@ -15,6 +15,7 @@ Rectangle {
     property variant aCheckboxArray: [];
     property string aSessionID: "";
     property string aErrorMessage: "";
+    //property string regex: /a/;
 
     EnginioClient {
         id: client
@@ -80,10 +81,112 @@ Rectangle {
                                     width: parent.width;
                                     height: 150;
                                     color: "gray"
+                                    //autocomplete
+                                    Rectangle {
+                                        id: autocomplete_adress
+                                        width: parent.width;
+                                        height: 100
+                                        color: "gray"
+                                        TextField{
+                                            id: textfield_autocomplete
+                                            width: parent.width;
+                                            height: 25
+                                            placeholderText: "autocomplete"
+                                            //validator: RegExpValidator { regExp: regex }
 
+                                            onTextChanged: {
+                                                model.clear();
+                                                var xmlhttp = new XMLHttpRequest();
+                                                var url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+ textfield_autocomplete.text +"&types=address&language=nl&components=country:be&key=AIzaSyAlaSiDm2B3v_xwLhfguwONmNzMrj3ffrc"
+
+                                                xmlhttp.onreadystatechange=function() {
+                                                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                                        var arr = JSON.parse(xmlhttp.responseText);
+                                                        var arr1 = arr.predictions;
+                                                        for(var i = 0; i < arr1.length; i++) {
+                                                            listview.model.append( {listdata: arr1[i].description,
+                                                                                      listdata1: arr1[i].place_id})
+                                                        }
+                                                    }
+                                                }
+                                                xmlhttp.open("GET", url, true);
+                                                xmlhttp.send();
+                                            }
+                                        }
+
+                                        ListModel {
+                                            id: model
+                                        }
+
+                                        Component {
+                                                id: listDelegate
+                                                Item {
+                                                width: 250; height: 30
+                                                Rectangle{
+
+                                                    anchors.fill: parent
+                                                    Text {
+                                                        id: text1
+                                                        text: listdata
+                                                    }
+                                                    Text {
+                                                        id : text2
+                                                        visible: false
+                                                        anchors.top: text1.bottom
+                                                        text: listdata1
+                                                    }
+                                                    MouseArea{
+                                                        id: mousearea2
+                                                                        anchors.fill: parent
+                                                                        onClicked: {
+                                                                            var mySplitResult = listdata.split(",");
+                                                                            textfield_street.text = mySplitResult[0];
+                                                                            textfield_place.text = mySplitResult[1];
+                                                                            textfield_country.text = mySplitResult[2];
+                                                                            var xmlhttp = new XMLHttpRequest();
+                                                                            var url = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ text2.text +"&key=AIzaSyAlaSiDm2B3v_xwLhfguwONmNzMrj3ffrc"
+
+                                                                            xmlhttp.onreadystatechange=function() {
+                                                                                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                                                                                    var arr = JSON.parse(xmlhttp.responseText);
+                                                                                    var arr1 = arr.result;
+                                                                                    var arr2 = arr1.address_components;
+                                                                                    for(var i = 0; i < arr2.length; i++) {
+                                                                                        if(arr2[i].types == "postal_code")
+                                                                                        {
+                                                                                             textfield_postcode.text = arr2[i].long_name;
+                                                                                        }
+                                                                                        if(arr2[i].types[0] == "administrative_area_level_2")
+                                                                                        {
+                                                                                             textfield_state.text = arr2[i].long_name;
+                                                                                        }
+                                                                                    }
+                                                                                    textfield_autocomplete.text = "";
+                                                                                    console.log(xmlhttp.responseText);
+                                                                                }
+                                                                            }
+                                                                            xmlhttp.open("GET", url, true);
+                                                                            xmlhttp.send();
+                                                                        }
+                                                    }
+                                                }
+                                                }
+                                            }
+
+                                        ListView {
+                                            id: listview
+                                            height: 300
+                                            width: 500
+                                            anchors.top: textfield_autocomplete.bottom
+                                            model: model
+                                            delegate: listDelegate
+                                            visible: textfield_autocomplete.length > 0 ? true : false
+                                            z: 1
+                                        }
                                     //straat + nummer
                                 TextField {
                                     height: 25
+                                    anchors.top: textfield_autocomplete.bottom
                                     font.pixelSize: 15
                                     width: parent.width;
                                     id: textfield_street
@@ -201,6 +304,9 @@ Rectangle {
                                     anchors.left: text_postcode.right
                                     color: "white"
                                 }
+              /////////////////////////////////////
+ }
+              /////////////////////////////////////
                                 }
 
                                 Rectangle {
@@ -639,8 +745,6 @@ Rectangle {
     function createArrayInCheckboxArray(naam)
     {
         var a = {"Name": naam, "List":[]};
-        //a.List.push("test");
-        //a.List.pop();
         aCheckboxArray.push(a);
     }
 
@@ -678,6 +782,4 @@ Rectangle {
 
            }
     }
-
-
 }

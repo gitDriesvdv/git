@@ -10,5 +10,6 @@
         <file>GoogleMapsTest.qml</file>
         <file>GoogleMapsTest2.qml</file>
         <file>FormViewV2.qml</file>
+        <file>FormbuilderV2.qml</file>
     </qresource>
 </RCC>
