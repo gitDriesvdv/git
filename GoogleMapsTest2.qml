@@ -27,6 +27,11 @@ Item {
         anchors.left: textfield.right
         text: qsTr("text")
     }
+    Text {
+        id: name2
+        anchors.left: name.right
+        text: qsTr("text")
+    }
 
     ListModel {
         id: model
@@ -44,7 +49,10 @@ Item {
                     id: mousearea2
                                     anchors.fill: parent
                                     onClicked: {
-                                        name.text = listdata;
+                                        var mySplitResult = listdata.split(",");
+
+                                        name.text = mySplitResult[0];
+                                        name2.text = mySplitResult[1];
                                         console.debug("list click")
                                     }
                 }
@@ -70,6 +78,7 @@ Item {
         xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 myFunction(xmlhttp.responseText);
+                console.log(xmlhttp.responseText);
             }
         }
         xmlhttp.open("GET", url, true);
@@ -78,6 +87,7 @@ Item {
 
     function myFunction(response) {
         var arr = JSON.parse(response);
+        //console.log(listdata);
         var arr1 = arr.predictions;
         for(var i = 0; i < arr1.length; i++) {
             listview.model.append( {listdata: arr1[i].description})

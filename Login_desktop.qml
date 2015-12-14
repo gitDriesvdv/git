@@ -222,8 +222,10 @@ Rectangle {
                 data.text = data.text + "User '"+ login.text +"' is logged in.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
                 enginioModelLogs.append({"Log": data.text, "User": login.text})
                 var component = Qt.createComponent("mainpanel_test.qml")
-                var window    = component.createObject(rec)
+                if (component.status == Component.Ready) {
+                var window    = component.createObject(rec);
                 window.show()
+                }
                 //gridview.visible = true;
                 //root.visible = true;
 
