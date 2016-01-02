@@ -520,20 +520,14 @@ Rectangle {
                                         if(item3.visible == true)
                                         {
                                             init_aInputFormArray(Name,combobox_item.currentText,List,Type,req)}
-
                                         }
-
-
                                         }
-
                                 }
-
                                 Rectangle {
                                                 height: 1
                                                 width: parent.width
                                                 color: "white"
                                             }
-
                     }
                 }
             }

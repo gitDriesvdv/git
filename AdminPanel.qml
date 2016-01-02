@@ -1,45 +1,25 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.0
-
+import QtQuick.Controls 1.4
 Rectangle {
     id :rect
     width: parent.width
-   height: parent.height - 200
+   height: parent.height
     color: "gray"
-    GridLayout{
-        id: grid
-        columns: 2
-        Rectangle{
-            id: rec1
-            width: rect.width/2
-            height: rect.height/2
-            color: "red"
-            // all gebruikers
-
+    TabView {
+        anchors.fill: parent
+        Tab {
+            title: "Users"
+            Users { anchors.fill: parent }
         }
-        Rectangle{
-            id: rec2
-            width: rect.width/2
-            height: rect.height/2
-            color: "blue"
-            //gebruikers toevoegen
-
+        Tab {
+            title: "Blue"
+            Rectangle { color: "blue" }
         }
-        Rectangle{
-            id: rec3
-            width: rect.width/2
-            height: rect.height/2
-            color: "blue"
-            //bedrijfsinformatie
-
-        }
-        Rectangle{
-            id: rec4
-            width: rect.width/2
-            height: rect.height/2
-            color: "red"
-
+        Tab {
+            title: "Green"
+            Rectangle { color: "green" }
         }
     }
 }

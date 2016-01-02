@@ -6,6 +6,8 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.0
+import Qt.labs.settings 1.0
+import "qrc:/FormResultFuntions.js" as Logic
 
 Rectangle {
     id: rec_formbuilder
@@ -19,6 +21,7 @@ Rectangle {
     property variant newindexFormArray: [];
     property variant fullNameFormArray: [];
     property int aIndexFormSingle : 0;
+
 
 
     //test
@@ -43,7 +46,6 @@ Rectangle {
     }
 
     //FormName
-
     GridLayout {
         id: grid
         columns: 2
@@ -135,15 +137,25 @@ Rectangle {
             TextField {
                 id: nameForm
                 Layout.fillWidth: true
-                placeholderText: "Formname"
+                placeholderText: "New Form"
             }
+            Component.onCompleted: getDataUserForms(settings.username)
+            ComboBox{
+                id: comboboxForms
+                anchors.top: nameForm.bottom
+                model: ListModel{
+                    id: lijstmodel
+                }
+            }
+
             Button {
                 id: startbutton
+                anchors.top: comboboxForms.bottom
                 text: "Start"
                 onClicked: {
                     enableButtons()
                 }
-                anchors.top: nameForm.bottom
+                //anchors.top: nameForm.bottom
             }
         }
 
@@ -714,7 +726,13 @@ Rectangle {
     }
     function enableButtons()
     {
-        aFormname = nameForm.text;
+        if(nameForm.text != "")
+        {
+            aFormname = nameForm.text;
+        }
+        else{
+            aFormname = comboboxForms.currentText
+        }
         textFieldbutton.enabled = true;
         textAreabutton.enabled = true;
         comboboxbutton.enabled = true;
@@ -808,6 +826,31 @@ Rectangle {
         lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
         lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
         lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff]);
+    }
+    function getDataUserForms(formname_input) {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://api.engin.io/v1/users?q={\"username\":\""+ formname_input +"\"}&limit=1"
+
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var arr = JSON.parse(xmlhttp.responseText);
+                var arr1 = arr.results;
+                for(var i = 0; i < arr1.length; i++) {
+                    console.log(arr1[i].forms);
+                    for(var y = 0; y < arr1[i].forms.length; y++)
+                    {
+                        lijstmodel.append({text: arr1[i].forms[y]})
+                    }
+                }
+            }
+            else
+            {
+                console.log("Bad request")
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.send();
     }
 }
 

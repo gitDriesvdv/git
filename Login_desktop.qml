@@ -5,11 +5,17 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.0
+import Qt.labs.settings 1.0
+
 Rectangle {
     id: rec
     width: Screen.width
     height: Screen.height
 
+    Settings {
+           id: settings
+           property string username: ""
+       }
     //![identity]
     EnginioOAuth2Authentication {
         id: identity
@@ -47,6 +53,9 @@ Rectangle {
             "objectType": "objects.Logs"
         }
     }
+
+
+
     //![identity]
     anchors.fill: parent
     anchors.margins: 0
@@ -156,8 +165,8 @@ Rectangle {
                         ]
 
                         onClicked: {
-                            plans.visible = true;
-                           /* proccessButton_R.state = "Registering"
+                            //plans.visible = true;
+                            proccessButton_R.state = "Registering"
                             //![create]
 
                             if(validateEmail(userEmail.text) == false)
@@ -171,7 +180,9 @@ Rectangle {
                                           "password": password_R.text,
                                           "email": userEmail.text,
                                           "firstName": userFirstName.text,
-                                          "lastName": userLastName.text
+                                          "lastName": userLastName.text,
+                                          "admin": true,
+                                          "myAdmin":login_R.text
                                         }, Enginio.UserOperation)
                             //![create]
                             reply.finished.connect(function() {
@@ -187,7 +198,7 @@ Rectangle {
 
                                     }
                                 })
-                            }*/
+                            }
                         }
                     }
 
@@ -221,13 +232,14 @@ Rectangle {
             onSessionAuthenticated: {
                 data.text = data.text + "User '"+ login.text +"' is logged in.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
                 enginioModelLogs.append({"Log": data.text, "User": login.text})
-                var component = Qt.createComponent("mainpanel_test.qml")
+                console.log("CHECK: " + login.text);
+                 //= login.text
+                settings.username = login.text
+                var component = Qt.createComponent("mainpanel_desktop_offline.qml")
                 if (component.status == Component.Ready) {
                 var window    = component.createObject(rec);
                 window.show()
                 }
-                //gridview.visible = true;
-                //root.visible = true;
 
             }
             onSessionAuthenticationError: {
@@ -305,7 +317,6 @@ Rectangle {
             width: plans.width/3
             height: plans.height
             color: "blue"
-
         }
         Rectangle{
             id: plan2
@@ -321,80 +332,15 @@ Rectangle {
             color: "yellow"
             anchors.left: plan2.right
         }
-
     }
 
-    /*Rectangle {
-        id: root
-       // anchors.fill: rec
-        visible: false
-        //opacity: 1
-        color: "blue"
-        width: Screen.width
-        height: Screen.height
-
-        Item{
-            id: griddelegate
-            Rectangle{
-
-                width: Screen.width
-                height: Screen.height
-
-            Loader {
-                id: mainloader_2
-                width: Screen.width
-                height: Screen.height
-                //anchors.verticalCenter: rec.verticalCenter
-                anchors.verticalCenter: parent.verticalCenter
-
-                Behavior on opacity { NumberAnimation { duration: 100 } }
-                focus: true
-                //Dit is voor QML uit database
-               /* Component.onCompleted: {
-                    mainloader.source = ""
-                        var data = { "id": file.id }
-                        var reply = client.downloadUrl(data)
-                        reply.finished.connect(function() {
-                            mainloader.source = reply.data.expiringUrl
-                        })
-                }
-
-                //Dit gebruiken voor de testen
-               source : "qrc:/mainpanel_test.qml"
-            }
-            }
-        }
-        GridView{
-            id: gridview
-            visible: false
-            model: enginioModel2
-            delegate: griddelegate
-            width: Screen.width
-            height: Screen.height
-            //anchors.fill: root
-            x:0
-            y:0
-        }
-
-        EnginioClient {
-            id: client
-            backendId: "54be545ae5bde551410243c3"
-            onError: console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
-        }
-        EnginioModel {
-            id: enginioModel2
-            client: client
-            query: {"objectType": "objects.OS_components",
-                    "include": {"file": {}},
-                    "query" : { "type": Qt.platform.os, "name" : "mainpanel_desktop" } }
-        }
-    }*/
     //bron: http://stackoverflow.com/questions/23652378/javascript-adding-email-validation-function-to-existing-validation-function
     function validateEmail(email)
     {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
     }
+
 }
 
 

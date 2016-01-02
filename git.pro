@@ -2,7 +2,8 @@ TEMPLATE = app
 
 QT += qml quick widgets
 QT += qml quick enginio
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    mainwindow.cpp
 
 RESOURCES += qml.qrc \
     desktop.qrc \
@@ -25,4 +26,5 @@ DISTFILES += \
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
-HEADERS +=
+HEADERS += \
+    mainwindow.h
