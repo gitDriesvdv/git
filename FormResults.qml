@@ -154,7 +154,6 @@ Rectangle{
         }
     }
 
-    //nog aanpassen voor lijsten
     function fillTable()
     {
         for(var i = 0; i < ids.length;i++)
