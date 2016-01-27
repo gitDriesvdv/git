@@ -4,8 +4,10 @@ import Enginio 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.1
-import "qrc:/FormResultFuntions.js" as Logic
+//import "qrc:/FormResultFuntions.js" as Logic
 import QtQuick.Window 2.0
+import Qt.labs.settings 1.0
+
 Rectangle{
     height: Screen.height
     width: Screen.width
@@ -33,18 +35,44 @@ Rectangle{
         height: 400
         width: 800
         Component.onCompleted: {
-            getData("azerty")
+            //getData("Dries")
+            getDataUserForms(settings.username)
         }
 
 
         ListModel{
             id:listmodel
         }
+        ListModel{
+            id: lijstmodel
+        }
+
+        ComboBox{
+            id: keuzelijst
+            model: lijstmodel
+            onCurrentIndexChanged:
+            {
+                listmodel.clear();
+                //primaireTableView.destroy()
+                //getData(keuzelijst.currentText)
+                getData(keuzelijst.currentText)
+            }
+        }
+        Button{
+            id: reload
+            anchors.left: keuzelijst.right
+            text: "refresh"
+            onClicked: {
+
+                getDataUserForms(settings.username)
+            }
+        }
 
     TableView{
         id: primaireTableView
-        width: Screen.width
-        height: Screen.height
+        anchors.top : keuzelijst.bottom
+        width: 900
+        height: 400
         model:listmodel
         onClicked: {
             console.log(listmodel.get(row).source);
@@ -54,18 +82,24 @@ Rectangle{
     function getData(formname_input) {
         var xmlhttp = new XMLHttpRequest();
 
-        var url = "https://api.engin.io/v1/objects/resultforms";
+        var url = "https://api.engin.io/v1/objects/resultforms?q={\"formname\":\""+ formname_input +"\"}";
 
         xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var arr = JSON.parse(xmlhttp.responseText);
                 var arr1 = arr.results;
+                console.log(xmlhttp.responseText)
                 for(var i = 0; i < arr1.length; i++) {
                     console.log(arr1[i].sessionID);
-                    createFieldnamesList(arr1[i].fieldname)
-                    createIdsList(arr1[i].sessionID)
-                    var a = {"fieldname":arr1[i].fieldname, "input":arr1[i].input,"type":arr1[i].type,"list":arr1[i].list};
-                    finaliseList(arr1[i].sessionID,a);
+                    console.log("naam :" + arr1[i].formname)
+                    //if(arr1[i].formname === formname_input)
+                    //{
+                        console.log("ok:"+ arr1[i].fieldname)
+                        createFieldnamesList(arr1[i].fieldname)
+                        createIdsList(arr1[i].sessionID)
+                        var a = {"fieldname":arr1[i].fieldname, "input":arr1[i].input,"type":arr1[i].type,"list":arr1[i].list};
+                        finaliseList(arr1[i].sessionID,a);
+                    //}
                 }
                 fillTable();
             }
@@ -171,5 +205,31 @@ Rectangle{
             }
             listmodel.append(samenstelling);
         }
+    }
+    function getDataUserForms(formname_input) {
+        lijstmodel.clear();
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://api.engin.io/v1/users?q={\"username\":\""+ formname_input +"\"}&limit=1"
+
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var arr = JSON.parse(xmlhttp.responseText);
+                var arr1 = arr.results;
+                for(var i = 0; i < arr1.length; i++) {
+                    console.log(arr1[i].forms);
+                    for(var y = 0; y < arr1[i].forms.length; y++)
+                    {
+                        lijstmodel.append({text: arr1[i].forms[y]})
+                    }
+                }
+            }
+            else
+            {
+                console.log("Bad request")
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.send();
     }
 }

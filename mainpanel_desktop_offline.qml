@@ -6,33 +6,63 @@ import Enginio 1.0
 import QtQuick.Controls.Styles 1.2
 
 ApplicationWindow {
+    id: main
     title: qsTr("Mainpanel")
     height: Screen.height
     width: Screen.width
     visible: true
     color: "white"
-
     Label {
                         id: label
                         text: "Loading your mainpanel..."
                         font.pixelSize: 28
                         color: "black"
                         anchors.centerIn: parent
-                        visible: view.status != TabView.Ready
+                        visible: view.status !== TabView.Ready
                     }
-
     Row {
+        id: leftrow
+        height: main.height
+        Rectangle {
+            id: head
+            height: 100
+            //z:1
+            color: "white"
+            /*Text {
+                id: headertext
+                text: qsTr("Dries")
+                color: "white"
+                font.pointSize: 24
+                x: 60
+                y: 50
+            }*/
+        }
         Column {
+            id: col
+            height: Screen.height
+            anchors.top: head.bottom
             Repeater {
                 model: view.count
                 Rectangle {
                     width: 200
                     height: 70
-                    border.width: 1
+                    color: "white"
+                    border.width: 0
                     Text {
+                        id: tekst
                         anchors.centerIn: parent
                         text: view.getTab(index).title
+                        color: "gray"
                     }
+                    Rectangle{
+                        id: lijn
+                        anchors.top: tekst.bottom
+                        height: 2
+                        width: 100
+                        color: "red"
+                        x: 50
+                    }
+
                     MouseArea {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
@@ -47,8 +77,7 @@ ApplicationWindow {
             height: Screen.height
             style: TabViewStyle {
                 tab: Rectangle {
-                    color: "transparent"
-                    border.color:  "steelblue"
+                   // border.color:"white"
                     radius: 2
                 }
             }
@@ -57,22 +86,23 @@ ApplicationWindow {
                 Users { anchors.fill: parent }
             }
             Tab {
-                title: "Create form"
+                title: "Create new form"
                 Formbuilder { anchors.fill: parent }
             }
             Tab {
-                title: "Logs"
-                Rectangle { anchors.fill: parent }
+                title: "Results"
+                FormResults { anchors.fill: parent }
             }
             Tab {
-                title: "Components"
+                title: "Settings"
                 Rectangle { anchors.fill: parent }
-            }
+            }/*
             Tab {
                 title: "Logbook"
                 Rectangle { anchors.fill: parent }
-            }
+            }*/
         }
     }
+
 }
 

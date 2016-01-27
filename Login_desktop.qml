@@ -6,7 +6,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.0
 import Qt.labs.settings 1.0
-
+import QtQuick.Layouts 1.1
+import QtQuick.Controls.Styles 1.4
 Rectangle {
     id: rec
     width: Screen.width
@@ -15,6 +16,7 @@ Rectangle {
     Settings {
            id: settings
            property string username: ""
+           property string my_id: ""
        }
     //![identity]
     EnginioOAuth2Authentication {
@@ -60,37 +62,118 @@ Rectangle {
     anchors.fill: parent
     anchors.margins: 0
     //spacing: 3
+Rectangle{
+    id: top
+    width: Screen.width
+    height: Screen.height / 3
+    color: "white"
+    Image {
+        id: logo
+        source: "qrc:/new/prefix1/Schermafdruk 2016-01-26 17.19.42.png"
+        anchors.centerIn: parent
+        y:50
+        //height: parent.height/0.8
+        width: 180
+    }
+}
+Rectangle{
+    id :bot
+    width: Screen.width
+    height: Screen.height / 3
+    anchors.top : top.bottom
 
     GridLayout{
+        id: col
         columns: 2
         Rectangle{
         id: loginscreen
         width: rec.width/2
         height: rec.height
-        color: "#23617B"
+        color: "white"
 
         Rectangle{
-            anchors.centerIn: parent
+            //anchors.centerIn: parent
+            x: Screen.width/4
+            y: 100
             TextField {
                 id: login
                 Layout.fillWidth: true
-                placeholderText: "Username"
+                placeholderText: "USERNAME"
                 enabled: enginioClient.authenticationState == Enginio.NotAuthenticated
+                style: TextFieldStyle {
+                        textColor: "black"
+                        background: Rectangle {
+                            radius: 2
+                            border.color: "red"
+                            border.width: 0
+                        }
+                    }
             }
-
+            Rectangle{
+                id: line
+                width: login.width
+                height: 2
+                color: "red"
+                 anchors.top: login.bottom
+            }
+            Rectangle{
+                id: spacer
+                width: login.width
+                height: 10
+                color: "white"
+                 anchors.top: line.bottom
+            }
             TextField {
                 id: password
-                anchors.top: login.bottom
+                anchors.top: spacer.bottom
                 Layout.fillWidth: true
-                placeholderText: "Password"
+                placeholderText: "PASSWORD"
+                style: TextFieldStyle {
+                        textColor: "black"
+                        background: Rectangle {
+                            radius: 2
+                            //implicitWidth: 100
+                            //implicitHeight: 24
+                            border.color: "red"
+                            border.width: 0
+                        }
+                    }
                 echoMode: TextInput.PasswordEchoOnEdit
                 enabled: enginioClient.authenticationState == Enginio.NotAuthenticated
             }
-
+            Rectangle{
+                id: line2
+                width: login.width
+                height: 2
+                color: "red"
+                 anchors.top: password.bottom
+            }
+            Rectangle{
+                id: spacer2
+                width: login.width
+                height: 10
+                color: "white"
+                 anchors.top: line2.bottom
+            }
             Button {
                 id: proccessButton
-                 anchors.top: password.bottom
+                 anchors.top: spacer2.bottom
                 Layout.fillWidth: true
+                width: password.width
+                style: ButtonStyle {
+                        background: Rectangle {
+                            implicitWidth: 100
+                            implicitHeight: 25
+                            color: "white"
+                            border.width: control.activeFocus ? 2 : 1
+                            border.color: "red"
+                            radius: 9
+                            gradient: Gradient {
+                                GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                                GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                            }
+                        }
+                    }
                 //text: "Login"
                 //onClicked: root.visible = true
             }
@@ -103,17 +186,34 @@ Rectangle {
             width: rec.width/2
             height: rec.height
             anchors.left: loginscreen.right
-            color: "#23617B"
+            color: "white"
             Rectangle{
-                anchors.centerIn: parent
+                x: Screen.width/5
+                y: 100
                 ColumnLayout {
                     anchors.margins: 1
-                    spacing: 3
+                    spacing: 9
 
                     TextField {
                         id: login_R
                         Layout.fillWidth: true
                         placeholderText: "Username (required)"
+                        style: TextFieldStyle {
+                                textColor: "black"
+                                background: Rectangle {
+                                    radius: 2
+                                    //implicitWidth: 100
+                                    //implicitHeight: 24
+                                    border.color: "red"
+                                    border.width: 0
+                                }
+                            }
+                        Rectangle{
+                            width: login.width
+                            height: 2
+                            color: "red"
+                             anchors.top: login_R.bottom
+                        }
                     }
 
                     TextField {
@@ -121,25 +221,89 @@ Rectangle {
                         Layout.fillWidth: true
                         placeholderText: "Password (required)"
                         echoMode: TextInput.PasswordEchoOnEdit
+                        style: TextFieldStyle {
+                                textColor: "black"
+                                background: Rectangle {
+                                    radius: 2
+                                    //implicitWidth: 100
+                                    //implicitHeight: 24
+                                    border.color: "red"
+                                    border.width: 0
+                                }
+                            }
+                        Rectangle{
+                            width: login.width
+                            height: 2
+                            color: "red"
+                             anchors.top: password_R.bottom
+                        }
                     }
 
                     TextField {
                         id: userFirstName
                         Layout.fillWidth: true
                         placeholderText: "First name"
+                        style: TextFieldStyle {
+                                textColor: "black"
+                                background: Rectangle {
+                                    radius: 2
+                                    //implicitWidth: 100
+                                    //implicitHeight: 24
+                                    border.color: "red"
+                                    border.width: 0
+                                }
+                            }
+                        Rectangle{
+                            width: login.width
+                            height: 2
+                            color: "red"
+                             anchors.top: userFirstName.bottom
+                        }
                     }
 
                     TextField {
                         id: userLastName
                         Layout.fillWidth: true
                         placeholderText: "Last name"
+                        style: TextFieldStyle {
+                                textColor: "black"
+                                background: Rectangle {
+                                    radius: 2
+                                    //implicitWidth: 100
+                                    //implicitHeight: 24
+                                    border.color: "red"
+                                    border.width: 0
+                                }
+                            }
+                        Rectangle{
+                            width: login.width
+                            height: 2
+                            color: "red"
+                             anchors.top: userLastName.bottom
+                        }
                     }
 
                     TextField {
                         id: userEmail
                         Layout.fillWidth: true
                         placeholderText: "Email (required)"
+                        style: TextFieldStyle {
+                                textColor: "black"
+                                background: Rectangle {
+                                    radius: 2
+                                    //implicitWidth: 100
+                                    //implicitHeight: 24
+                                    border.color: "red"
+                                    border.width: 0
+                                }
+                            }
                         inputMethodHints: Qt.ImhEmailCharactersOnly
+                        Rectangle{
+                            width: login.width
+                            height: 2
+                            color: "red"
+                             anchors.top: userEmail.bottom
+                        }
                     }
                     Text{
                         id: val_text
@@ -152,7 +316,20 @@ Rectangle {
                         Layout.fillWidth: true
                         enabled: login_R.text.length >= 10 && password_R.text.length >= 7
                         text: "Register"
-
+                        style: ButtonStyle {
+                                background: Rectangle {
+                                    implicitWidth: 100
+                                    implicitHeight: 25
+                                    color: "white"
+                                    border.width: control.activeFocus ? 2 : 1
+                                    border.color: "red"
+                                    radius: 9
+                                    gradient: Gradient {
+                                        GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                                        GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                                    }
+                                }
+                            }
                         states: [
                             State {
                                 name: "Registering"
@@ -233,7 +410,7 @@ Rectangle {
                 data.text = data.text + "User '"+ login.text +"' is logged in.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
                 enginioModelLogs.append({"Log": data.text, "User": login.text})
                 console.log("CHECK: " + login.text);
-                 //= login.text
+                getDataUserForms(login.text)
                 settings.username = login.text
                 var component = Qt.createComponent("mainpanel_desktop_offline.qml")
                 if (component.status == Component.Ready) {
@@ -333,6 +510,8 @@ Rectangle {
             anchors.left: plan2.right
         }
     }
+}
+
 
     //bron: http://stackoverflow.com/questions/23652378/javascript-adding-email-validation-function-to-existing-validation-function
     function validateEmail(email)
@@ -340,7 +519,29 @@ Rectangle {
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
     }
+    function getDataUserForms(formname_input) {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://api.engin.io/v1/users?q={\"username\":\""+ formname_input +"\"}&limit=1"
 
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var arr = JSON.parse(xmlhttp.responseText);
+                var arr1 = arr.results;
+                console.log(arr1)
+                for(var i = 0; i < arr1.length; i++) {
+                    console.log(arr1[i].id);
+                    settings.my_id = arr1[i].id;
+                }
+            }
+            else
+            {
+                console.log("Bad request")
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.send();
+    }
 }
 
 

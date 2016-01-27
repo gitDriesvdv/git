@@ -40,7 +40,7 @@ Rectangle {
         client: client
         query: {
             "objectType": "objects.Form",
-            "query" : { "User": "Dries", "FormName" : aFormname},
+            "query" : { "User": settings.username, "FormName" : aFormname},
             "sort" : [ {"sortBy": "indexForm", "direction": "asc"} ]
         }
     }
@@ -58,7 +58,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":8,"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField","req":"false"})
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "TextField","req":"false"})
             }
         }
         Button{
@@ -67,7 +67,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem_mobile":4,"heightItem": 170 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextArea"})
+                enginioModel.append({"heightItem_mobile":4,"heightItem": 170 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "TextArea"})
             }
         }
         Button{
@@ -76,7 +76,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem_mobile":8,"heightItem": 100 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "ComboBox","List":[]})
+                enginioModel.append({"heightItem_mobile":8,"heightItem": 100 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "ComboBox","List":[]})
             }
         }
         Button{
@@ -85,7 +85,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem_mobile":4,"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "CheckBox","List":[]})
+                enginioModel.append({"heightItem_mobile":4,"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "CheckBox","List":[]})
             }
         }
         Button{
@@ -94,7 +94,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Full Name", "Type" : "ComplexType"})
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Full Name", "Type" : "ComplexType"})
             }
         }
         Button{
@@ -103,7 +103,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Email", "Type" : "Email"})
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Email", "Type" : "Email"})
             }
         }
         Button{
@@ -112,7 +112,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":4,"heightItem": 250 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Adress", "Type" : "Adress"})
+                    enginioModel.append({"heightItem_mobile":4,"heightItem": 250 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Adress", "Type" : "Adress"})
             }
         }
         Button{
@@ -121,7 +121,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "Number"})
+                enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "Number"})
             }
         }
     }
@@ -743,6 +743,8 @@ Rectangle {
         fullNamebutton.enabled = true;
         adressbutton.enabled = true;
         emailbutton.enabled = true;
+
+        addFormToUser();
     }
     function reload() {
         var a = enginioModel.query
@@ -851,6 +853,33 @@ Rectangle {
         xmlhttp.open("GET", url, true);
         xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
         xmlhttp.send();
+    }
+
+    function addFormToUser()
+    {
+        var url = "https://api.engin.io/v1/users/"+ settings.my_id +"/atomic";
+        var xhr = new XMLHttpRequest();
+               xhr.onreadystatechange = function() {
+                   if ( xhr.readyState == xhr.DONE)
+                   {
+                       console.log("Success " + xhr.responseText + " STATUS " + xhr.status)
+                       if ( xhr.status == 200)
+                       {
+                           var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
+                           console.log("Success " + jsonObject.balance)
+                           inputComboBox.text = "";
+                           reload()
+                       }
+                   }
+               }
+               xhr.open("PUT",url,true);
+               var data = {
+                    "$push": {
+                    "forms": aFormname
+                }
+               }
+               xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+        xhr.send(JSON.stringify(data));
     }
 }
 

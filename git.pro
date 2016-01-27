@@ -7,7 +7,8 @@ SOURCES += main.cpp \
 
 RESOURCES += qml.qrc \
     desktop.qrc \
-    mobiel.qrc
+    mobiel.qrc \
+    logo.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

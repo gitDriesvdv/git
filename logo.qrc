@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/new/prefix1">
+        <file>Schermafdruk 2016-01-26 17.19.42.png</file>
+    </qresource>
+</RCC>

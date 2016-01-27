@@ -15,5 +15,6 @@
         <file>Users.qml</file>
         <file>Settings.qml</file>
         <file>mainpanel_desktop_offline.qml</file>
+        <file>AdminPanel_pag1.qml</file>
     </qresource>
 </RCC>

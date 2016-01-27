@@ -11,7 +11,7 @@ Rectangle {
         anchors.fill: parent
         Tab {
             title: "Users"
-            Users { anchors.fill: parent }
+            AdminPanel_pag1 { anchors.fill: parent }
         }
         Tab {
             title: "Blue"
