@@ -18,7 +18,7 @@ Rectangle{
 
     EnginioClient {
         id: enginioClientLog
-        backendId: "54be545ae5bde551410243c3"
+        backendId: settings.myBackendId
         onError: {
         enginioModelErrors.append({"Error": "Enginio" + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
         }
@@ -56,6 +56,7 @@ Rectangle{
                 //primaireTableView.destroy()
                 //getData(keuzelijst.currentText)
                 getData(keuzelijst.currentText)
+                console.log("TEST " + listmodel)
             }
         }
         Button{
@@ -79,6 +80,7 @@ Rectangle{
         }
     }
     }
+
     function getData(formname_input) {
         var xmlhttp = new XMLHttpRequest();
 
@@ -109,7 +111,7 @@ Rectangle{
             }
         }
         xmlhttp.open("GET", url, true);
-        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.setRequestHeader("Enginio-Backend-Id",settings.myBackendId);
         xmlhttp.send();
     }
 
@@ -229,7 +231,7 @@ Rectangle{
             }
         }
         xmlhttp.open("GET", url, true);
-        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.setRequestHeader("Enginio-Backend-Id",settings.myBackendId);
         xmlhttp.send();
     }
 }

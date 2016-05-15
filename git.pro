@@ -3,12 +3,14 @@ TEMPLATE = app
 QT += qml quick widgets
 QT += qml quick enginio
 SOURCES += main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    fileio.cpp
 
 RESOURCES += qml.qrc \
     desktop.qrc \
     mobiel.qrc \
-    logo.qrc
+    logo.qrc \
+    formbuildercomponents.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -28,4 +30,5 @@ DISTFILES += \
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
 HEADERS += \
-    mainwindow.h
+    mainwindow.h \
+    fileio.h

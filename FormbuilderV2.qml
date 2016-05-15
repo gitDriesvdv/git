@@ -6,6 +6,8 @@ import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.0
+import Qt.labs.settings 1.0
+import "qrc:/FormResultFuntions.js" as Logic
 
 Rectangle {
     id: rec_formbuilder
@@ -21,10 +23,11 @@ Rectangle {
     property int aIndexFormSingle : 0;
 
 
+
     //test
     EnginioClient {
         id: client
-        backendId: "54be545ae5bde551410243c3"
+        backendId: settings.myBackendId
         onError:
         {
          console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
@@ -37,13 +40,12 @@ Rectangle {
         client: client
         query: {
             "objectType": "objects.Form",
-            "query" : { "User": "Dries", "FormName" : aFormname},
+            "query" : { "User": settings.username, "FormName" : aFormname},
             "sort" : [ {"sortBy": "indexForm", "direction": "asc"} ]
         }
     }
 
     //FormName
-
     GridLayout {
         id: grid
         columns: 2
@@ -56,7 +58,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":8,"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextField","req":"false"})
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 70 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "TextField","req":"false"})
             }
         }
         Button{
@@ -65,7 +67,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem_mobile":4,"heightItem": 170 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "TextArea"})
+                enginioModel.append({"heightItem_mobile":4,"heightItem": 170 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "TextArea","req":"false"})
             }
         }
         Button{
@@ -74,7 +76,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem_mobile":8,"heightItem": 100 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "ComboBox","List":[]})
+                enginioModel.append({"heightItem_mobile":8,"heightItem": 100 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "ComboBox","List":[],"req":"false"})
             }
         }
         Button{
@@ -83,7 +85,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem_mobile":4,"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "CheckBox","List":[]})
+                enginioModel.append({"heightItem_mobile":4,"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "CheckBox","List":[],"req":"false"})
             }
         }
         Button{
@@ -92,7 +94,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Full Name", "Type" : "ComplexType"})
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Full Name", "Type" : "ComplexType","req":"false"})
             }
         }
         Button{
@@ -101,7 +103,7 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Email", "Type" : "Email"})
+                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Email", "Type" : "Email","req":"false"})
             }
         }
         Button{
@@ -110,30 +112,36 @@ Rectangle {
             enabled: false
             onClicked: {
                 indexRegulator();
-                    enginioModel.append({"heightItem_mobile":4,"heightItem": 250 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Adress", "Type" : "Adress"})
+                    enginioModel.append({"heightItem_mobile":4,"heightItem": 250 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Adress", "Type" : "Adress","req":"false"})
             }
         }
-
-        Button{
-            id: phonebutton
-            text: "Phone"
-            enabled: false
-            onClicked: {
-                indexRegulator();
-                    enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": "Phone", "Type" : "Phone"})
-            }
-        }
-
         Button{
             id: numberbutton
             text: "Number"
             enabled: false
             onClicked: {
                 indexRegulator();
-                enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": "Dries", "Name": aFieldname, "Type" : "Number"})
+                enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "Number","req":"false"})
             }
         }
-
+        Button{
+            id: phonenumberbutton
+            text: "Phone"
+            enabled: false
+            onClicked: {
+                indexRegulator();
+                enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Phone", "Type" : "phone","req":"false"})
+            }
+        }
+        Button{
+            id: personebutton
+            text: "Persone"
+            enabled: false
+            onClicked: {
+                indexRegulator();
+                    enginioModel.append({"heightItem_mobile":4,"heightItem": 500 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Persone", "Type" : "Persone","req":"false"})
+            }
+        }
     }
     Rectangle{
         width: rec_formbuilder.width - grid.width
@@ -147,15 +155,25 @@ Rectangle {
             TextField {
                 id: nameForm
                 Layout.fillWidth: true
-                placeholderText: "Formname"
+                placeholderText: "New Form"
             }
+            Component.onCompleted: getDataUserForms(settings.username)
+            ComboBox{
+                id: comboboxForms
+                anchors.top: nameForm.bottom
+                model: ListModel{
+                    id: lijstmodel
+                }
+            }
+
             Button {
                 id: startbutton
+                anchors.top: comboboxForms.bottom
                 text: "Start"
                 onClicked: {
                     enableButtons()
                 }
-                anchors.top: nameForm.bottom
+                //anchors.top: nameForm.bottom
             }
         }
 
@@ -184,8 +202,6 @@ Rectangle {
                                 id: fielcheck
                                 anchors.horizontalCenter: checkrect.horizontalCenter
                                 anchors.verticalCenter: checkrect.verticalCenter
-                                //text: qsTr(test)
-                                //checked: true
 
                                 onClicked:  {
                                     if(fielcheck.checked)
@@ -248,238 +264,34 @@ Rectangle {
                                         }
                                     }
                                 }
+                                 AdressComponent{
+                                     visible: Type == "Adress"
+                                 }
 
-                                Rectangle {
-                                    id: itemAdress
-                                    visible: Type == "Adress"
-                                    x: 20
-                                    width: parent.width;
-                                    height: 150;
-                                    color: "gray"
-
-                                    //straat + nummer
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width;
-                                    id: textfield_street
-
-                                }
-                                Text{
-                                    id: text_streetname
-                                    height: 20
-                                    text:qsTr("streetname + number")
-                                    width: parent.width/2.5;
-                                    anchors.top: textfield_street.bottom
-                                    color: "white"
-                                }
-
-                                //plaats
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width/2.5;
-                                    id: textfield_place
-                                    anchors.top: text_streetname.bottom
-                                }
-                                Text{
-                                    id: text_place
-                                    height: 20
-                                    text:qsTr("place")
-                                    width: parent.width/2.5;
-                                    anchors.top: textfield_place.bottom
-                                    color: "white"
-                                }
-
-                                //staat
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width/2.5;
-                                    id: textfield_state
-                                    anchors.top: text_streetname.bottom
-                                    anchors.left: textfield_place.right
-
-                                }
-                                Text{
-                                    id: text_state
-                                    height: 20
-                                    text:qsTr("State")
-                                    anchors.top: textfield_state.bottom
-                                    anchors.left: text_place.right
-                                    color: "white"
-                                }
-
-                                //postcode
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width/2.5;
-                                    id: textfield_postcode
-                                    anchors.top: text_state.bottom
-
-                                }
-                                Text{
-                                    id: text_postcode
-                                    height: 20
-                                    width: parent.width/2.5;
-                                    text:qsTr("zip code")
-                                    anchors.top: textfield_postcode.bottom
-                                    color: "white"
-                                }
-
-                                //land
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width/2.5;
-                                    id: textfield_country
-                                    anchors.top: text_state.bottom
-                                    anchors.left: textfield_postcode.right
-
-                                }
-                                Text{
-                                    id: text_country
-                                    height: 20
-                                    text:qsTr("country")
-                                    anchors.top: textfield_country.bottom
-                                    anchors.left: text_postcode.right
-                                    color: "white"
-                                }
-                                }
-                                Rectangle {
-                                    id: itemFullName
+                                FullNameComponent{
                                     visible: Type == "ComplexType"
-                                    x: 20
-                                    width: parent.width;
-                                    height: 35;
-                                    color: "gray"
-
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width/2.5;
-                                    id: textfield_firstname
-
-
-                                }
-                                Text{
-                                    id: text_firstname
-                                    height: 10
-                                    text:qsTr("first name")
-                                    width: parent.width/2.5;
-                                    anchors.top: textfield_firstname.bottom
-                                    color: "white"
                                 }
 
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width/2.5;
-                                    id: textfield_lastname
-                                    anchors.left: textfield_firstname.right
-
-                                }
-                                Text{
-                                    height: 10
-                                    text:qsTr("last name")
-                                    anchors.top: textfield_lastname.bottom
-                                    anchors.left: text_firstname.right
-                                    color: "white"
-                                }
-                                }
-
-                                Rectangle {
-                                    id: itemPhone
-                                    visible: Type == "Phone"
-                                    x: 20
-                                    width: parent.width;
-                                    height: 35;
-                                    color: "gray"
-
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width/2.5;
-                                    id: textfield_firstname
-
-
-                                }
-                                Text{
-                                    id: text_firstname
-                                    height: 10
-                                    text:qsTr("first name")
-                                    width: parent.width/2.5;
-                                    anchors.top: textfield_firstname.bottom
-                                    color: "white"
-                                }
-
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width/2.5;
-                                    id: textfield_lastname
-                                    anchors.left: textfield_firstname.right
-
-                                }
-                                Text{
-                                    height: 10
-                                    text:qsTr("last name")
-                                    anchors.top: textfield_lastname.bottom
-                                    anchors.left: text_firstname.right
-                                    color: "white"
-                                }
-                                }
-
-                                Rectangle {
-                                    id: itemEmail
+                                EmailComponent {
                                     visible: Type == "Email"
-                                    x: 20
-                                    //y: 20
-                                    width: parent.width;
-                                    height: 20;
-                                    color: "gray"
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width;
-                                    id: textfield_item
                                 }
+
+                                PhoneComponent{
+                                    visible: Type == "phone"
                                 }
-                                Rectangle {
-                                    id: item1
+
+                                TextFieldComponent{
                                     visible: Type == "TextField"
-                                    x: 20
-                                    //y: 20
-                                    width: parent.width;
-                                    height: 20;
-                                    color: "gray"
-                                TextField {
-                                    height: 25
-                                    font.pixelSize: 15
-                                    width: parent.width;
-                                    id: email_item
-
-                                }
                                 }
 
-                                Rectangle {
-                                    width: parent.width;
-                                    color: "gray"
-                                    height: 75
-                                    id: item2
+                                TextAreaComponent{
                                     visible: Type == "TextArea"
-                                    x: 20
-                                    //y: 10
-                                TextArea {
-                                    height: 75
-                                    font.pixelSize: 15
-                                    id: textarea_item
-                                  /*  Component.onCompleted: {
-                                        item_list.height = 160
-                                        }*/
                                 }
+                                PersoneComponent{
+                                    visible: Type == "Persone"
                                 }
+
+
                     /*
                         Checkbox nog niet werkend. Een listview nog aan koppelen om meerdere weer te geven.
                         Idem maken voor radiobuttons
@@ -577,7 +389,7 @@ Rectangle {
                                                                 "List": modelData
                                                             }
                                                            }
-                                                           xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                                           xhr.setRequestHeader("Enginio-Backend-Id", settings.myBackendId)
                                                     xhr.send(JSON.stringify(data));
                                                 }
                                             }
@@ -640,7 +452,7 @@ Rectangle {
                                                            "List": inputComboBox.text
                                                        }
                                                       }
-                                                      xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                                      xhr.setRequestHeader("Enginio-Backend-Id", settings.myBackendId)
                                                xhr.send(JSON.stringify(data));
                                            }
                                         }
@@ -670,7 +482,7 @@ Rectangle {
                                                            "List": combobox_item.currentText
                                                        }
                                                       }
-                                                      xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                                      xhr.setRequestHeader("Enginio-Backend-Id", settings.myBackendId)
                                                xhr.send(JSON.stringify(data));
                                            }
                                         }
@@ -768,7 +580,14 @@ Rectangle {
     }
     function enableButtons()
     {
-        aFormname = nameForm.text;
+        if(nameForm.text != "")
+        {
+            aFormname = nameForm.text;
+            addFormToUser();
+        }
+        else{
+            aFormname = comboboxForms.currentText
+        }
         textFieldbutton.enabled = true;
         textAreabutton.enabled = true;
         comboboxbutton.enabled = true;
@@ -779,7 +598,9 @@ Rectangle {
         fullNamebutton.enabled = true;
         adressbutton.enabled = true;
         emailbutton.enabled = true;
-        phonebutton.enabled = true;
+        phonenumberbutton.enabled = true;
+        personebutton.enabled = true;
+        //addFormToUser();
     }
     function reload() {
         var a = enginioModel.query
@@ -864,6 +685,57 @@ Rectangle {
         lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
         lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff]);
     }
-}
+    function getDataUserForms(formname_input) {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://api.engin.io/v1/users?q={\"username\":\""+ formname_input +"\"}&limit=1"
 
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var arr = JSON.parse(xmlhttp.responseText);
+                var arr1 = arr.results;
+                for(var i = 0; i < arr1.length; i++) {
+                    console.log(arr1[i].forms);
+                    for(var y = 0; y < arr1[i].forms.length; y++)
+                    {
+                        lijstmodel.append({text: arr1[i].forms[y]})
+                    }
+                }
+            }
+            else
+            {
+                console.log("Bad request")
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.send();
+    }
+
+    function addFormToUser()
+    {
+        var url = "https://api.engin.io/v1/users/"+ settings.my_id +"/atomic";
+        var xhr = new XMLHttpRequest();
+               xhr.onreadystatechange = function() {
+                   if ( xhr.readyState == xhr.DONE)
+                   {
+                       console.log("Success " + xhr.responseText + " STATUS " + xhr.status)
+                       if ( xhr.status == 200)
+                       {
+                           var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
+                           console.log("Success " + jsonObject.balance)
+                           inputComboBox.text = "";
+                           reload()
+                       }
+                   }
+               }
+               xhr.open("PUT",url,true);
+               var data = {
+                    "$push": {
+                    "forms": aFormname
+                }
+               }
+               xhr.setRequestHeader("Enginio-Backend-Id", settings.myBackendId)
+        xhr.send(JSON.stringify(data));
+    }
+}
 

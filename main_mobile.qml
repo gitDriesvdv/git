@@ -11,7 +11,7 @@ Item {
     height: Screen.height
     EnginioClient {
         id: client
-        backendId: "54be545ae5bde551410243c3"
+        backendId: settings.myBackendId
         onError: console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
     }
     EnginioModel {

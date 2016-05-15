@@ -17,6 +17,7 @@ Rectangle {
            id: settings
            property string username: ""
            property string my_id: ""
+           property string myBackendId: settings.myBackendId
        }
     //![identity]
     EnginioOAuth2Authentication {
@@ -26,7 +27,7 @@ Rectangle {
     }
     EnginioClient {
         id: enginioClient
-        backendId: "54be545ae5bde551410243c3"
+        backendId: settings.myBackendId
 
         onError:{
             console.debug(JSON.stringify(reply.data))
@@ -176,6 +177,7 @@ Rectangle{
                     }
                 //text: "Login"
                 //onClicked: root.visible = true
+                onClicked: FileIO.save("test tekst");
             }
         }
 
@@ -539,7 +541,7 @@ Rectangle{
             }
         }
         xmlhttp.open("GET", url, true);
-        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.setRequestHeader("Enginio-Backend-Id",settings.myBackendId);
         xmlhttp.send();
     }
 }

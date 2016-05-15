@@ -5,15 +5,22 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 import QtQuick.Dialogs 1.1
 import QtQuick.Controls.Styles 1.4
+import Qt.labs.settings 1.0
+
 Rectangle{
     //height: 800
     //width: 1000
     anchors.fill: parent
+    property string client_id_edit: ""
+    Component.onCompleted: {
+        getDataUsers();
+    }
 
     EnginioClient {
         id: enginioClient
-        backendId: "54be545ae5bde551410243c3"
-        onError: {console.debug(JSON.stringify(reply.data))
+        backendId: settings.myBackendId
+        onError: {
+        console.debug(JSON.stringify(reply.data))
         enginioModelErrors.append({"Error": "Enginio " + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
         }
     }
@@ -34,6 +41,13 @@ Rectangle{
         }
     }
 
+    EnginioModel {
+        id: enginioModelUsers
+        client: enginioClient
+        operation: Enginio.UserOperation
+        query: {"objectType": "users" }
+    }
+
     /*Rectangle{
         id: userlist
         x: 20
@@ -44,11 +58,12 @@ Rectangle{
 
     Row {
         id: topRij
-    anchors.margins: 3
-    spacing: 3
-    height: Screen.height/2
-    width: Screen.width
-    Rectangle{
+        anchors.margins: 3
+        spacing: 3
+        height: Screen.height/2
+        width: Screen.width
+
+        Rectangle{
         id: left
         height: Screen.height/2
         width: Screen.width/1.5
@@ -59,25 +74,35 @@ Rectangle{
             height: Screen.height/2
             width: Screen.width/1.5
             style: TableViewStyle{
-                //backgroundColor: "white"
                 alternateBackgroundColor :"white"
             }
            onClicked: {
-               editButton.enabled = true
                deleteButton.enabled = true
+               client_id_edit = tabel.model.get(row).id
+               editlogin.text = tabel.model.get(row).username
+               edituserEmail.text = tabel.model.get(row).email
+               edituserFirstName.text = tabel.model.get(row).firstName
+               edituserLastName.text = tabel.model.get(row).lastName
            }
 
+            TableViewColumn { title: "Id"; role: "id" }
             TableViewColumn { title: "First name"; role: "firstName" }
             TableViewColumn { title: "Last name"; role: "lastName" }
             TableViewColumn { title: "Login"; role: "username" }
             TableViewColumn { title: "Email"; role: "email" }
 
-            model: EnginioModel {
+            //dit verwijderen als enginio terug werkt omdat op windows problemen met ssl
+            model: ListModel {
+                id: tabelmodel
+            }
+
+            //dit terugzetten als enginio terug werkt
+            /*model: EnginioModel {
                 id: enginioModel
                 client: enginioClient
                 operation: Enginio.UserOperation
                 query: {"objectType": "users" }
-            }
+            }*/
         }
     }
 
@@ -110,9 +135,7 @@ Rectangle{
                     }
                 }
             onClicked: {
-                var tmp = enginioModel.query
-                enginioModel.query = null
-                enginioModel.query = tmp
+                getDataUsers()
             }
         }
         Button {
@@ -136,13 +159,12 @@ Rectangle{
                     }
                 }
             onClicked: {
-                enginioModel.remove(tabel.currentRow);
-                /*var tmp = enginioModel.query
-                enginioModel.query = null
-                enginioModel.query = tmp*/
+
+                //overzetten naar Enginio zodat de data in de database ook verwijderd zal worden
+                tabelmodel.remove(tabel.currentRow);
             }
         }
-        Button {
+        /*Button {
             id: editButton
             text: "edit"
             anchors.left: tabel.right
@@ -163,12 +185,13 @@ Rectangle{
                     }
                 }
             onClicked: {
+                login.text = tabel.model.get(row).firstName
                 /*var tmp = enginioModel.query
                 enginioModel.query = null
-                enginioModel.query = tmp*/
+                enginioModel.query = tmp
                 console.log()
             }
-        }
+        }*/
     }
 
 
@@ -183,9 +206,121 @@ Rectangle{
         Rectangle {
             id: first
             anchors.left: parent.left
-            color: "white";
+            color: "gray";
             width: parent.width/4;
-            height: 50 }
+            height: 200
+
+            //2 listviews naast elkaar met in het midden 2 buttons < en >
+
+            Rectangle{
+                id: first_left
+                width: first.width/2.3
+                height: first.height
+                ListModel {
+                    id: contactModel
+                    ListElement {
+                        name: "Bill Smith"
+                    }
+                    ListElement {
+                        name: "John Brown"
+                    }
+                    ListElement {
+                        name: "Sam Wise"
+                    }
+                }
+                Component{
+                    id: lijstDelegate
+                    BorderImage {
+                     id: item
+                     width: parent.width ;
+                     height: 15
+
+                    Text {
+                           id: tekstlijst
+                           text: name + " >"
+                        }
+                   MouseArea {
+                          id: mouse
+                          anchors.fill: parent
+                          hoverEnabled: true
+                          onClicked: {
+                              contactModel2.append({name: name})
+                              //hier nog wijziging in de database doorvoeren
+                           }
+                     }
+                }
+                }
+                ListView{
+                        id: leftList
+                        model: contactModel //deze lijst komt van de admin zelf (zijn forms)
+                        delegate: lijstDelegate
+                        height: first.height
+                        anchors.fill: parent
+                }
+            }
+            Rectangle {
+                id: first_middle
+                width: first.width/4.6
+                color: "gray"
+                anchors.left: first_left.right
+                /*ColumnLayout{
+                    Button{
+                        id: add
+                        text: ">"
+                    }
+                    Button{
+                        id: remove
+                        text: "<"
+                    }
+                }*/
+            }
+            Rectangle {
+                id: first_right
+                width: first.width/2.3
+                anchors.left: first_middle.right
+                height: first.height
+                ListModel {
+                    id: contactModel2
+                    ListElement {
+                        name: "Bill Smith"
+                    }
+                    ListElement {
+                        name: "John Brown"
+                    }
+                    ListElement {
+                        name: "Sam Wise"
+                    }
+                }
+                Component{
+                    id: lijstDelegate2
+                    BorderImage {
+                     id: item
+                     width: parent.width ;
+                     height: 15
+
+                    Text {
+                           id: tekstlijst
+                           text: "< " +name
+                        }
+                   MouseArea {
+                          id: mouse
+                          anchors.fill: parent
+                          hoverEnabled: true
+                          onClicked: {
+                              contactModel.append({name: name})
+                              //hier nog wijziging in de database doorvoeren
+                           }
+                     }
+                }
+                }
+                ListView{
+                        model: contactModel2 //deze lijst komt van de user uit de tabel zelf (zijn forms)
+                        delegate: lijstDelegate2
+                    height: first.height
+                    anchors.fill: parent
+                }
+            }
+        }
 
         Rectangle{
             id: spacer
@@ -200,13 +335,77 @@ Rectangle{
             anchors.left: spacer.right
             color: "white";
             width: parent.width/4;
-            height: 50 }
+            height: 50
+            ColumnLayout {
+                x: 10
+                anchors.margins: 3
+                spacing: 3
+
+                TextField {
+                    id: editlogin
+                    Layout.fillWidth: true
+                    placeholderText: "Username"
+                }
+                TextField {
+                    id: edituserPassw
+                    Layout.fillWidth: true
+                    placeholderText: "Password"
+                }
+                TextField {
+                    id: edituserFirstName
+                    Layout.fillWidth: true
+                    placeholderText: "First name"
+                }
+
+                TextField {
+                    id: edituserLastName
+                    Layout.fillWidth: true
+                    placeholderText: "Last name"
+                }
+
+                TextField {
+                    id: edituserEmail
+                    Layout.fillWidth: true
+                    placeholderText: "Email"
+                }
+
+                Button {
+                    id: editproccessButton
+                    Layout.fillWidth: true
+                    text: "Edit User"
+
+                    onClicked: {
+                        var reply =
+                                    { "id":client_id_edit,
+                                      "username": editlogin.text,
+                                      "password": edituserPassw.text,
+                                      "email": edituserEmail.text,
+                                      "firstName": edituserFirstName.text,
+                                      "lastName": edituserLastName.text,
+                                      "myAdmin" : settings.username
+                                    };
+                        //enginioClient.update(reply);
+                        //enginioModelUsers.append(reply);
+                                    enginioModelUsers.append({"id":client_id_edit,
+                                                            "username": editlogin.text,
+                                                            "password": edituserPassw.text,
+                                                            "email": edituserEmail.text,
+                                                            "firstName": edituserFirstName.text,
+                                                            "lastName": edituserLastName.text,
+                                                            "myAdmin" : settings.username}, Enginio.UserOperation)
+                        getDataUsers();
+                        //edit_userdata(editlogin.text,edituserFirstName.text,edituserLastName.text,edituserEmail.text)
+                    }
+                }
+
+            }}
         Rectangle{
             id: spacer2
             width: 2
             color: "red"
             height: 200
             anchors.left: second.right
+
         }
         Rectangle {
             id : addUser
@@ -257,7 +456,7 @@ Rectangle{
             id: proccessButton
             Layout.fillWidth: true
             enabled: login.text.length && password.text.length
-            text: "Register"
+            text: "ADD"
 
             states: [
                 State {
@@ -298,6 +497,7 @@ Rectangle{
                             userLastName.text = ""
                         }
                         messageDialog.visible = true;
+                        getDataUsers();
                     })
             }
         }
@@ -306,19 +506,40 @@ Rectangle{
     }
 
     }
-    function getDataUserForms(formname_input) {
-        var xmlhttp = new XMLHttpRequest();
-        var url = "https://api.engin.io/v1/users?q={\"username\":\""+ formname_input +"\"}&limit=1"
 
+    function edit_userdata(username,firstname,lastname,email)
+    {
+        var output = {
+            "id": client_id_edit,
+             "username": username,
+             "email": email,
+             "firstName": firstname,
+             "lastName": lastname,
+             //"admin": null,
+             //"myAdmin": null,
+             //"forms": null
+        }
+        //functie voorzien om dit object weg te schrijven naar de database
+    }
+
+    function getDataUsers() {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://api.engin.io/v1/users?q={\"myAdmin\":\""+ settings.username +"\"}"
         xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var arr = JSON.parse(xmlhttp.responseText);
                 var arr1 = arr.results;
+                tabelmodel.clear()
                 for(var i = 0; i < arr1.length; i++) {
-                    console.log(arr1[i].forms);
-                    for(var y = 0; y < arr1[i].forms.length; y++)
+                tabelmodel.append({"id": arr1[i].id, "firstName":arr1[i].firstName,"lastName":arr1[i].lastName,"username":arr1[i].username,"email":arr1[i].email})
+                    var arr2 = {};
+                    arr2 = arr1[i].forms;
+                    if(arr2.length > 0)
                     {
-                        lijstmodel.append({text: arr1[i].forms[y]})
+                    for(var z = 0; z < arr2.length;z++)
+                    {
+                        contactModel2.append({"name": arr2[z]})
+                    }
                     }
                 }
             }
@@ -328,9 +549,7 @@ Rectangle{
             }
         }
         xmlhttp.open("GET", url, true);
-        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.setRequestHeader("Enginio-Backend-Id",settings.myBackendId);
         xmlhttp.send();
     }
 }
-
-

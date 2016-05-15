@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>TextFieldComponent.qml</file>
+        <file>AdressComponent.qml</file>
+        <file>FullNameComponent.qml</file>
+        <file>EmailComponent.qml</file>
+        <file>PhoneComponent.qml</file>
+        <file>TextAreaComponent.qml</file>
+        <file>PersoneComponent.qml</file>
+    </qresource>
+</RCC>

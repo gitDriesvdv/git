@@ -27,7 +27,7 @@ Rectangle {
     //test
     EnginioClient {
         id: client
-        backendId: "54be545ae5bde551410243c3"
+        backendId: settings.myBackendId
         onError:
         {
          console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
@@ -124,6 +124,17 @@ Rectangle {
                 enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "Number"})
             }
         }
+        Button{
+            id: phonenumberbutton
+            text: "Phone"
+            enabled: false
+            onClicked: {
+                indexRegulator();
+                enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Phone", "Type" : "phone"})
+            }
+        }
+
+
     }
     Rectangle{
         width: rec_formbuilder.width - grid.width
@@ -184,8 +195,6 @@ Rectangle {
                                 id: fielcheck
                                 anchors.horizontalCenter: checkrect.horizontalCenter
                                 anchors.verticalCenter: checkrect.verticalCenter
-                                //text: qsTr(test)
-                                //checked: true
 
                                 onClicked:  {
                                     if(fielcheck.checked)
@@ -248,8 +257,11 @@ Rectangle {
                                         }
                                     }
                                 }
+                                 AdressComponent{
+                                     visible: Type == "Adress"
+                                 }
 
-                                Rectangle {
+                                /*Rectangle {
                                     id: itemAdress
                                     visible: Type == "Adress"
                                     x: 20
@@ -346,7 +358,7 @@ Rectangle {
                                     anchors.left: text_postcode.right
                                     color: "white"
                                 }
-                                }
+                                }*/
                                 Rectangle {
                                     id: itemFullName
                                     visible: Type == "ComplexType"
@@ -402,6 +414,22 @@ Rectangle {
                                     font.pixelSize: 15
                                     width: parent.width;
                                     id: textfield_item
+                                }
+                                }
+                                Rectangle {
+                                    id: itemPhone
+                                    visible: Type == "phone"
+                                    x: 20
+                                    //y: 20
+                                    width: parent.width;
+                                    height: 20;
+                                    color: "gray"
+                                TextField {
+                                    height: 25
+                                    font.pixelSize: 15
+                                    width: parent.width;
+                                    inputMethodHints : Qt.ImhDigitsOnly
+                                    id: textfield_itemPhone
                                 }
                                 }
                                 Rectangle {
@@ -535,7 +563,7 @@ Rectangle {
                                                                 "List": modelData
                                                             }
                                                            }
-                                                           xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                                           xhr.setRequestHeader("Enginio-Backend-Id", settings.myBackendId)
                                                     xhr.send(JSON.stringify(data));
                                                 }
                                             }
@@ -598,7 +626,7 @@ Rectangle {
                                                            "List": inputComboBox.text
                                                        }
                                                       }
-                                                      xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                                      xhr.setRequestHeader("Enginio-Backend-Id", settings.myBackendId)
                                                xhr.send(JSON.stringify(data));
                                            }
                                         }
@@ -628,7 +656,7 @@ Rectangle {
                                                            "List": combobox_item.currentText
                                                        }
                                                       }
-                                                      xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+                                                      xhr.setRequestHeader("Enginio-Backend-Id", settings.myBackendId)
                                                xhr.send(JSON.stringify(data));
                                            }
                                         }
@@ -743,7 +771,7 @@ Rectangle {
         fullNamebutton.enabled = true;
         adressbutton.enabled = true;
         emailbutton.enabled = true;
-
+        phonenumberbutton.enabled = true;
         addFormToUser();
     }
     function reload() {
@@ -878,7 +906,7 @@ Rectangle {
                     "forms": aFormname
                 }
                }
-               xhr.setRequestHeader("Enginio-Backend-Id", "54be545ae5bde551410243c3")
+               xhr.setRequestHeader("Enginio-Backend-Id", settings.myBackendId)
         xhr.send(JSON.stringify(data));
     }
 }

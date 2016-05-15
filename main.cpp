@@ -4,6 +4,7 @@
 #include <QQuickView>
 #include <QQmlEngine>
 #include "mainwindow.h"
+#include "fileio.h"
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc,argv);

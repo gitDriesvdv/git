@@ -87,7 +87,7 @@ ApplicationWindow {
             }
             Tab {
                 title: "Create new form"
-                Formbuilder { anchors.fill: parent }
+                FormbuilderV2 { anchors.fill: parent }
             }
             Tab {
                 title: "Results"
@@ -95,7 +95,7 @@ ApplicationWindow {
             }
             Tab {
                 title: "Settings"
-                Rectangle { anchors.fill: parent }
+                Settings { anchors.fill: parent }
             }/*
             Tab {
                 title: "Logbook"

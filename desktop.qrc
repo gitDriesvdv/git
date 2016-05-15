@@ -17,4 +17,5 @@
         <file>mainpanel_desktop_offline.qml</file>
         <file>AdminPanel_pag1.qml</file>
     </qresource>
+    <qresource prefix="/FormbuilderComponents"/>
 </RCC>
