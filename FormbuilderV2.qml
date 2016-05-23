@@ -583,7 +583,7 @@ Rectangle {
         if(nameForm.text != "")
         {
             aFormname = nameForm.text;
-            addFormToUser();
+            checkIfFormExcists()
         }
         else{
             aFormname = comboboxForms.currentText
@@ -600,8 +600,40 @@ Rectangle {
         emailbutton.enabled = true;
         phonenumberbutton.enabled = true;
         personebutton.enabled = true;
-        //addFormToUser();
     }
+    function checkIfFormExcists()
+    {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://api.engin.io/v1/users?q={\"username\":\""+ settings.username +"\"}&limit=1"
+
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var arr = JSON.parse(xmlhttp.responseText);
+                var arr1 = arr.results;
+                for(var i = 0; i < arr1.length; i++) {
+                    console.log(arr1[i].forms);
+                    for(var y = 0; y < arr1[i].forms.length; y++)
+                    {
+                        if(aFormname == arr1[i].forms[y])
+                        {
+                            console.log("CONTROLE 2: DE "+ aFormname +" BESTAAT")
+                            return true;
+                        }
+                    }
+                }
+                console.log("CONTROLE 2: DE "+ aFormname +" BESTAAT NIET")
+                addFormToUser();
+                return false;
+            }
+            else
+            {
+                console.log("Bad request")
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.send();
+     }
     function reload() {
         var a = enginioModel.query
         enginioModel.query = null

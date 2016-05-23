@@ -93,7 +93,7 @@ ApplicationWindow {
                 title: "Results"
                 FormResults { anchors.fill: parent }
             }
-            Tab {
+            /*Tab {
                 title: "Settings"
                 Settings { anchors.fill: parent }
             }/*

@@ -772,8 +772,31 @@ Rectangle {
         adressbutton.enabled = true;
         emailbutton.enabled = true;
         phonenumberbutton.enabled = true;
-        addFormToUser();
+
+        //Checken dat geen 2 dezelfde namen kunnen worden toegevoegd
+
+            if(checkDataUserForms() == true)
+            {
+                //addFormToUser();
+                console.log("CONTROLE : Formname bestaat al")
+            }
+            else
+            {
+                console.log("CONTROLE : Formname bestaat nog niet")
+            }
     }
+    /*function checkIfFormExcists(formname)
+    {
+        for(var i = 0; lijstmodel.count; i++)
+        {
+            if(lijstmodel[i] === formname)
+            {
+                return true;
+            }
+        }
+        return false;
+    }*/
+
     function reload() {
         var a = enginioModel.query
         enginioModel.query = null
@@ -882,6 +905,35 @@ Rectangle {
         xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
         xmlhttp.send();
     }
+    function checkDataUserForms() {
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://api.engin.io/v1/users?q={\"username\":\""+ settings.username +"\"}&limit=1"
+
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                var arr = JSON.parse(xmlhttp.responseText);
+                var arr1 = arr.results;
+                for(var i = 0; i < arr1.length; i++) {
+                    console.log(arr1[i].forms);
+                    for(var y = 0; y < arr1[i].forms.length; y++)
+                    {
+                        if(aFormname == arr1[i].forms[y])
+                        {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                console.log("Bad request")
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.setRequestHeader("Enginio-Backend-Id","54be545ae5bde551410243c3");
+        xmlhttp.send();
+    }
 
     function addFormToUser()
     {
@@ -900,6 +952,7 @@ Rectangle {
                        }
                    }
                }
+
                xhr.open("PUT",url,true);
                var data = {
                     "$push": {

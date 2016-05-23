@@ -17,6 +17,7 @@ Rectangle {
            id: settings
            property string username: ""
            property string my_id: ""
+           property bool isAdmin: false;
            property string myBackendId: settings.myBackendId
        }
     //![identity]
@@ -94,7 +95,7 @@ Rectangle{
 
         Rectangle{
             //anchors.centerIn: parent
-            x: Screen.width/4
+            x: Screen.width/3
             y: 100
             TextField {
                 id: login
@@ -142,6 +143,9 @@ Rectangle{
                 echoMode: TextInput.PasswordEchoOnEdit
                 enabled: enginioClient.authenticationState == Enginio.NotAuthenticated
             }
+
+
+
             Rectangle{
                 id: line2
                 width: login.width
@@ -156,9 +160,14 @@ Rectangle{
                 color: "white"
                  anchors.top: line2.bottom
             }
+            Text{
+                id:messageLogin
+                anchors.top: spacer2.bottom
+                text: ""
+            }
             Button {
                 id: proccessButton
-                 anchors.top: spacer2.bottom
+                 anchors.top: messageLogin.bottom
                 Layout.fillWidth: true
                 width: password.width
                 style: ButtonStyle {
@@ -271,8 +280,6 @@ Rectangle{
                                 textColor: "black"
                                 background: Rectangle {
                                     radius: 2
-                                    //implicitWidth: 100
-                                    //implicitHeight: 24
                                     border.color: "red"
                                     border.width: 0
                                 }
@@ -293,8 +300,6 @@ Rectangle{
                                 textColor: "black"
                                 background: Rectangle {
                                     radius: 2
-                                    //implicitWidth: 100
-                                    //implicitHeight: 24
                                     border.color: "red"
                                     border.width: 0
                                 }
@@ -344,7 +349,6 @@ Rectangle{
                         ]
 
                         onClicked: {
-                            //plans.visible = true;
                             proccessButton_R.state = "Registering"
                             //![create]
 
@@ -371,10 +375,9 @@ Rectangle{
                                         enginioModelErrors.append({"Error": "Enginio " + log.text + "\n\n", "User": login.text})
 
                                     } else {
+                                        val_text.text = "Account Created.\n"
                                         log.text = "Account Created.\n"
                                         enginioModelLogs.append({"Log": log.text, "User": login.text})
-                                        //root.visible = true
-
                                     }
                                 })
                             }
@@ -414,12 +417,14 @@ Rectangle{
                 console.log("CHECK: " + login.text);
                 getDataUserForms(login.text)
                 settings.username = login.text
-                var component = Qt.createComponent("mainpanel_desktop_offline.qml")
-                if (component.status == Component.Ready) {
-                var window    = component.createObject(rec);
-                window.show()
-                }
-
+                /*if(settings.isAdmin == true)
+                {
+                    var component = Qt.createComponent("mainpanel_desktop_offline.qml")
+                    if (component.status == Component.Ready) {
+                        var window    = component.createObject(rec);
+                        window.show()
+                    }
+                }*/
             }
             onSessionAuthenticationError: {
                 data.text = data.text + "Authentication of user '"+ login.text +"' failed.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
@@ -533,6 +538,21 @@ Rectangle{
                 for(var i = 0; i < arr1.length; i++) {
                     console.log(arr1[i].id);
                     settings.my_id = arr1[i].id;
+                    settings.isAdmin = arr1[i].admin;
+                    if(arr1[i].admin === true)
+                    {
+                        var component = Qt.createComponent("mainpanel_desktop_offline.qml")
+                        if (component.status == Component.Ready) {
+                            var window    = component.createObject(rec);
+                            window.show()
+                        }
+                    }
+                    else
+                    {
+                        messageLogin.text = "only administrators can login"
+                    }
+
+                    console.log("ADMIN:"+ settings.isAdmin)
                 }
             }
             else

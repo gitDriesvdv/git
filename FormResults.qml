@@ -50,21 +50,35 @@ Rectangle{
         ComboBox{
             id: keuzelijst
             model: lijstmodel
-            onCurrentIndexChanged:
+            /*onCurrentIndexChanged:
             {
-                listmodel.clear();
+                //listmodel.clear();
                 //primaireTableView.destroy()
-                //getData(keuzelijst.currentText)
                 getData(keuzelijst.currentText)
-                console.log("TEST " + listmodel)
+                //getData(keuzelijst.currentText)
+                console.log("TEST: " + keuzelijst.currentText)
+            }
+            Component.onCompleted:
+            {
+                console.log("TEST 2: " + keuzelijst.currentText)
+            }*/
+        }
+        Button{
+            id: showResult
+            anchors.left: keuzelijst.right
+            text: "Show"
+            onClicked: {
+                listmodel.clear();
+                getData(keuzelijst.currentText)
+                //getData("FormulierDries")
             }
         }
         Button{
             id: reload
-            anchors.left: keuzelijst.right
+            anchors.left: showResult.right
             text: "refresh"
             onClicked: {
-
+                //console.log("TEST 3: " + keuzelijst.currentText)
                 getDataUserForms(settings.username)
             }
         }
