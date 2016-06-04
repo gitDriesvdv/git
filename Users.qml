@@ -8,8 +8,6 @@ import QtQuick.Controls.Styles 1.4
 import Qt.labs.settings 1.0
 
 Rectangle{
-    //height: 800
-    //width: 1000
     anchors.fill: parent
     property string client_id_edit: ""
     property string currentFormnale: ""
@@ -46,44 +44,59 @@ Rectangle{
         operation: Enginio.UserOperation
         query: {"objectType": "users" }
     }
+    Rectangle{
+        id: header
+        height: 50
+        width: parent.width
+        Text{
+            id: titel
+            x:30
+            y:20
+            text:"My Users"
+            font.pixelSize: 20
+            color: "gray"
+        }
+    }
 
-    /*Rectangle{
-        id: userlist
-        x: 20
-        y: 20
-        color: "green"
-        height: Screen.height/2
-        width: Screen.width*/
-
+    //BOVENSTE DEEL MET DE TABEL EN DE KNOPPEN
     Row {
         id: topRij
         anchors.margins: 3
+        anchors.top: header.bottom
         spacing: 3
-        height: Screen.height/2
+        height: Screen.height/2.5
         width: Screen.width
+        x: 30
 
         Rectangle{
         id: left
-        height: Screen.height/2
-        width: Screen.width/1.5
+        height: Screen.height/2.5
+        width: Screen.width/1.3
         TableView {
             id: tabel
             Layout.fillWidth: true
             Layout.fillHeight: true
-            height: Screen.height/2
-            width: Screen.width/1.5
+            height: Screen.height/2.5
+            width: Screen.width/1.3
             style: TableViewStyle{
                 alternateBackgroundColor :"white"
             }
            onClicked: {
-               deleteButton.enabled = true
+               if(tabel.model.get(row).username != settings.username)
+               {
+                   deleteButton.enabled = true
+               }
+               else
+               {
+                   deleteButton.enabled = false
+               }
                client_id_edit = tabel.model.get(row).id
                editlogin.text = tabel.model.get(row).username
                edituserEmail.text = tabel.model.get(row).email
                edituserFirstName.text = tabel.model.get(row).firstName
                edituserLastName.text = tabel.model.get(row).lastName
-               //HIER FUNCTIE OPROEPEN OM DE LIJST VAN DE FORMS VAN DE USER WEER TE GEVEN
 
+               //HIER FUNCTIE OPROEPEN OM DE LIJST VAN DE FORMS VAN DE USER WEER TE GEVEN
                currentUsername = tabel.model.get(row).username;
                getSelectedDataUserForms(tabel.model.get(row).username);
            }
@@ -94,23 +107,14 @@ Rectangle{
             TableViewColumn { title: "Login"; role: "username" }
             TableViewColumn { title: "Email"; role: "email" }
 
-            //dit verwijderen als enginio terug werkt omdat op windows problemen met ssl
             model: ListModel {
                 id: tabelmodel
             }
-
-            //dit terugzetten als enginio terug werkt
-            /*model: EnginioModel {
-                id: enginioModel
-                client: enginioClient
-                operation: Enginio.UserOperation
-                query: {"objectType": "users" }
-            }*/
         }
     }
 
 
-Rectangle{
+    Rectangle{
     anchors.left: left.right
     width: Screen.width/4
     ColumnLayout{
@@ -129,11 +133,11 @@ Rectangle{
                         implicitHeight: 25
                         color: "white"
                         border.width: control.activeFocus ? 2 : 1
-                        border.color: "red"
-                        radius: 9
+                        border.color: "#4BB43A"
+                        radius: 2
                         gradient: Gradient {
-                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
-                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 0 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
+                            GradientStop { position: 1 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
                         }
                     }
                 }
@@ -151,76 +155,56 @@ Rectangle{
                     background: Rectangle {
                         implicitWidth: 100
                         implicitHeight: 25
-                        color: "white"
+                        color: "black"
                         border.width: control.activeFocus ? 2 : 1
                         border.color: "red"
-                        radius: 9
+                        radius: 2
                         gradient: Gradient {
-                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
-                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 0 ; color: control.pressed ? "red" : "red" }
+                            GradientStop { position: 1 ; color: control.pressed ? "red" : "red" }
                         }
                     }
                 }
             onClicked: {
-
-                //overzetten naar Enginio zodat de data in de database ook verwijderd zal worden
                 tabelmodel.remove(tabel.currentRow);
             }
         }
-        /*Button {
-            id: editButton
-            text: "edit"
-            anchors.left: tabel.right
-            enabled:  false
-            width: Screen.width/4.5
-            style: ButtonStyle {
-                    background: Rectangle {
-                        implicitWidth: 100
-                        implicitHeight: 25
-                        color: "white"
-                        border.width: control.activeFocus ? 2 : 1
-                        border.color: "red"
-                        radius: 9
-                        gradient: Gradient {
-                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
-                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
-                        }
-                    }
-                }
-            onClicked: {
-                login.text = tabel.model.get(row).firstName
-                /*var tmp = enginioModel.query
-                enginioModel.query = null
-                enginioModel.query = tmp
-                console.log()
-            }
-        }*/
-    }
-
-
+      }
     }
 }
-   // }
 
+    //ONDERSTE DEEL MET DE INVOERVELDEN
     Row {
         anchors.top: topRij.bottom
         width: Screen.width
-
+        x: 30
         Rectangle {
             id: first
             anchors.left: parent.left
-            color: "gray";
+            color: "white";
             width: parent.width/4;
             height: 200
+            Rectangle{
+                id: headerForms
+                height: 40
+                width: first.width
+                Text{
+                    text: "Forms"
+                    anchors.centerIn: parent
+                    color: "gray"
+                    font.pixelSize: 20
+                }
+            }
+            RowLayout{
+                anchors.top: headerForms.bottom
+                height: first.height - 40
 
             Rectangle{
                 id: first_left
                 width: first.width/2.3
-                height: first.height
-                /*Text {
-                    id: allAdminForms
-                    text: qsTr("All Forms")
-                }*/
+                height: first.height - 40
+                anchors.top: headerForms.bottom
+
                 ListModel {
                     id: adminFomModel
 
@@ -236,9 +220,10 @@ Rectangle{
                            id: tekstlijst
                            text: name + " >"
                         }
+
                    MouseArea {
                           id: mouse
-                          anchors.fill: parent
+                          anchors.fill: tekstlijst
                           hoverEnabled: true
                           onClicked: {
                               checkIfFormExcists(currentUsername,name,client_id_edit)
@@ -246,19 +231,32 @@ Rectangle{
                      }
                 }
                 }
-                ListView{
+                Rectangle{
+                    anchors.top: parent.top
+                    height: 20
+                    width: first_left.width
+                    id: adminForms
+
+                    Text {
+                        text: qsTr("Adminforms")
+                        height: 20
+                        horizontalAlignment: Text.AlignHCenter
+                        width: first_left.width
+                        font.underline : true
+                    }
+                }
+                ListView {
                         id: leftList
                         model: adminFomModel //deze lijst komt van de admin zelf (zijn forms)
                         delegate: lijstDelegate
-                        height: first.height
-                        anchors.fill: parent
-                        //anchors.top: allAdminForms.bottom
+                        height: first.height - 40
+                        anchors.top: adminForms.bottom
                         Component.onCompleted: getDataUserForms();
                 }
             }
             Rectangle {
                 id: first_middle
-                width: first.width/4.6
+                width: 2
                 color: "gray"
                 anchors.left: first_left.right
             }
@@ -266,7 +264,7 @@ Rectangle{
                 id: first_right
                 width: first.width/2.3
                 anchors.left: first_middle.right
-                height: first.height
+                height: first.height - 40
                 ListModel {
                     id: selectedUserFomModel
                 }
@@ -283,7 +281,7 @@ Rectangle{
                         }
                    MouseArea {
                           id: mouse
-                          anchors.fill: parent
+                          anchors.fill: tekstlijst
                           hoverEnabled: true
                           onClicked: {
                               removeFormToUser(client_id_edit,currentUsername,name)
@@ -291,19 +289,39 @@ Rectangle{
                      }
                 }
                 }
+
+                Rectangle{
+                    anchors.top: parent.top
+                    height: 20
+                    width: first_right.width
+                    id: userForms
+
+                    Text {
+                        text: qsTr("Userforms")
+                        height: 20
+                        horizontalAlignment: Text.AlignHCenter
+                        width: first_right.width
+                          font.underline : true
+                    }
+                }
+
                 ListView{
                     model: selectedUserFomModel //deze lijst komt van de user uit de tabel zelf (zijn forms)
                     delegate: lijstDelegate2
-                    height: first.height
-                    anchors.fill: parent
+                    anchors.top: userForms.bottom
+                    //anchors.top: userForms.bottom
+                    height: first.height - 40
+                    //anchors.fill: parent
                 }
+            }
             }
         }
 
         Rectangle{
             id: spacer
             width: 2
-            color: "red"
+            y:10
+            color: "#1A3138"
             height: 200
             anchors.left: first.right
         }
@@ -317,10 +335,20 @@ Rectangle{
 
       //Editeren van een gebruiker
             ColumnLayout {
-                x: 10
+                x: 50
                 anchors.margins: 3
                 spacing: 3
-
+                Rectangle{
+                    id: headerEditUser
+                    height: 40
+                    width: second.width/1.5
+                    Text{
+                        text: "Edit User"
+                        anchors.centerIn: parent
+                        color: "gray"
+                        font.pixelSize: 20
+                    }
+                }
                 TextField {
                     id: editlogin
                     Layout.fillWidth: true
@@ -383,7 +411,8 @@ Rectangle{
         Rectangle{
             id: spacer2
             width: 2
-            color: "red"
+            y:10
+            color: "#1A3138"
             height: 200
             anchors.left: second.right
 
@@ -400,14 +429,25 @@ Rectangle{
 
     //Toevoegen van een nieuwe gebruiker
     ColumnLayout {
-        x: 10
+        x: 50
         anchors.margins: 3
         spacing: 3
-
+        Rectangle{
+            id: headerNewUser
+            height: 40
+            width: second.width/1.5
+            Text{
+                text: "New User"
+                anchors.centerIn: parent
+                color: "gray"
+                font.pixelSize: 20
+            }
+        }
         TextField {
             id: login
             Layout.fillWidth: true
             placeholderText: "Username"
+            width: 30
         }
 
         TextField {
@@ -515,16 +555,7 @@ Rectangle{
                 var arr1 = arr.results;
                 tabelmodel.clear()
                 for(var i = 0; i < arr1.length; i++) {
-                tabelmodel.append({"id": arr1[i].id, "firstName":arr1[i].firstName,"lastName":arr1[i].lastName,"username":arr1[i].username,"email":arr1[i].email})
-                    /*var arr2 = {};
-                    arr2 = arr1[i].forms;
-                    if(arr2.length > 0)
-                    {
-                    for(var z = 0; z < arr2.length;z++)
-                    {
-                        contactModel2.append({"name": arr2[z]})
-                    }
-                    }*/
+                    tabelmodel.append({"id": arr1[i].id, "firstName":arr1[i].firstName,"lastName":arr1[i].lastName,"username":arr1[i].username,"email":arr1[i].email})
                 }
             }
             else
@@ -538,6 +569,7 @@ Rectangle{
     }
 
     function getDataUserForms() {
+        adminFomModel.clear();
         var xmlhttp = new XMLHttpRequest();
         var url = "https://api.engin.io/v1/users?q={\"username\":\""+ settings.username +"\"}&limit=1"
 
@@ -546,7 +578,6 @@ Rectangle{
                 var arr = JSON.parse(xmlhttp.responseText);
                 var arr1 = arr.results;
                 for(var i = 0; i < arr1.length; i++) {
-                    console.log(arr1[i].forms);
                     for(var y = 0; y < arr1[i].forms.length; y++)
                     {
                         adminFomModel.append({name: arr1[i].forms[y]})
@@ -564,6 +595,7 @@ Rectangle{
     }
 
     function getSelectedDataUserForms(username) {
+        getDataUserForms();
         var xmlhttp = new XMLHttpRequest();
         var url = "https://api.engin.io/v1/users?q={\"username\":\""+ username +"\"}&limit=1"
 
@@ -572,7 +604,6 @@ Rectangle{
                 var arr = JSON.parse(xmlhttp.responseText);
                 var arr1 = arr.results;
                 for(var i = 0; i < arr1.length; i++) {
-                    console.log(arr1[i].forms);
                     selectedUserFomModel.clear();
                     for(var y = 0; y < arr1[i].forms.length; y++)
                     {
@@ -609,7 +640,6 @@ Rectangle{
                         }
                     }
                 }
-                console.log("CONTROLE 2: DE "+ formname +" BESTAAT NIET")
                 addFormToUser(id,username,formname);
                 return false;
             }
@@ -625,24 +655,14 @@ Rectangle{
 
     function addFormToUser(id,username,formname)
     {
-        /*var newFORM = {
-                objectType: "objects.formsUsers",
-                form: formname,
-                username: username
-            };
-        enginioClient.create(newFORM);*/
-        console.log("id: "+ id);
         var url = "https://api.engin.io/v1/users/"+ id +"/atomic";
-        console.log(url);
         var xhr = new XMLHttpRequest();
                xhr.onreadystatechange = function() {
                    if ( xhr.readyState == xhr.DONE)
                    {
-                       console.log("Success test " + xhr.responseText + " STATUS " + xhr.status)
                        if ( xhr.status == 200)
                        {
                            var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
-                           console.log("Success test " + jsonObject.balance)
                            getSelectedDataUserForms(username)
                        }
                    }
@@ -659,7 +679,6 @@ Rectangle{
 
     function removeFormToUser(id,username,formname)
     {
-        console.log(id +" "+ username +" "+ formname)
         var url = "https://api.engin.io/v1/users/"+ id +"/atomic";
         var xhr = new XMLHttpRequest();
                xhr.onreadystatechange = function() {
@@ -669,7 +688,6 @@ Rectangle{
                        if ( xhr.status == 200)
                        {
                            var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request
-                           //console.log("Success " + jsonObject.balance)
                            getSelectedDataUserForms(username)
                        }
                    }

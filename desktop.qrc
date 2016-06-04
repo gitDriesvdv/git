@@ -1,21 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>Login_desktop.qml</file>
-        <file>Mainpanel_desktop_online.qml</file>
-        <file>Formbuilder.qml</file>
-        <file>AdminPanel.qml</file>
-        <file>FormView.qml</file>
         <file>FormResults.qml</file>
-        <file>mainpanel_test.qml</file>
-        <file>GoogleMapsTest.qml</file>
-        <file>GoogleMapsTest2.qml</file>
-        <file>FormViewV2.qml</file>
         <file>FormbuilderV2.qml</file>
-        <file>FormResultFuntions.js</file>
         <file>Users.qml</file>
-        <file>Settings.qml</file>
         <file>mainpanel_desktop_offline.qml</file>
-        <file>AdminPanel_pag1.qml</file>
     </qresource>
     <qresource prefix="/FormbuilderComponents"/>
 </RCC>

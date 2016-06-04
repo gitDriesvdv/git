@@ -31,11 +31,25 @@ Rectangle{
         }
     }
     Rectangle{
+        id: header
+        height: 50
+        width: parent.width
+        Text{
+            id: titel
+            x:30
+            y:20
+            text:"My Results"
+            font.pixelSize: 20
+            color: "gray"
+        }
+    }
+    Rectangle{
         id: resultlist
+        anchors.top: header.bottom
         height: 400
         width: 800
+        x:30
         Component.onCompleted: {
-            //getData("Dries")
             getDataUserForms(settings.username)
         }
 
@@ -46,53 +60,87 @@ Rectangle{
         ListModel{
             id: lijstmodel
         }
-
-        ComboBox{
-            id: keuzelijst
-            model: lijstmodel
-            /*onCurrentIndexChanged:
-            {
-                //listmodel.clear();
-                //primaireTableView.destroy()
-                getData(keuzelijst.currentText)
-                //getData(keuzelijst.currentText)
-                console.log("TEST: " + keuzelijst.currentText)
+        RowLayout{
+            id: controllerRow
+            height: 50
+            width: Screen.width/3
+            spacing: 1
+            anchors.top: header.bottom
+            Rectangle{
+                height: 50
+                width: 100
+                ComboBox{
+                    id: keuzelijst
+                    model: lijstmodel
+                    width: 100
+                    anchors.centerIn: parent
+                    /*onCurrentIndexChanged:
+                    {
+                        //listmodel.clear();
+                        //primaireTableView.destroy()
+                        getData(keuzelijst.currentText)
+                        //getData(keuzelijst.currentText)
+                        console.log("TEST: " + keuzelijst.currentText)
+                    }
+                    Component.onCompleted:
+                    {
+                        console.log("TEST 2: " + keuzelijst.currentText)
+                    }*/
+                }
             }
-            Component.onCompleted:
-            {
-                console.log("TEST 2: " + keuzelijst.currentText)
-            }*/
-        }
+
+
         Button{
             id: showResult
-            anchors.left: keuzelijst.right
             text: "Show"
             onClicked: {
                 listmodel.clear();
                 getData(keuzelijst.currentText)
-                //getData("FormulierDries")
             }
         }
         Button{
             id: reload
-            anchors.left: showResult.right
             text: "refresh"
             onClicked: {
-                //console.log("TEST 3: " + keuzelijst.currentText)
                 getDataUserForms(settings.username)
             }
+        }
+        Button {
+                id: button1
+                text: qsTr("Save")
+                onClicked:
+                {
+                    var data = {}
+                    for(var i = 0; i < listmodel.count;i++)
+                    {
+                        //data.push(listmodel.get(i));
+                        console.log(listmodel.get(i))
+                    }
+                    console.log("Test output");
+                    console.log(data);
+                    //var data = listmodel;
+                    //var data2 = JSON.stringify(data)
+                    //FileIO.save(data);
+                }
+            }
+    }
+        Rectangle{
+            id:spacer
+            height: 30
+            width: parent.width
+            anchors.top:controllerRow.bottom
         }
 
     TableView{
         id: primaireTableView
-        anchors.top : keuzelijst.bottom
-        width: 900
+        anchors.top : spacer.bottom
+        width: Screen.width - 150
         height: 400
         model:listmodel
         onClicked: {
             console.log(listmodel.get(row).source);
         }
-    }
+      }
     }
 
     function getData(formname_input) {

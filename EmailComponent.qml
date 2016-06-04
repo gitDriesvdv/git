@@ -4,9 +4,9 @@ import QtQuick.Controls 1.4
 Rectangle {
     id: itemEmail
     x: 20
-    width: parent.width;
+    width: parent.width - 50;
     height: 20;
-    color: "gray"
+    color: "white"
 TextField {
     height: 25
     font.pixelSize: 15

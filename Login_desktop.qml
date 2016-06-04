@@ -63,19 +63,18 @@ Rectangle {
     //![identity]
     anchors.fill: parent
     anchors.margins: 0
-    //spacing: 3
 Rectangle{
     id: top
     width: Screen.width
     height: Screen.height / 3
-    color: "white"
+    color: "#1C353C"
     Image {
         id: logo
-        source: "qrc:/new/prefix1/Schermafdruk 2016-01-26 17.19.42.png"
+        source: "qrc:/../Desktop/FormLogo.jpg"
         anchors.centerIn: parent
         y:50
-        //height: parent.height/0.8
-        width: 180
+        width: 200
+        height: 200
     }
 }
 Rectangle{
@@ -87,15 +86,17 @@ Rectangle{
     GridLayout{
         id: col
         columns: 2
+
         Rectangle{
         id: loginscreen
         width: rec.width/2
         height: rec.height
-        color: "white"
+        color: "#1C353C"
 
-        Rectangle{
+        Rectangle
+        {
             //anchors.centerIn: parent
-            x: Screen.width/3
+            x: Screen.width/4
             y: 100
             TextField {
                 id: login
@@ -106,7 +107,7 @@ Rectangle{
                         textColor: "black"
                         background: Rectangle {
                             radius: 2
-                            border.color: "red"
+                            border.color: "#4BB43A"
                             border.width: 0
                         }
                     }
@@ -115,14 +116,14 @@ Rectangle{
                 id: line
                 width: login.width
                 height: 2
-                color: "red"
+                color: "#4BB43A"
                  anchors.top: login.bottom
             }
             Rectangle{
                 id: spacer
                 width: login.width
                 height: 10
-                color: "white"
+                color: "#1C353C"
                  anchors.top: line.bottom
             }
             TextField {
@@ -134,9 +135,7 @@ Rectangle{
                         textColor: "black"
                         background: Rectangle {
                             radius: 2
-                            //implicitWidth: 100
-                            //implicitHeight: 24
-                            border.color: "red"
+                            border.color: "#4BB43A"
                             border.width: 0
                         }
                     }
@@ -150,14 +149,14 @@ Rectangle{
                 id: line2
                 width: login.width
                 height: 2
-                color: "red"
+                color: "#4BB43A"
                  anchors.top: password.bottom
             }
             Rectangle{
                 id: spacer2
                 width: login.width
                 height: 10
-                color: "white"
+                color: "#1C353C"
                  anchors.top: line2.bottom
             }
             Text{
@@ -174,13 +173,13 @@ Rectangle{
                         background: Rectangle {
                             implicitWidth: 100
                             implicitHeight: 25
-                            color: "white"
+                            color: "#4BB43A"
                             border.width: control.activeFocus ? 2 : 1
-                            border.color: "red"
-                            radius: 9
+                            border.color: "#4BB43A"
+                            radius: 2
                             gradient: Gradient {
-                                GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
-                                GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                                GradientStop { position: 0 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
+                                GradientStop { position: 1 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
                             }
                         }
                     }
@@ -197,13 +196,13 @@ Rectangle{
             width: rec.width/2
             height: rec.height
             anchors.left: loginscreen.right
-            color: "white"
+            color: "#1C353C"
             Rectangle{
                 x: Screen.width/5
                 y: 100
                 ColumnLayout {
                     anchors.margins: 1
-                    spacing: 9
+                    spacing: 5
 
                     TextField {
                         id: login_R
@@ -215,14 +214,14 @@ Rectangle{
                                     radius: 2
                                     //implicitWidth: 100
                                     //implicitHeight: 24
-                                    border.color: "red"
+                                    border.color: "#4BB43A"
                                     border.width: 0
                                 }
                             }
                         Rectangle{
                             width: login.width
                             height: 2
-                            color: "red"
+                            color: "#4BB43A"
                              anchors.top: login_R.bottom
                         }
                     }
@@ -238,14 +237,14 @@ Rectangle{
                                     radius: 2
                                     //implicitWidth: 100
                                     //implicitHeight: 24
-                                    border.color: "red"
+                                    border.color: "#4BB43A"
                                     border.width: 0
                                 }
                             }
                         Rectangle{
                             width: login.width
                             height: 2
-                            color: "red"
+                            color: "#4BB43A"
                              anchors.top: password_R.bottom
                         }
                     }
@@ -260,14 +259,14 @@ Rectangle{
                                     radius: 2
                                     //implicitWidth: 100
                                     //implicitHeight: 24
-                                    border.color: "red"
+                                    border.color: "#4BB43A"
                                     border.width: 0
                                 }
                             }
                         Rectangle{
                             width: login.width
                             height: 2
-                            color: "red"
+                            color: "#4BB43A"
                              anchors.top: userFirstName.bottom
                         }
                     }
@@ -280,14 +279,14 @@ Rectangle{
                                 textColor: "black"
                                 background: Rectangle {
                                     radius: 2
-                                    border.color: "red"
+                                    border.color: "#4BB43A"
                                     border.width: 0
                                 }
                             }
                         Rectangle{
                             width: login.width
                             height: 2
-                            color: "red"
+                            color: "#4BB43A"
                              anchors.top: userLastName.bottom
                         }
                     }
@@ -300,7 +299,7 @@ Rectangle{
                                 textColor: "black"
                                 background: Rectangle {
                                     radius: 2
-                                    border.color: "red"
+                                    border.color: "#4BB43A"
                                     border.width: 0
                                 }
                             }
@@ -308,7 +307,7 @@ Rectangle{
                         Rectangle{
                             width: login.width
                             height: 2
-                            color: "red"
+                            color: "#4BB43A"
                              anchors.top: userEmail.bottom
                         }
                     }
@@ -329,11 +328,11 @@ Rectangle{
                                     implicitHeight: 25
                                     color: "white"
                                     border.width: control.activeFocus ? 2 : 1
-                                    border.color: "red"
-                                    radius: 9
+                                    border.color: "#4BB43A"
+                                    radius: 2
                                     gradient: Gradient {
-                                        GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
-                                        GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                                        GradientStop { position: 0 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
+                                        GradientStop { position: 1 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
                                     }
                                 }
                             }

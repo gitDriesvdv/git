@@ -1,0 +1,22 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Formbuilder.qml</file>
+        <file>FormView_mobile.qml</file>
+        <file>FormView.qml</file>
+        <file>FormViewV2.qml</file>
+        <file>Login_mobile.qml</file>
+        <file>main_mobile.qml</file>
+        <file>Mainpanel_desktop_online.qml</file>
+        <file>mainpanel_test.qml</file>
+        <file>Settings.qml</file>
+        <file>AdminPanel_pag1.qml</file>
+        <file>AdminPanel.qml</file>
+        <file>FormResultFuntions.js</file>
+        <file>FormResult_mobile.qml</file>
+        <file>GoogleMapsTest.qml</file>
+        <file>GoogleMapsTest2.qml</file>
+        <file>Mainpanel_Mobile.qml</file>
+        <file>RegisterPage1.qml</file>
+        <file>ScreenInfo.qml</file>
+    </qresource>
+</RCC>

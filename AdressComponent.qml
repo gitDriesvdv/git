@@ -3,9 +3,9 @@ import QtQuick.Controls 1.4
 Rectangle {
     id: itemAdress
     x: 20
-    width: parent.width;
+    width: parent.width - 50;
     height: 150;
-    color: "gray"
+    color: "white"
 
     //straat + nummer
 TextField {
@@ -21,7 +21,7 @@ Text{
     text:qsTr("streetname + number")
     width: parent.width/2.5;
     anchors.top: textfield_street.bottom
-    color: "white"
+    color: "black"
 }
 
 //plaats
@@ -38,7 +38,7 @@ Text{
     text:qsTr("place")
     width: parent.width/2.5;
     anchors.top: textfield_place.bottom
-    color: "white"
+    color: "black"
 }
 
 //staat
@@ -57,7 +57,7 @@ Text{
     text:qsTr("State")
     anchors.top: textfield_state.bottom
     anchors.left: text_place.right
-    color: "white"
+    color: "black"
 }
 
 //postcode
@@ -75,7 +75,7 @@ Text{
     width: parent.width/2.5;
     text:qsTr("zip code")
     anchors.top: textfield_postcode.bottom
-    color: "white"
+    color: "black"
 }
 
 //land
@@ -94,7 +94,7 @@ Text{
     text:qsTr("country")
     anchors.top: textfield_country.bottom
     anchors.left: text_postcode.right
-    color: "white"
+    color: "black"
 }
 }
 

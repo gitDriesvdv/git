@@ -6,13 +6,14 @@ Rectangle {
     x: 20
     width: parent.width;
     height: 20;
-    color: "gray"
-TextField {
-    height: 25
-    font.pixelSize: 15
-    width: parent.width;
-    inputMethodHints : Qt.ImhDigitsOnly
-    id: textfield_itemPhone
-}
+    color: "white"
+
+    TextField {
+        height: 25
+        font.pixelSize: 15
+        width: parent.width;
+        inputMethodHints : Qt.ImhDigitsOnly
+        id: textfield_itemPhone
+    }
 }
 

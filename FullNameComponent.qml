@@ -4,9 +4,9 @@ import QtQuick.Controls 1.4
 Rectangle {
     id: itemFullName
     x: 20
-    width: parent.width;
+    width: parent.width - 50;
     height: 35;
-    color: "gray"
+    color: "white"
 
 TextField {
     height: 25
@@ -22,7 +22,7 @@ Text{
     text:qsTr("first name")
     width: parent.width/2.5;
     anchors.top: textfield_firstname.bottom
-    color: "white"
+    color: "black"
 }
 
 TextField {
@@ -38,7 +38,7 @@ Text{
     text:qsTr("last name")
     anchors.top: textfield_lastname.bottom
     anchors.left: text_firstname.right
-    color: "white"
+    color: "black"
 }
 }
 

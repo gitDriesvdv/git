@@ -8,7 +8,7 @@ FileIO::FileIO()
 }
 
 void FileIO::save(QString text){
-    QFile file("text.txt");
+    QFile file("/Users/driesvandevelde/Desktop/text.csv");
 
     if(file.open(QIODevice::ReadWrite)){
     QTextStream stream(&file);

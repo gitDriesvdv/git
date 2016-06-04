@@ -8,10 +8,10 @@ SOURCES += main.cpp \
 
 RESOURCES += \
     desktop.qrc \
-    mobiel.qrc \
     logo.qrc \
     formbuildercomponents.qrc \
-    qmlHistorie.qrc
+    icons.qrc \
+    oldfiles.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

@@ -7,6 +7,8 @@ import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.0
 import Qt.labs.settings 1.0
+import QtQuick.Controls.Styles 1.4
+
 import "qrc:/FormResultFuntions.js" as Logic
 
 Rectangle {
@@ -41,7 +43,7 @@ Rectangle {
         query: {
             "objectType": "objects.Form",
             "query" : { "User": settings.username, "FormName" : aFormname},
-            "sort" : [ {"sortBy": "indexForm", "direction": "asc"} ]
+            "sort" : [ {"sortBy": "createdAt", "direction": "asc"} ]
         }
     }
 
@@ -49,12 +51,28 @@ Rectangle {
     GridLayout {
         id: grid
         columns: 2
-        columnSpacing: 40
+        columnSpacing: 10
+        x:10
+        y:10
         width: rec_formbuilder/7
 
         Button {
             id: textFieldbutton
             text: "Textfield"
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             enabled: false
             onClicked: {
                 indexRegulator();
@@ -65,6 +83,20 @@ Rectangle {
             id: textAreabutton
             text: "Textarea"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                 enginioModel.append({"heightItem_mobile":4,"heightItem": 170 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "TextArea","req":"false"})
@@ -74,6 +106,20 @@ Rectangle {
             id: comboboxbutton
             text: "Combobox"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                 enginioModel.append({"heightItem_mobile":8,"heightItem": 100 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "ComboBox","List":[],"req":"false"})
@@ -83,6 +129,20 @@ Rectangle {
             id: checkboxbutton
             text: "Checkbox"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                 enginioModel.append({"heightItem_mobile":4,"heightItem": 200 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "CheckBox","List":[],"req":"false"})
@@ -92,6 +152,20 @@ Rectangle {
             id: fullNamebutton
             text: "Full Name"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                     enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Full Name", "Type" : "ComplexType","req":"false"})
@@ -101,6 +175,20 @@ Rectangle {
             id: emailbutton
             text: "Email"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                     enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Email", "Type" : "Email","req":"false"})
@@ -110,6 +198,20 @@ Rectangle {
             id: adressbutton
             text: "Adress"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                     enginioModel.append({"heightItem_mobile":4,"heightItem": 250 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Adress", "Type" : "Adress","req":"false"})
@@ -119,6 +221,20 @@ Rectangle {
             id: numberbutton
             text: "Number"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                 enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": aFieldname, "Type" : "Number","req":"false"})
@@ -128,6 +244,20 @@ Rectangle {
             id: phonenumberbutton
             text: "Phone"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                 enginioModel.append({"heightItem_mobile":8,"heightItem": 90 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Phone", "Type" : "phone","req":"false"})
@@ -137,6 +267,20 @@ Rectangle {
             id: personebutton
             text: "Persone"
             enabled: false
+            style: ButtonStyle {
+                    background: Rectangle {
+                        implicitWidth: 100
+                        implicitHeight: 50
+                        color: "white"
+                        border.width: control.activeFocus ? 2 : 1
+                        border.color: "#39AEE6"
+                        radius: 2
+                        gradient: Gradient {
+                            GradientStop { position: 0 ; color: control.pressed ? "white" : "white" }
+                            GradientStop { position: 1 ; color: control.pressed ? "white" : "white" }
+                        }
+                    }
+                }
             onClicked: {
                 indexRegulator();
                     enginioModel.append({"heightItem_mobile":4,"heightItem": 500 ,"indexForm": aIndexForm,"FormName":aFormname,"User": settings.username, "Name": "Persone", "Type" : "Persone","req":"false"})
@@ -144,44 +288,81 @@ Rectangle {
         }
     }
     Rectangle{
-        width: rec_formbuilder.width - grid.width
-        height: rec_formbuilder.height - grid.height
+        id:spacer
+        width: 10
+        height: parent.height
         anchors.left: grid.right
-        color: "gray"
+    }
+    Rectangle{
+        id:colorspacer
+        width: 1
+        color: "#39AEE6"
+        height: parent.height
+        anchors.left: spacer.right
+    }
+
+    Rectangle{
+        width: rec_formbuilder.width - grid.width
+        height: parent.height//rec_formbuilder.height - grid.height
+        anchors.left: colorspacer.right
+
+        color: "white"
 
         Rectangle {
             id: newform
             anchors.centerIn: parent
-            TextField {
-                id: nameForm
-                Layout.fillWidth: true
-                placeholderText: "New Form"
-            }
-            Component.onCompleted: getDataUserForms(settings.username)
-            ComboBox{
-                id: comboboxForms
-                anchors.top: nameForm.bottom
-                model: ListModel{
-                    id: lijstmodel
+            width: 300
+            height: 150
+            color:"#1C353C"
+            ColumnLayout{
+                width: 200
+                anchors.centerIn: parent
+                Rectangle{
+                    id:header
+                    width: 200
+                    height: 50
+                    color:"#1C353C"
+                    Text{
+                        text: "New Form"
+                        anchors.centerIn: parent
+                        color: "white"
+                        font.pixelSize: 20
+                    }
+                }
+
+                TextField {
+                    id: nameForm
+                    width: 200
+                    Layout.fillWidth: true
+                    placeholderText: "New Form"
+                }
+                Component.onCompleted: getDataUserForms(settings.username)
+                ComboBox{
+                    id: comboboxForms
+                    Layout.fillWidth: true
+                    model: ListModel{
+                        id: lijstmodel
+                    }
+                }
+
+                Button {
+                    id: startbutton
+                    Layout.fillWidth: true
+                    text: "Start"
+                    onClicked: {
+                        enableButtons()
+                    }
                 }
             }
 
-            Button {
-                id: startbutton
-                anchors.top: comboboxForms.bottom
-                text: "Start"
-                onClicked: {
-                    enableButtons()
-                }
-                //anchors.top: nameForm.bottom
-            }
+
         }
 
             Component {
                 id: listDelegate
                 Item {
                     id: item_list
-                    width: 600 ;
+                    width: 650 ;
                     height: heightItem + 40
                     Rectangle{
                         id: colorvalidator
@@ -189,31 +370,23 @@ Rectangle {
                         height: 70
                         x: 0
                         y: 10
-                        color: Name === "" ? "red" : "green"
+                        color: "white"
                     }
                     Rectangle{
                         id: checkrect
                         width: 50
                         height: 70
-                        color: "gray"
-                        //y: 10
+                        color: "white"
                         anchors.left: colorvalidator.right
-                        CheckBox {
-                                id: fielcheck
-                                anchors.horizontalCenter: checkrect.horizontalCenter
-                                anchors.verticalCenter: checkrect.verticalCenter
 
-                                onClicked:  {
-                                    if(fielcheck.checked)
-                                    {
-                                        push_indexFormArrayRegulator(index,indexForm);
-                                    }
-                                    else
-                                    {
-                                        pop_indexFormArrayRegulator(indexForm);
-                                    }
-                                }
-                            }
+                        Image {
+                            id: checkNameSaved
+                            width: 30
+                            height: 30
+                            anchors.horizontalCenter: checkrect.horizontalCenter
+                            anchors.verticalCenter: checkrect.verticalCenter
+                            source: Name === "" ? "qrc:/new/prefix1/tick_red.png" : "qrc:/new/prefix1/tick_green.png"
+                        }
                     }
 
 
@@ -223,39 +396,72 @@ Rectangle {
                         anchors.left: checkrect.right
                         width: parent.width
                         x: 10;
-                        //y: 10
-
                                 spacing: 10
                                 Rectangle {
                                     width: parent.width;
                                     height: 20;
-                                    color: "gray"
+                                    color: "white"
                                     x: 20
 
                                     TextField {
                                         id: name_component
                                         width: parent.width/2 ;
                                         text: Name
+                                        placeholderText: Name == "" ? "Fill in the title here" : ""
                                     }
-                                    Button{
-                                        id: changeName
-                                        width: parent.width/5
+                                    Rectangle{
+                                        id: horizontalSpacer
+                                        width: 5
+                                        height: 25
                                         anchors.left: name_component.right
-                                        text: "Save name"
+                                    }
+
+                                    Button
+                                    {
+                                        id: changeName
+                                        height: 25
+                                        width: 25
+                                        anchors.left: horizontalSpacer.right
                                         enabled: name_component.length
+                                        Image {
+                                                anchors.fill: parent
+                                                source: "qrc:/new/prefix1/pencil.png"
+                                            }
+                                        style: ButtonStyle {
+                                                background: Rectangle {
+                                                    implicitWidth: 25
+                                                    implicitHeight: 25
+                                                    color: "white"
+                                                    border.width: 0
+                                                    border.color: "transparent"
+                                                    radius: 0
+                                                    gradient: Gradient {
+                                                        GradientStop { position: 0 ; color: control.pressed ? "transparent" : "transparent" }
+                                                        GradientStop { position: 1 ; color: control.pressed ? "transparent" : "transparent" }
+                                                    }
+                                                }
+                                            }
                                         onClicked:{
                                             enginioModel.setProperty(index, "Name", name_component.text);
                                         }
                                     }
+                                    Rectangle{
+                                        id: horizontalSpacer2
+                                        width: 5
+                                        height: 25
+                                        anchors.left: changeName.right
+                                    }
                                     Text{
                                         id: fieldname
-                                        anchors.left: changeName.right
+                                        anchors.left: horizontalSpacer2.right
                                         text: Name === "" ? "no fieldname" : ""
                                         color: "white"
+                                        y:5
                                         verticalAlignment : Text.AlignHCenter
                                     }
                                     CheckBox{
                                         id: checkReq
+                                        y:5
                                         anchors.left: fieldname.right
                                         text: qsTr("required")
                                         checked: req
@@ -299,21 +505,39 @@ Rectangle {
 
                                 Rectangle {
                                     width: parent.width;
-                                    color: "gray"
+                                    color: "white"
                                     height: 150
                                     id: item4
                                     visible: Type == "CheckBox"
                                     x: 20
-                                    //y: 10
-                                    Row{
+                                    Row {
                                         id: rowcheckbox
                                         TextField{
                                             id: inputcheckbox
                                             width: Screen.width/5
                                         }
+                                        Rectangle{
+                                            id: checkboxspacer
+                                            width: 10
+                                            height: 20
+                                        }
                                         Button{
                                             id: addcheckbox
                                             text: "add"
+                                            style: ButtonStyle {
+                                                    background: Rectangle {
+                                                        implicitWidth: 100
+                                                        implicitHeight: 25
+                                                        color: "white"
+                                                        border.width: control.activeFocus ? 2 : 1
+                                                        border.color: "#4BB43A"
+                                                        radius: 2
+                                                        gradient: Gradient {
+                                                            GradientStop { position: 0 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
+                                                            GradientStop { position: 1 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
+                                                        }
+                                                    }
+                                                }
                                             onClicked: {
                                                 var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
                                                 var xhr = new XMLHttpRequest();
@@ -341,17 +565,21 @@ Rectangle {
                                             }
                                         }
                                     }
-                                    ScrollView {
-                                        //contentWidth: columnCheckbox.width; contentHeight: columnCheckbox.height
+                                    Rectangle{
+                                        id: spacer
+                                        height: 10
+                                        width: 180
                                         anchors.top: rowcheckbox.bottom
-                                        width: 180; height: 150
-                                        /*Component.onCompleted: {
-                                            item_list.height = 300
-                                            }*/
+                                    }
+
+                                    ScrollView {
+                                        anchors.top: spacer.bottom
+                                        width: 300;
+                                        height: 150
+
                                     Column{
                                         id: columnCheckbox
                                         spacing: 20
-                                       // height: 20
                                         width: parent.width
 
 
@@ -360,15 +588,36 @@ Rectangle {
                                             model: List
                                             Row{
                                                 spacing: 20
+                                                width: 300
+
                                             CheckBox {
                                                 height: 15
                                                 id: checkbox_item
                                                 text: modelData
+                                                y:5
                                             }
+
+
                                             Button{
                                                 id: removecheckbox
-                                                text: "remove"
-                                                onClicked: {
+                                                width: 50
+
+                                                    style: ButtonStyle {
+                                                            background: Rectangle {
+                                                                implicitWidth: 25
+                                                                implicitHeight: 25
+                                                                color: "white"
+                                                                border.width: 0
+                                                                border.color: "transparent"
+                                                                radius: 0
+                                                                gradient: Gradient {
+                                                                    GradientStop { position: 0 ; color: control.pressed ? "transparent" : "transparent" }
+                                                                    GradientStop { position: 1 ; color: control.pressed ? "transparent" : "transparent" }
+                                                                }
+                                                            }
+                                                        }
+                                                    iconSource: "qrc:/new/prefix1/Delete.png"
+                                                    onClicked: {
                                                     var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
                                                     var xhr = new XMLHttpRequest();
                                                            xhr.onreadystatechange = function() {
@@ -400,13 +649,14 @@ Rectangle {
                                 }
 
                                 }
+                                //COMBOBOX
                                 Rectangle {
                                     height: 30
-                                    width: parent.width
+                                    width: parent.width - 50
                                     id: item3
                                     visible: qsTr(Type) === "ComboBox"
                                     x: 20
-                                    color: "gray"
+                                    color: "white"
                                 Text{
                                     id: containerID
                                     text: id
@@ -426,10 +676,24 @@ Rectangle {
 
                                 Button {
                                            id: addIcon
-                                           text: "ADD"
+                                           text: "add"
                                            anchors.margins: 20
                                            anchors.left: inputComboBox.right
                                            enabled: inputComboBox.text.length
+                                           style: ButtonStyle {
+                                                   background: Rectangle {
+                                                       implicitWidth: 100
+                                                       implicitHeight: 25
+                                                       color: "white"
+                                                       border.width: control.activeFocus ? 2 : 1
+                                                       border.color: "#4BB43A"
+                                                       radius: 2
+                                                       gradient: Gradient {
+                                                           GradientStop { position: 0 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
+                                                           GradientStop { position: 1 ; color: control.pressed ? "#4BB43A" : "#4BB43A" }
+                                                       }
+                                                   }
+                                               }
                                            onClicked: {
                                                var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
                                                var xhr = new XMLHttpRequest();
@@ -458,9 +722,23 @@ Rectangle {
                                         }
                                 Button {
                                            id: removeButton
-                                           text: "Remove current"
+                                           text: "remove current"
                                            anchors.margins: 20
                                            anchors.left: addIcon.right
+                                           style: ButtonStyle {
+                                                   background: Rectangle {
+                                                       implicitWidth: 100
+                                                       implicitHeight: 25
+                                                       color: "white"
+                                                       border.width: control.activeFocus ? 2 : 1
+                                                       border.color: "red"
+                                                       radius: 2
+                                                       gradient: Gradient {
+                                                           GradientStop { position: 0 ; color: control.pressed ? "red" : "red" }
+                                                           GradientStop { position: 1 ; color: control.pressed ? "red" : "red" }
+                                                       }
+                                                   }
+                                               }
                                            onClicked: {
                                                var url = "https://api.engin.io/v1/objects/Form/"+ containerID.text +"/atomic";
                                                var xhr = new XMLHttpRequest();
@@ -488,25 +766,7 @@ Rectangle {
                                         }
 
                                 }
-                                Rectangle {
-                                    width: parent.width;
-                                    color: "gray"
-                                    height: 25
-                                    id: delete_button
-                                    x: 20
-                                    y: 20
-                                    Button {
-                                               id: removeIcon
-                                               text: "remove"
-                                               anchors.margins: 20
-                                               opacity: enabled ? 1 : 0.5
-                                               Behavior on opacity {NumberAnimation{duration: 100}}
-                                               onClicked: {
-                                                   enginioModel.remove(index);
-                                                   pop_indexFormArrayRegulator(indexForm);
-                                               }
-                                            }
-                                }
+
                                 Rectangle {
                                                 height: 1
                                                 width: parent.width
@@ -514,22 +774,49 @@ Rectangle {
                                             }
 
                     }
+                    Rectangle{
+                        anchors.left: col.right
+                        width: 50
+                        height: 50
+                        color:"white"
+                        Button{
+                            id: deleteButton
+                            anchors.bottom: parent.bottom
+                            style: ButtonStyle {
+                                    background: Rectangle {
+                                        implicitWidth: 25
+                                        implicitHeight: 25
+                                        color: "white"
+                                        border.width: 0
+                                        border.color: "transparent"
+                                        radius: 0
+                                        gradient: Gradient {
+                                            GradientStop { position: 0 ; color: control.pressed ? "transparent" : "transparent" }
+                                            GradientStop { position: 1 ; color: control.pressed ? "transparent" : "transparent" }
+                                        }
+                                    }
+                                }
+                            anchors.right: parent.right
+                            iconSource: "qrc:/new/prefix1/Delete.png"
+                            onClicked: {
+                                enginioModel.remove(index);
+                                pop_indexFormArrayRegulator(indexForm);
+                            }
+                        }
+                    }
                 }
             }
 
                 ListView {
                     id: formListView
-                    //interactive: false
                     model: enginioModel
                     delegate: listDelegate
                     clip: true
-                     anchors.left: grid.right
-                     y: 50
-                    //width: parent.width
-                    //height: parent.height
+                    anchors.left: grid.right
+                    y: 50
                     visible: false
                     width: rec_formbuilder.width - grid.width
-                    height: parent.height - 100//Screen.height - grid.height
+                    height: parent.height - 100
 
                     // Animations
                     add: Transition { NumberAnimation { properties: "y"; from: root.height; duration: 250 } }
@@ -541,18 +828,24 @@ Rectangle {
 
                 Rectangle{
                     id: actionbar
-                    color: "gray"
-                    width: Screen.width - grid.width
+                    color: "#E8ECEE"
+                    width: rec_formbuilder.width - grid.width
                     height: 50
                     y:0
-                    visible: false;
+                    visible: true;
                     Row{
                         id: rowActionbar
-                        height :50
-                        x:50
-                        width: Screen.width - grid.width
+                        height :49
+                        anchors.centerIn: parent
+                        width: rec_formbuilder.width - grid.width
                         spacing: 20;
-                     Button{
+                        Text{
+                            id: formheader
+                            text:"My Form"
+                            anchors.centerIn: parent
+                        }
+
+                     /*Button{
                          id: swapBUtton
                          anchors.verticalCenter: rowActionbar.verticalCenter
                          text: "SWAP";
@@ -573,7 +866,14 @@ Rectangle {
                          onClicked: {
                              reload();
                          }
-                     }
+                     }*/
+                    }
+                    Rectangle{
+                        id: linespacer
+                        height: 1
+                        width: rec_formbuilder.width - grid.width
+                        color:"gray"
+                        anchors.top: rowActionbar.bottom
                     }
                 }
 

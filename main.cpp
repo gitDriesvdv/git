@@ -4,6 +4,7 @@
 #include <QQuickView>
 #include <QQmlEngine>
 #include "mainwindow.h"
+#include <QQmlContext>
 #include "fileio.h"
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,7 @@ int main(int argc, char *argv[])
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     QObject::connect(view.engine(), SIGNAL(quit()), qApp, SLOT(quit()));
     view.setSource(QUrl("qrc:///Login_desktop.qml"));
+    view.rootContext()->setContextProperty("FileIO", new FileIO());
     view.resize(800, 480);
     view.showFullScreen();
     return app.exec();
