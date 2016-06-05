@@ -24,16 +24,12 @@ Rectangle {
     property variant fullNameFormArray: [];
     property int aIndexFormSingle : 0;
 
-
-
-    //test
     EnginioClient {
         id: client
         backendId: settings.myBackendId
         onError:
         {
          console.log("Enginio error: " + reply.errorCode + ": " + reply.errorString)
-         //enginioModelErrors.append({"Error": "Enginio " + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
         }
     }
 

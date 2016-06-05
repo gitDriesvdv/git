@@ -4,7 +4,6 @@ import Enginio 1.0
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
 import QtQuick.Dialogs 1.1
-//import "qrc:/FormResultFuntions.js" as Logic
 import QtQuick.Window 2.0
 import Qt.labs.settings 1.0
 
@@ -18,18 +17,9 @@ Rectangle{
 
     EnginioClient {
         id: enginioClientLog
-        backendId: settings.myBackendId
-        onError: {
-        enginioModelErrors.append({"Error": "Enginio" + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
-        }
+        backendId: settings.myBackendId  
     }
-    EnginioModel {
-        id: enginioModelErrors
-        client: enginioClientLog
-        query: {
-            "objectType": "objects.Errors"
-        }
-    }
+
     Rectangle{
         id: header
         height: 50
@@ -55,10 +45,10 @@ Rectangle{
 
 
         ListModel{
-            id:listmodel
+            id:listmodelTable
         }
         ListModel{
-            id: lijstmodel
+            id: lijstmodelCombobox
         }
         RowLayout{
             id: controllerRow
@@ -71,12 +61,12 @@ Rectangle{
                 width: 100
                 ComboBox{
                     id: keuzelijst
-                    model: lijstmodel
+                    model: lijstmodelCombobox
                     width: 100
                     anchors.centerIn: parent
                     /*onCurrentIndexChanged:
                     {
-                        //listmodel.clear();
+                        //listmodelTable.clear();
                         //primaireTableView.destroy()
                         getData(keuzelijst.currentText)
                         //getData(keuzelijst.currentText)
@@ -94,7 +84,7 @@ Rectangle{
             id: showResult
             text: "Show"
             onClicked: {
-                listmodel.clear();
+                listmodelTable.clear();
                 getData(keuzelijst.currentText)
             }
         }
@@ -110,17 +100,36 @@ Rectangle{
                 text: qsTr("Save")
                 onClicked:
                 {
-                    var data = {}
-                    for(var i = 0; i < listmodel.count;i++)
+                    fileDialog.visible = true;
+                    /*var str = ''
+                    var txt = '';
+                    for(var y = 0; y < primaireTableView.columnCount; y++)
                     {
-                        //data.push(listmodel.get(i));
-                        console.log(listmodel.get(i))
+                        if(txt != '')
+                        {
+                            txt += ';'
+                        }
+                        txt += primaireTableView.getColumn(y).title;
                     }
-                    console.log("Test output");
-                    console.log(data);
-                    //var data = listmodel;
-                    //var data2 = JSON.stringify(data)
-                    //FileIO.save(data);
+                        str += txt + '\n';
+                    txt = '';
+                    for (var i = 0; i < listmodelTable.count; i++) {
+
+                        var row = listmodelTable.get(i);
+                        var x;
+                        for (x in row) {
+                            if(String(row[x]) != "function() { [code] }")
+                            {
+                                if(txt != '')
+                                {
+                                    txt += ';'
+                                }
+                                txt += String(row[x]);
+                            }
+                        }
+                        str += txt + '\n';
+                    }
+                    FileIO.save(str);*/
                 }
             }
     }
@@ -136,11 +145,56 @@ Rectangle{
         anchors.top : spacer.bottom
         width: Screen.width - 150
         height: 400
-        model:listmodel
+        model:listmodelTable
         onClicked: {
-            console.log(listmodel.get(row).source);
+            console.log(listmodelTable.get(row).source);
         }
       }
+    FileDialog {
+        id: fileDialog
+        title: "Please choose a directory"
+        folder: shortcuts.home
+        selectFolder: true
+        visible: false
+
+        onAccepted: {
+            console.log("You chose: " + fileDialog.fileUrls)
+
+            var str = ''
+                                var txt = '';
+                                for(var y = 0; y < primaireTableView.columnCount; y++)
+                                {
+                                    if(txt != '')
+                                    {
+                                        txt += ';'
+                                    }
+                                    txt += primaireTableView.getColumn(y).title;
+                                }
+                                    str += txt + '\n';
+                                txt = '';
+                                for (var i = 0; i < listmodelTable.count; i++) {
+
+                                    var row = listmodelTable.get(i);
+                                    var x;
+                                    for (x in row) {
+                                        if(String(row[x]) != "function() { [code] }")
+                                        {
+                                            if(txt != '')
+                                            {
+                                                txt += ';'
+                                            }
+                                            txt += String(row[x]);
+                                        }
+                                    }
+                                    str += txt + '\n';
+                                }
+                                var location = fileDialog.fileUrls
+                                FileIO.save(str,location);
+        }
+        onRejected: {
+            console.log("Canceled")
+        }
+    }
     }
 
     function getData(formname_input) {
@@ -267,11 +321,11 @@ Rectangle{
                    samenstelling[ids[i].lijst[y].fieldname] = ids[i].lijst[y].input;
                 }
             }
-            listmodel.append(samenstelling);
+            listmodelTable.append(samenstelling);
         }
     }
     function getDataUserForms(formname_input) {
-        lijstmodel.clear();
+        lijstmodelCombobox.clear();
         var xmlhttp = new XMLHttpRequest();
         var url = "https://api.engin.io/v1/users?q={\"username\":\""+ formname_input +"\"}&limit=1"
 
@@ -283,7 +337,7 @@ Rectangle{
                     console.log(arr1[i].forms);
                     for(var y = 0; y < arr1[i].forms.length; y++)
                     {
-                        lijstmodel.append({text: arr1[i].forms[y]})
+                        lijstmodelCombobox.append({text: arr1[i].forms[y]})
                     }
                 }
             }
@@ -295,5 +349,29 @@ Rectangle{
         xmlhttp.open("GET", url, true);
         xmlhttp.setRequestHeader("Enginio-Backend-Id",settings.myBackendId);
         xmlhttp.send();
+    }
+
+    //testen of dit werkt !!!!
+    function json2CSVConverter(objArray)
+    {
+      var array = objArray != 'object' ? JSON.parse(objArray) : objArray;
+      var str = '';
+
+      for (var i = 0; i < array.length; i++) {
+        var line = '';
+        for (var index in array[i]) {
+          if(line != '')
+          {
+              line += ','
+          }
+          console.log(array[i][index]);
+          line += array[i][index];
+        }
+
+        str += line + '\r\n';
+      }
+      console.log("str = ");
+      console.log(str);
+       FileIO.save(str);
     }
 }

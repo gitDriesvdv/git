@@ -414,7 +414,7 @@ Rectangle{
                 data.text = data.text + "User '"+ login.text +"' is logged in.\n\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
                 enginioModelLogs.append({"Log": data.text, "User": login.text})
                 console.log("CHECK: " + login.text);
-                getDataUserForms(login.text)
+                getDataUser(login.text)
                 settings.username = login.text
                 /*if(settings.isAdmin == true)
                 {
@@ -525,7 +525,9 @@ Rectangle{
         var re = /\S+@\S+\.\S+/;
         return re.test(email);
     }
-    function getDataUserForms(formname_input) {
+
+
+    function getDataUser(formname_input) {
         var xmlhttp = new XMLHttpRequest();
         var url = "https://api.engin.io/v1/users?q={\"username\":\""+ formname_input +"\"}&limit=1"
 
@@ -550,8 +552,6 @@ Rectangle{
                     {
                         messageLogin.text = "only administrators can login"
                     }
-
-                    console.log("ADMIN:"+ settings.isAdmin)
                 }
             }
             else

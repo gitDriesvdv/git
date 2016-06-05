@@ -21,15 +21,6 @@ Rectangle{
         backendId: settings.myBackendId
         onError: {
         console.debug(JSON.stringify(reply.data))
-        enginioModelErrors.append({"Error": "Enginio " + reply.errorCode + ": " + reply.errorString + "\n\n", "User": "Admin"})
-        }
-    }
-
-    EnginioModel {
-        id: enginioModelLogs
-        client: enginioClient
-        query: {
-            "objectType": "objects.Logs"
         }
     }
 
@@ -96,7 +87,6 @@ Rectangle{
                edituserFirstName.text = tabel.model.get(row).firstName
                edituserLastName.text = tabel.model.get(row).lastName
 
-               //HIER FUNCTIE OPROEPEN OM DE LIJST VAN DE FORMS VAN DE USER WEER TE GEVEN
                currentUsername = tabel.model.get(row).username;
                getSelectedDataUserForms(tabel.model.get(row).username);
            }
@@ -309,9 +299,7 @@ Rectangle{
                     model: selectedUserFomModel //deze lijst komt van de user uit de tabel zelf (zijn forms)
                     delegate: lijstDelegate2
                     anchors.top: userForms.bottom
-                    //anchors.top: userForms.bottom
                     height: first.height - 40
-                    //anchors.fill: parent
                 }
             }
             }
@@ -494,7 +482,6 @@ Rectangle{
 
             onClicked: {
                 proccessButton.state = "Registering"
-                //![create]
                 var reply = enginioClient.create(
                             { "username": login.text,
                               "password": password.text,
@@ -510,10 +497,8 @@ Rectangle{
                         proccessButton.state = ""
                         if (reply.errorType !== EnginioReply.NoError) {
                             messageDialog.text = "Failed to create an account:\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n"
-                            enginioModelErrors.append({"Error": login.text + " Failed to create an account:\n" + JSON.stringify(reply.data, undefined, 2) + "\n\n", "User": "Admin"})
                         } else {
                             messageDialog.text = "Account Created.\n"
-                            enginioModelLogs.append({"Log": login.text + " Account Created", "User": "Admin"})
                             login.text = ""
                             password.text = ""
                             userEmail.text = ""
@@ -631,7 +616,6 @@ Rectangle{
                 var arr = JSON.parse(xmlhttp.responseText);
                 var arr1 = arr.results;
                 for(var i = 0; i < arr1.length; i++) {
-                    console.log(arr1[i].forms);
                     for(var y = 0; y < arr1[i].forms.length; y++)
                     {
                         if(formname === arr1[i].forms[y])
@@ -684,7 +668,6 @@ Rectangle{
                xhr.onreadystatechange = function() {
                    if ( xhr.readyState == xhr.DONE)
                    {
-                       console.log("STATUS " + xhr.status)
                        if ( xhr.status == 200)
                        {
                            var jsonObject = JSON.parse(xhr.responseText); // Parse Json Response from http request

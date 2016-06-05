@@ -11,7 +11,7 @@ class FileIO : public QObject
 
 public:
     FileIO();
-    Q_INVOKABLE void save(QString text);
+    Q_INVOKABLE void save(QString text, QString url);
     ~FileIO();
 
 };

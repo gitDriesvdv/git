@@ -1,14 +1,16 @@
 #include "fileio.h"
 #include <QFile>
 #include <QTextStream>
-
+#include <QFileDialog>
 FileIO::FileIO()
 {
 
 }
 
-void FileIO::save(QString text){
-    QFile file("/Users/driesvandevelde/Desktop/text.csv");
+void FileIO::save(QString text, QString url){
+
+    url.remove(1, 7);
+    QFile file(url+"/Results.csv");
 
     if(file.open(QIODevice::ReadWrite)){
     QTextStream stream(&file);
